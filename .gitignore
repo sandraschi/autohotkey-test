@@ -1,0 +1,35 @@
+# AutoHotkey specific
+*.exe
+*.tmp
+*.log
+
+# Editor and IDE files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files and directories
+temp/
+tmp/
+*.temp
+
+# Build artifacts
+build/
+dist/
+out/
+
+# Snapshots (keep structure but ignore contents)
+.snapshots/*/
+!.snapshots/.gitkeep
+
+# Personal test files
+test_*.ahk
+debug_*.ahk

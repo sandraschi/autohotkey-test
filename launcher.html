@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scriptlet Launcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #343a40;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .status-online {
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .status-offline {
+            background: var(--danger);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            background: rgba(74, 111, 165, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            min-height: 3.6rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: #3a5a8c;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .status-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-message {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .connection-status {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .tab-content.active {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: left;
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+            
+            .tab.active {
+                border-left: 3px solid var(--primary);
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-robot"></i>
+                <h1>Scriptlet Launcher</h1>
+            </div>
+            <div class="status">
+                <span class="status-indicator" id="connectionIndicator"></span>
+                <span id="connectionStatus">Connecting...</span>
+            </div>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="utilities">Utilities</div>
+            <div class="tab" data-tab="games">Games</div>
+            <div class="tab" data-tab="pranks">Pranks</div>
+            <div class="tab" data-tab="advanced">Advanced</div>
+        </div>
+
+        <!-- Utilities Tab -->
+        <div id="utilities" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-window-maximize"></i>
+                    <h3>Window Management</h3>
+                </div>
+                <div class="card-body">
+                    <p>Manage and organize your windows with ease. Snap, resize, and arrange windows quickly.</p>
+                    <button class="btn btn-primary" onclick="runScript('window_management.ahk')">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-clipboard"></i>
+                    <h3>Clipboard Manager</h3>
+                </div>
+                <div class="card-body">
+                    <p>Access your clipboard history and manage copied items efficiently.</p>
+                    <button class="btn btn-primary" onclick="runScript('clipboard_manager.ahk')">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-volume-up"></i>
+                    <h3>Volume Control</h3>
+                </div>
+                <div class="card-body">
+                    <p>Quickly adjust your system volume with hotkeys and visual feedback.</p>
+                    <button class="btn btn-primary" onclick="runScript('volume_control.ahk')">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-sticky-note"></i>
+                    <h3>Quick Notes</h3>
+                </div>
+                <div class="card-body">
+                    <p>Take quick notes with hotkeys and organize your thoughts.</p>
+                    <button class="btn btn-primary" onclick="runScript('quick_notes.ahk')">
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div id="games" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Snake Game</h3>
+                </div>
+                <div class="card-body">
+                    <p>Classic Snake game. Use Ctrl+Alt+S to start when script is running.</p>
+                    <button class="btn btn-primary" onclick="runScript('fun_games.ahk')">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <h3>Sudoku</h3>
+                </div>
+                <div class="card-body">
+                    <p>Play Sudoku with multiple difficulty levels and solver assistance.</p>
+                    <button class="btn btn-primary" onclick="runScript('sudoku.ahk')">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pranks Tab -->
+        <div id="pranks" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-keyboard"></i>
+                    <h3>Classic Pranks</h3>
+                </div>
+                <div class="card-body">
+                    <p>Harmless pranks including fake typing, mouse jiggle, and fake BSOD.</p>
+                    <button class="btn btn-primary" onclick="runScript('classic_pranks.ahk')">
+                        <i class="fas fa-smile"></i> Start
+                    </button>
+                    <button class="btn btn-danger" onclick="stopScript('classic_pranks.ahk')">
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-volume-off"></i>
+                    <h3>Annoying Sounds</h3>
+                </div>
+                <div class="card-body">
+                    <p>Play random annoying sounds at intervals. Use with caution!</p>
+                    <button class="btn btn-primary" id="soundsBtn" onclick="toggleSounds()">
+                        <i class="fas fa-play"></i> Start Sounds
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Tab -->
+        <div id="advanced" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-robot"></i>
+                    <h3>Ollama Chatbot</h3>
+                </div>
+                <div class="card-body">
+                    <p>Full-featured AI chat client with model switching and TTS support.</p>
+                    <button class="btn btn-success" onclick="runScript('ollama_chatbot.ahk')">
+                        <i class="fas fa-comments"></i> Open Chat
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cloud-sun"></i>
+                    <h3>Weather Widget</h3>
+                </div>
+                <div class="card-body">
+                    <p>Always-on-top weather widget with Vienna forecast and conditions.</p>
+                    <button class="btn btn-success" onclick="runScript('weather_widget.ahk')">
+                        <i class="fas fa-thermometer-half"></i> Show Weather
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>System Monitor</h3>
+                </div>
+                <div class="card-body">
+                    <p>Real-time system performance monitoring with CPU, RAM, and disk usage.</p>
+                    <button class="btn btn-success" onclick="runScript('system_monitor.ahk')">
+                        <i class="fas fa-desktop"></i> Monitor
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Eliza Chatbot</h3>
+                </div>
+                <div class="card-body">
+                    <p>Classic ELIZA therapeutic chatbot for nostalgic AI conversations.</p>
+                    <button class="btn btn-success" onclick="runScript('eliza.ahk')">
+                        <i class="fas fa-brain"></i> Talk to Eliza
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-message" id="statusMessage">Ready to launch scripts</div>
+            <div class="status-actions">
+                <div class="connection-status" id="serverStatus">Checking server connection...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isServerOnline = false;
+        let serverURL = 'http://localhost:8765';
+
+        // Check server connection on load
+        window.addEventListener('load', () => {
+            checkServerConnection();
+            setInterval(checkServerConnection, 5000); // Check every 5 seconds
+        });
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Check if server is running
+        async function checkServerConnection() {
+            const indicator = document.getElementById('connectionIndicator');
+            const status = document.getElementById('connectionStatus');
+            const serverStatus = document.getElementById('serverStatus');
+
+            try {
+                const response = await fetch(`${serverURL}/status`, {
+                    method: 'GET',
+                    timeout: 2000
+                });
+
+                if (response.ok) {
+                    isServerOnline = true;
+                    indicator.className = 'status-indicator status-online';
+                    status.textContent = 'AHK Bridge Online';
+                    serverStatus.textContent = 'COM Bridge: Connected';
+                } else {
+                    throw new Error('Server responded with error');
+                }
+            } catch (error) {
+                isServerOnline = false;
+                indicator.className = 'status-indicator status-offline';
+                status.textContent = 'AHK Bridge Offline';
+                serverStatus.textContent = 'COM Bridge: Disconnected - Start ScriptletCOMBridge.ahk';
+            }
+        }
+
+        // Run a script via the COM bridge
+        async function runScript(scriptName) {
+            if (!isServerOnline) {
+                updateStatus('ERROR: COM Bridge is offline. Please start ScriptletCOMBridge.ahk');
+                return;
+            }
+
+            updateStatus(`Starting: ${scriptName}...`);
+
+            try {
+                const response = await fetch(`${serverURL}/run/${scriptName}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const result = await response.text();
+                updateStatus(result);
+
+                // Visual feedback for successful launch
+                if (result.includes('SUCCESS')) {
+                    const button = event.target;
+                    button.style.background = '#28a745';
+                    setTimeout(() => {
+                        button.style.background = '';
+                    }, 1000);
+                }
+
+            } catch (error) {
+                updateStatus(`ERROR: Failed to run ${scriptName} - ${error.message}`);
+            }
+        }
+
+        // Stop a script
+        async function stopScript(scriptName) {
+            if (!isServerOnline) {
+                updateStatus('ERROR: COM Bridge is offline');
+                return;
+            }
+
+            updateStatus(`Stopping: ${scriptName}...`);
+
+            try {
+                const response = await fetch(`${serverURL}/stop/${scriptName}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.text();
+                updateStatus(result);
+
+            } catch (error) {
+                updateStatus(`ERROR: Failed to stop ${scriptName} - ${error.message}`);
+            }
+        }
+
+        // Toggle annoying sounds
+        function toggleSounds() {
+            const btn = document.getElementById('soundsBtn');
+            
+            if (btn.innerHTML.includes('Start')) {
+                btn.innerHTML = '<i class="fas fa-stop"></i> Stop Sounds';
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-danger');
+                runScript('annoying_sounds.ahk');
+            } else {
+                btn.innerHTML = '<i class="fas fa-play"></i> Start Sounds';
+                btn.classList.remove('btn-danger');
+                btn.classList.add('btn-primary');
+                stopScript('annoying_sounds.ahk');
+            }
+        }
+
+        // Update status message
+        function updateStatus(message) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            
+            // Clear previous timeouts
+            if (window.statusTimeout) {
+                clearTimeout(window.statusTimeout);
+            }
+            
+            // Reset status after 5 seconds
+            window.statusTimeout = setTimeout(() => {
+                statusElement.textContent = 'Ready to launch scripts';
+            }, 5000);
+        }
+
+        // Show helpful message on first load
+        updateStatus('Start ScriptletCOMBridge.ahk to enable script launching');
+    </script>
+</body>
+</html>

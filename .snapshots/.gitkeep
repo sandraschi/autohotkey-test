@@ -1,0 +1,5 @@
+# Version Snapshots
+
+This directory preserves version snapshots and backups during development.
+
+*.gitkeep files maintain directory structure while ignoring snapshot contents.*
