@@ -1,3 +1,4 @@
+#Requires AutoHotkey v2.0+
 ; AutoHotkey v2 Scripts for Claude Desktop MCP Development
 ; Compatible with AutoHotkey v2.0+
 
@@ -84,7 +85,13 @@
 ; 6. Claude Desktop Restart (Ctrl+Alt+R)
 ^!r::
 {
-    ; Find Claude Desktop window
+    Run "taskkill /f /im Claude.exe",, "Hide"
+    Sleep 2000
+    Run "C:\Users\sandr\AppData\Local\AnthropicClaude\app-0.12.129\claude.exe"
+}
+^!x::
+{
+	; Find Claude Desktop window
     try {
         WinActivate "Claude"
         Sleep 500
@@ -99,13 +106,13 @@
         WinWaitClose "Claude",, 5
 
         ; Restart Claude Desktop
-        Run "C:\Users\sandr\AppData\Local\Programs\Claude\Claude.exe"
+        Run "C:\Users\sandr\AppData\Local\AnthropicClaude\app-0.12.129\claude.exe"
     }
     catch {
         ; Fallback: Force restart
         Run "taskkill /f /im Claude.exe",, "Hide"
         Sleep 2000
-        Run "C:\Users\sandr\AppData\Local\Programs\Claude\Claude.exe"
+        Run "C:\Users\sandr\AppData\Local\AnthropicClaude\app-0.12.129\claude.exe"
     }
 }
 
