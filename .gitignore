@@ -2,22 +2,80 @@
 *.exe
 *.tmp
 *.log
+*.ahk.bak
+*.ahk~*
+*.ahk.orig
+*.ahk.new
+*.ahk.old
+
+# Compiled scripts
+*.exe
+*.bin
+*.bin.*
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
 
 # Editor and IDE files
-.vscode/settings.json
+.vscode/
 .idea/
 *.swp
 *.swo
 *~
+*.sublime-workspace
+*.sublime-project
+*.sublime-cache
+*.sublime-grunt.cache
 
 # Windows system files
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+[Dd]esktop.ini
 
 # Temporary files and directories
 temp/
+tmp/
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+*_backup
+*_backup_*
+
+# Test artifacts
+/test-results/
+/coverage/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Local configuration overrides
+config.local.ini
+*.local.ini
+
+# Build output
+/dist/
+/build/
+/out/
+
+# Dependency directories
+/lib/
+/vendor/
+
+# Logs directory
+/logs/
+
+# Cache directories
+.cache/
+*.cache
 tmp/
 *.temp
 

@@ -1,20 +1,53 @@
 # AutoHotkey Development Tools & Scripts
 
-A comprehensive collection of AutoHotkey v2 scripts and development tools for system automation, COM bridging, and scriptlet management.
+A comprehensive collection of AutoHotkey v2 scripts and development tools for system automation, COM bridging, and scriptlet management, featuring a powerful bridge script and modern HTML-based GUI.
 
 ## 🚀 Features
 
 ### Core Components
+
 - **ScriptletCOMBridge**: Advanced COM bridge for AutoHotkey v2 with JSON utilities
-- **Scriptlet Launcher**: Dynamic script launcher with web-based GUI
+- **HTML5 GUI**: Modern web-based interface for script management
 - **Development Tools**: Collection of utilities for AutoHotkey development
 - **Claude MCP Integration**: Scripts designed to work with Claude MCP tools
 
 ### Key Scripts
+
 - `scriptlet_launcher_v2.ahk` - Main launcher with 25+ development tools
-- `ScriptletCOMBridge_v2*.ahk` - COM bridge implementation (modular parts)
-- `claude-mcp-scripts.ahk` - Claude Desktop integration utilities
+- `ScriptletCOMBridge_v2.ahk` - Core COM bridge implementation
+- `claude-mcp-scripts-extended.ahk` - Enhanced Claude Desktop integration
 - `launcher.html` - Web-based interface for script management
+
+## 🔧 ScriptletCOMBridge
+
+The `ScriptletCOMBridge` is a powerful COM bridge that enables:
+
+- **Bidirectional Communication**: Seamless interaction between AutoHotkey and other applications
+- **JSON Serialization**: Built-in utilities for JSON data handling
+- **Modular Design**: Split into multiple files for better maintainability
+- **Error Handling**: Robust error reporting and recovery
+
+### Key Bridge Scripts
+
+- `ScriptletCOMBridge_v2.ahk` - Main bridge implementation
+- `ScriptletCOMBridge_v2_part*.ahk` - Modular components (1-5)
+- `ScriptletCOMBridge_v2_final.ahk` - Final compiled version
+
+## 🌐 HTML5 GUI
+
+The `launcher.html` provides a modern web interface with:
+
+- **Responsive Design**: Works on desktop and mobile devices
+- **Real-time Updates**: Dynamic content updates without page reloads
+- **Dark/Light Mode**: Automatic theme switching based on system preferences
+- **Keyboard Navigation**: Full keyboard support for power users
+
+### Features
+
+- Script categorization and search
+- One-click script execution
+- Status monitoring
+- Configuration management
 
 ## 📁 Structure
 
@@ -36,10 +69,27 @@ autohotkey-test/
 
 ## 🎯 Quick Start
 
-1. Install AutoHotkey v2.0+ from [autohotkey.com](https://autohotkey.com)
-2. Clone or download this repository
-3. Run `scriptlet_launcher_v2.ahk` for the main toolset
-4. Use `launcher.html` for web-based management
+### Using the Bridge Script
+
+1. Ensure AutoHotkey v2.0+ is installed
+2. Run `ScriptletCOMBridge_v2.ahk` to start the bridge
+3. The bridge will be available for other applications to connect
+
+### Using the Web GUI
+
+1. Start the bridge script as above
+2. Open `launcher.html` in any modern web browser
+3. The interface will automatically connect to the running bridge
+
+### Command Line Usage
+
+```bash
+# Start the bridge
+AutoHotkey64.exe ScriptletCOMBridge_v2.ahk
+
+# Launch with custom port
+AutoHotkey64.exe ScriptletCOMBridge_v2.ahk --port 8080
+```
 
 ## 🔧 Development Tools Included
 
