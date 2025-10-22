@@ -323,6 +323,42 @@
       "enabled": true,
       "priority": 2,
       "tags": ["security", "warning", "safety", "ai", "limitations", "critical"]
+    },
+    "classic_pong": {
+      "name": "Classic Pong Game",
+      "version": "1.0.0",
+      "description": "Classic Pong arcade game with AI opponent and sound effects",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!p", "F5"],
+      "enabled": true,
+      "priority": 85,
+      "tags": ["game", "pong", "arcade", "classic", "ai", "retro"]
+    },
+    "classic_frogger": {
+      "name": "Classic Frogger Game",
+      "version": "1.0.0",
+      "description": "Classic Frogger arcade game with cars, logs, and turtles",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!f", "F6"],
+      "enabled": true,
+      "priority": 86,
+      "tags": ["game", "frogger", "arcade", "classic", "retro", "frog"]
+    },
+    "chess_stockfish": {
+      "name": "Chess Game with Stockfish Integration",
+      "version": "1.0.0",
+      "description": "Full-featured chess game with Stockfish engine integration",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": ["stockfish.exe"],
+      "hotkeys": ["^!c", "F7"],
+      "enabled": true,
+      "priority": 87,
+      "tags": ["game", "chess", "stockfish", "ai", "strategy", "classic"]
     }
   },
   "categories": {
