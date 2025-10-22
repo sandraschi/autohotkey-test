@@ -296,13 +296,13 @@ class ChessGame {
             return false ; Can't move to same square
         }
         
-        local piece := this.board[from.row][from.col]
+        piece := this.board[from.row][from.col]
         if (piece = "") {
             return false ; No piece to move
         }
         
         ; Check if it's the player's piece
-        local isWhite := (piece = piece.ToUpper())
+        isWhite := (piece = piece.ToUpper())
         if ((isWhite && this.currentPlayer != "white") || (!isWhite && this.currentPlayer != "black")) {
             return false
         }
@@ -317,19 +317,19 @@ class ChessGame {
         }
         
         ; Convert board to FEN notation
-        local fen := this.BoardToFEN()
+        fen := this.BoardToFEN()
         
         ; Send position to Stockfish
         this.SendToStockfish("position fen " . fen)
         this.SendToStockfish("go depth 3")
         
         ; Get best move from Stockfish
-        local bestMove := this.GetBestMoveFromStockfish()
+        bestMove := this.GetBestMoveFromStockfish()
         
         if (bestMove != "") {
             ; Parse and make the move
-            local from := this.ParseSquare(bestMove.SubStr(1, 2))
-            local to := this.ParseSquare(bestMove.SubStr(3, 2))
+            from := this.ParseSquare(bestMove.SubStr(1, 2))
+            to := this.ParseSquare(bestMove.SubStr(3, 2))
             
             this.MakeMove(from, to)
         }
@@ -359,14 +359,14 @@ class ChessGame {
     
     static BoardToFEN() {
         ; Convert board to FEN notation
-        local fen := ""
+        fen := ""
         
         Loop 8 {
-            local row := 8 - A_Index
-            local emptyCount := 0
+            row := 8 - A_Index
+            emptyCount := 0
             
             Loop 8 {
-                local piece := this.board[row][A_Index - 1]
+                piece := this.board[row][A_Index - 1]
                 if (piece = "") {
                     emptyCount++
                 } else {
@@ -393,8 +393,8 @@ class ChessGame {
     
     static ParseSquare(square) {
         ; Convert algebraic notation to board coordinates
-        local col := Ord(square.SubStr(1, 1)) - Ord("a")
-        local row := 8 - Integer(square.SubStr(2, 1))
+        col := Ord(square.SubStr(1, 1)) - Ord("a")
+        row := 8 - Integer(square.SubStr(2, 1))
         return {row: row, col: col}
     }
     

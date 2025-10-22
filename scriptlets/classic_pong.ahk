@@ -151,10 +151,10 @@ class PongGame {
     
     static UpdateAI() {
         ; Simple AI - follow the ball
-        local targetY := this.ballY - this.paddleHeight // 2
+        targetY := this.ballY - this.paddleHeight // 2
         
         ; Adjust AI difficulty
-        local aiSpeed := this.paddleSpeed
+        aiSpeed := this.paddleSpeed
         switch (this.difficulty) {
             case "Easy":
                 aiSpeed := this.paddleSpeed * 0.6
@@ -199,7 +199,7 @@ class PongGame {
     
     static GameOver() {
         this.gameRunning := false
-        local winner := this.score1 >= 10 ? "Player" : "AI"
+        winner := this.score1 >= 10 ? "Player" : "AI"
         MsgBox("Game Over!`n`n" . winner . " wins!`n`nFinal Score:`nPlayer: " . this.score1 . "`nAI: " . this.score2, "Pong Game Over", "Iconi")
         this.Init()
     }

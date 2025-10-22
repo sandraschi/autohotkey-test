@@ -158,8 +158,8 @@ class FroggerGame {
         
         ; Check if frog fell in water
         if (this.frogY > 100 && this.frogY < 400) {
-            local onLog := false
-            local onTurtle := false
+            onLog := false
+            onTurtle := false
             
             ; Check if on log
             for log in this.logs {
