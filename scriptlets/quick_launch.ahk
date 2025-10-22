@@ -1,25 +1,93 @@
-#NoEnv
+#Requires AutoHotkey v2.0
 #SingleInstance Force
-SendMode Input
-SetWorkingDir %A_ScriptDir%
+#Warn
 
-; Launch Applications with Win+[Key]
-#n::Run notepad.exe  ; Win+N
-#c::Run calc.exe     ; Win+C
-#w::Run winword.exe  ; Win+W (Word)
-#e::Run explorer.exe ; Win+E (File Explorer)
-#f::Run firefox.exe  ; Win+F (Firefox)
+; =============================================================================
+; CONFIGURATION - EDIT THESE TO MATCH YOUR SYSTEM
+; =============================================================================
+; Application Shortcuts (Win+Key)
+APPS := Map(
+    "#n", "notepad.exe",
+    "#c", "calc.exe",
+    "#e", "explorer.exe",
+    "#f", "C:\Program Files\Mozilla Firefox\firefox.exe",
+    "#v", A_AppData "\Local\Programs\Microsoft VS Code\Code.exe",
+    "#b", "msedge.exe",
+    "#t", "wt.exe"
+)
 
-; Quick Folders
-^!d::  ; Ctrl+Alt+D for Downloads
-    Run, %A_UserProfile%\Downloads
-return
+; Folder Shortcuts (Ctrl+Alt+Key)
+FOLDERS := Map(
+    "^!d", A_MyDocuments,
+    "^!D", A_MyDocuments "\..\Downloads",
+    "^!p", A_MyPictures,
+    "^!m", A_MyMusic,
+    "^!v", A_MyVideos,
+    "^!s", A_MyPictures "\Screenshots"
+)
 
-^!d::  ; Ctrl+Alt+D for Documents
-    Run, %A_UserProfile%\Documents
-return
+; System Tools (Win+Shift+Key)
+TOOLS := Map(
+    "#+d", "devmgmt.msc",
+    "#+e", "eventvwr.msc",
+    "#+m", "compmgmt.msc",
+    "#+t", "taskmgr"
+)
 
-; Quick Settings
-^!i::  ; Ctrl+Alt+I for Internet Options
-    Run, inetcpl.cpl
-return
+; =============================================================================
+; MAIN SCRIPT - NO NEED TO EDIT BELOW THIS LINE
+; =============================================================================
+; Set working directory
+SetWorkingDir A_ScriptDir
+
+; Register hotkeys
+for hotkey, target in APPS {
+    Hotkey hotkey, (*) => RunTarget(target)
+}
+
+for hotkey, folder in FOLDERS {
+    Hotkey hotkey, (*) => OpenFolder(folder)
+}
+
+for hotkey, tool in TOOLS {
+    Hotkey hotkey, (*) => RunTarget(tool)
+}
+
+; Show notification on startup
+TrayTip "Quick Launch", "Quick launch hotkeys are active", "Iconi"
+SetTimer () => TrayTip(), 3000
+
+; =============================================================================
+; FUNCTIONS
+; =============================================================================
+; Run a target (app or tool)
+RunTarget(target) {
+    try {
+        Run target
+        ShowTooltip("Launched: " target)
+    } catch Error as e {
+        ShowTooltip("Failed to launch: " e.Message, true)
+    }
+}
+
+; Open a folder
+OpenFolder(path) {
+    try {
+        Run "explorer.exe " path
+        ShowTooltip("Opened: " path)
+    } catch Error as e {
+        ShowTooltip("Failed to open folder: " e.Message, true)
+    }
+}
+
+; Show a tooltip message
+ShowTooltip(message, isError := false) {
+    Tooltip(message)
+    SetTimer(() => Tooltip(), -2000)
+}
+
+; Clean up on exit
+OnExit(ExitFunc)
+ExitFunc(ExitReason, ExitCode) {
+    return 0
+}

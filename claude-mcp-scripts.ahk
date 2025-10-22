@@ -1,6 +1,15 @@
-#Requires AutoHotkey v2.0+
+#Requires AutoHotkey v2.0
 ; AutoHotkey v2 Scripts for Claude Desktop MCP Development
 ; Compatible with AutoHotkey v2.0+
+#SingleInstance Force
+
+; Show help when script starts
+ShowHelp()
+
+; Keep the script running with a timer that does nothing
+SetTimer () => 0, 1000
+
+; Hotkeys and other code follow...
 
 ; =============================================================================
 ; CORE MCP DEVELOPMENT SCRIPTS
@@ -211,9 +220,8 @@
 ; UTILITY FUNCTIONS
 ; =============================================================================
 
-; Quick help display (Ctrl+Shift+H)
-^+h::
-{
+; Show help window
+ShowHelp() {
     MsgBox "
     (
     AutoHotkey MCP Development Scripts - Hotkeys:
@@ -226,6 +234,9 @@
     Advanced Workflows:
     Ctrl+Shift+T - Smart troubleshooting
     Ctrl+Shift+D - Full development cycle
+    
+    Help:
+    Ctrl+Shift+H - Show this help window
     
     System Management:
     Ctrl+Alt+R - Restart Claude Desktop

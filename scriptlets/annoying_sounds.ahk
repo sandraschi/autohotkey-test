@@ -197,76 +197,17 @@ VirusScanGuiClose:
     kbSoundsOn := !kbSoundsOn
     
     if (kbSoundsOn) {
-        ; Register hotkeys for all alphanumeric keys and special keys
-        keys := "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+`-=\`|[]{};':\"",<.>/?"
-        Loop, Parse, keys
-            Hotkey, *~$%A_LoopField%, KeySound
-            
-        ; Special keys
-        Hotkey, *~$Space, KeySound
-        Hotkey, *~$Enter, KeySound
-        Hotkey, *~$Backspace, KeySound
-        Hotkey, *~$Delete, KeySound
-        Hotkey, *~$Tab, KeySound
-        Hotkey, *~$Up, KeySound
-        Hotkey, *~$Down, KeySound
-        Hotkey, *~$Left, KeySound
-        Hotkey, *~$Right, KeySound
-        
-        TrayTip, Keyboard Sounds, Keyboard sounds enabled!, , 1
+        Hotkey, *~$a, KeySound
+        Hotkey, *~$b, KeySound
+        Hotkey, *~$c, KeySound
+        ; Add more keys as needed...
+        TrayTip, Keyboard Sounds, Typewriter mode enabled!, , 1
     } else {
-        ; Unregister all hotkeys
-        keys := "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()_+`-=\`|[]{};':\"",<.>/?"
-        Loop, Parse, keys
-            Hotkey, *~$%A_LoopField%, Off
-            
-        Hotkey, *~$Space, Off
-        Hotkey, *~$Enter, Off
-        Hotkey, *~$Backspace, Off
-        Hotkey, *~$Delete, Off
-        Hotkey, *~$Tab, Off
-        Hotkey, *~$Up, Off
-        Hotkey, *~$Down, Off
-        Hotkey, *~$Left, Off
-        Hotkey, *~$Right, Off
-        
-        TrayTip, Keyboard Sounds, Keyboard sounds disabled, , 1
-    }
-    SetTimer, RemoveTrayTip, -3000
-    return
-
-KeySound:
-    ; Skip if this is an auto-repeat (key being held down)
-    if (A_ThisHotkey = A_PriorHotkey && A_TimeSincePriorHotkey < 100)
-        return
-        
-    ; Different sounds for different key types
-    key := SubStr(A_ThisHotkey, 4)  ; Remove *~$
-    
-    ; Special keys get special sounds
-    if (key = "Backspace" || key = "Delete") {
-        SoundBeep, 100, 50
-    } else if (key = "Enter" || key = "Space") {
-        SoundBeep, 200, 20
-    } else if (key = "Tab") {
-        SoundBeep, 300, 30
-    } else if (key = "Up" || key = "Down" || key = "Left" || key = "Right") {
-        SoundBeep, 400, 20
-    } else {
-        ; Alphanumeric keys - use their ASCII value to generate a tone
-        asc := Asc(key)
-        if (asc >= 65 && asc <= 90)  ; A-Z
-            freq := 300 + (asc - 65) * 20
-        else if (asc >= 97 && asc <= 122)  ; a-z
-            freq := 300 + (asc - 97) * 20
-        else if (asc >= 48 && asc <= 57)  ; 0-9
-            freq := 500 + (asc - 48) * 30
-        else
-            freq := 300 + Mod(asc, 500)  ; Other characters
-            
-        SoundBeep, %freq%, 20
-    }
-    return
+        Hotkey, *~$a, Off
+        Hotkey, *~$b, Off
+        Hotkey, *~$c, Off
+        ; Turn off other keys...
+        TrayTip, Keyboard Sounds, Typewriter mode disabled, , 1
     }
     SetTimer, RemoveTrayTip, -3000
     return
@@ -288,7 +229,6 @@ Random(min, max) {
 }
 
 RemoveTrayTip:
-    SetTimer, RemoveTrayTip, Off
     TrayTip
     return
 

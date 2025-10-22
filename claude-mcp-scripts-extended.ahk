@@ -11,29 +11,44 @@
 ; CONFIGURATION & GLOBALS
 ; =============================================================================
 
-; Load configuration from INI file
+; Configuration file path
 configFile := A_ScriptDir . "\config.ini"
 
-; Ensure config file exists, create with defaults if not
+; Ensure config file exists with default values if not present
 if !FileExist(configFile) {
-    MsgBox "Configuration file not found. A default config.ini has been created.", "Configuration", "Iconi"
-    FileAppend "", configFile  ; This will be created with default values on first run
-    Run "notepad.exe" configFile
+    ; Create default configuration with direct values
+    defaultConfig := "[Paths]`n"
+    defaultConfig .= "ReposDir=" . A_ScriptDir . "`n"
+    defaultConfig .= "ClaudeConfig=" . A_AppData . "\Claude\claude_desktop_config.json`n"
+    defaultConfig .= "ClaudeLogs=" . A_AppData . "\Claude\logs\`n"
+    defaultConfig .= "ClaudeExe=" . A_AppData . "\Local\AnthropicClaude\claude.exe`n"
+    defaultConfig .= "PythonExe=" . A_ProgramFiles . "\Python\python.exe`n"
+    defaultConfig .= "TempDir=" . A_Temp . "\`n"
+    
+    ; Write default config
+    try {
+        FileAppend defaultConfig, configFile
+        MsgBox "Created default configuration file at:`n" configFile, "Configuration Created", "Iconi"
+    } catch as e {
+        MsgBox "Failed to create configuration file: " e.Message, "Error", "Iconx"
+    }
 }
 
 ; Read configuration
 REPOS_DIR := IniRead(configFile, "Paths", "ReposDir", A_ScriptDir)
-CLAUDE_CONFIG := IniRead(configFile, "Paths", "ClaudeConfig", A_AppData "\Claude\claude_desktop_config.json")
-CLAUDE_LOGS := IniRead(configFile, "Paths", "ClaudeLogs", A_AppData "\Claude\logs\")
-CLAUDE_EXE := IniRead(configFile, "Paths", "ClaudeExe", A_LocalAppData "\AnthropicClaude\claude.exe")
-PYTHON_EXE := IniRead(configFile, "Paths", "PythonExe", A_ProgramFiles "\Python\python.exe")
-TEMP_DIR := IniRead(configFile, "Paths", "TempDir", A_Temp "\")
+CLAUDE_CONFIG := IniRead(configFile, "Paths", "ClaudeConfig", A_AppData . "\Claude\claude_desktop_config.json")
+CLAUDE_LOGS := IniRead(configFile, "Paths", "ClaudeLogs", A_AppData . "\Claude\logs\")
+CLAUDE_EXE := IniRead(configFile, "Paths", "ClaudeExe", A_AppData . "\Local\AnthropicClaude\claude.exe")
+PYTHON_EXE := IniRead(configFile, "Paths", "PythonExe", A_ProgramFiles . "\Python\python.exe")
+TEMP_DIR := IniRead(configFile, "Paths", "TempDir", A_Temp . "\\")
 
 ; Ensure directories end with a backslash
-if !InStr(CLAUDE_LOGS, "\",, -1)
-    CLAUDE_LOGS .= "\"
-if !InStr(TEMP_DIR, "\",, -1)
-    TEMP_DIR .= "\"
+if !InStr(CLAUDE_LOGS, "\\",, -1) {
+    CLAUDE_LOGS .= "\\"
+}
+if !InStr(TEMP_DIR, "\\",, -1) {
+    TEMP_DIR .= "\\"
+}
 
 ; Global variables
 global LastOperation := ""

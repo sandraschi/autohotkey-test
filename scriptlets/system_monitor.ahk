@@ -1,226 +1,334 @@
-#NoEnv
+#Requires AutoHotkey v2.0
 #SingleInstance Force
-#Persistent
-#SingleInstance ignore
-SetWorkingDir %A_ScriptDir%
-SetBatchLines -1
+#Warn
 
-; Configuration
-updateInterval := 1000  ; Update every second
+; =============================================================================
+; CONFIGURATION
+; =============================================================================
+UPDATE_INTERVAL := 3000  ; Update every 3 seconds
 
+; =============================================================================
+; GLOBAL VARIABLES
+; =============================================================================
+guiMain := ""
+lvProcesses := ""
+
+; =============================================================================
+; MAIN SCRIPT
+; =============================================================================
 ; Create the GUI
-Gui, +AlwaysOnTop +Resize +ToolWindow
-Gui, Font, s10, Consolas
+CreateGUI()
 
-; CPU Usage
-Gui, Add, Text, x10 y10 w100 h20, CPU Usage:
-Gui, Add, Progress, x120 y10 w200 h20 vCPUProgress BackgroundEEEEEE
-Gui, Add, Text, x330 y10 w40 h20 vCPUPercent, 0`%
+; Set up update timer
+SetTimer(UpdateSystemInfo, UPDATE_INTERVAL)
 
-; Memory Usage
-Gui, Add, Text, x10 y40 w100 h20, Memory Usage:
-Gui, Add, Progress, x120 y40 w200 h20 vMemProgress BackgroundEEEEEE
-Gui, Add, Text, x330 y40 w80 h20 vMemPercent, 0`%
-
-; Disk Usage
-Gui, Add, Text, x10 y70 w100 h20, C:\ Usage:
-Gui, Add, Progress, x120 y70 w200 h20 vDiskProgress BackgroundEEEEEE
-Gui, Add, Text, x330 y70 w80 h20 vDiskPercent, 0`%
-
-; Network
-Gui, Add, Text, x10 y100 w100 h20, Network:
-Gui, Add, Text, x120 y100 w300 h20 vNetworkInfo, Download: 0 KB/s  Upload: 0 KB/s
-
-; Process List
-Gui, Add, Text, x10 y130 w100 h20, Top Processes:
-Gui, Add, ListView, x10 y150 w400 h200 vProcessList, Process|CPU`%|Memory (MB)
-LV_ModifyCol(1, 200)
-LV_ModifyCol(2, 80)
-LV_ModifyCol(3, 80)
-
-; System Info
-Gui, Add, Text, x10 y360 w400 h20 vSystemInfo, 
-
-; Buttons
-Gui, Add, Button, x10 y390 w100 h30 vRefreshBtn gRefresh, &Refresh
-Gui, Add, Button, x120 y390 w100 h30 vExitBtn gExitApp, E&xit
+; Global hotkey to toggle window
+Hotkey "^!s", ToggleWindow
 
 ; Initial update
-GoSub, UpdateSystemInfo
-SetTimer, UpdateSystemInfo, %updateInterval%
+UpdateSystemInfo()
 
-; Show the GUI
-Gui, Show, w430 h430, System Monitor
-return
-
-UpdateSystemInfo:
-    ; Get CPU usage
-    static lastIdle, lastKernel, lastUser
-    static lastNetIn, lastNetOut, lastNetTime
+; =============================================================================
+; GUI CREATION
+; =============================================================================
+CreateGUI() {
     
-    ; CPU Usage
-    if (A_TimeIdlePhysical != "" && lastIdle != "") {
-        idleTime := A_TimeIdlePhysical - lastIdle
-        totalTime := (A_TimeSincePriorIdle - lastKernel - lastUser) / 1000  ; Convert to seconds
-        cpuUsage := 100 - (idleTime / totalTime * 100)
-        cpuUsage := Round(cpuUsage, 1)
-        GuiControl,, CPUProgress, %cpuUsage%
-        GuiControl,, CPUPercent, %cpuUsage%`%
+    ; Create main window
+    guiMain := Gui("+Resize +MinSize700x500", "System Monitor v2.0")
+    guiMain.BackColor := "0x1E1E1E"
+    guiMain.SetFont("s9 cWhite", "Segoe UI")
+    guiMain.MarginX := 10
+    guiMain.MarginY := 10
+    
+    ; Header
+    guiMain.Add("Text", "x10 y10 w680 h25 Center BackgroundTrans cYellow", 
+        "System Monitor - Press Ctrl+Alt+S to toggle")
+    
+    ; System info
+    guiMain.Add("Text", "x10 y40 w680 h20 vSystemInfo BackgroundTrans", 
+        "System: " A_ComputerName " | " A_OSVersion " | " A_PtrSize*8 "-bit")
+    
+    ; CPU Section
+    guiMain.Add("GroupBox", "x10 y70 w330 h80", "CPU Usage")
+    guiMain.Add("Text", "x20 y95 w60 h20 BackgroundTrans", "Usage:")
+    guiMain.Add("Progress", "x85 y95 w200 h20 vCpuMeter Background0x333333 c0x569CD6")
+    guiMain.Add("Text", "x290 y95 w45 h20 vCpuText BackgroundTrans", "0%")
+    guiMain.Add("Text", "x20 y120 w60 h20 BackgroundTrans", "Cores:")
+    guiMain.Add("Text", "x85 y120 w200 h20 vCpuCores BackgroundTrans", "Getting info...")
+    
+    ; Memory Section  
+    guiMain.Add("GroupBox", "x350 y70 w340 h80", "Memory Usage")
+    guiMain.Add("Text", "x360 y95 w60 h20 BackgroundTrans", "RAM:")
+    guiMain.Add("Progress", "x425 y95 w200 h20 vMemMeter Background0x333333 c0x4EC9B0")
+    guiMain.Add("Text", "x630 y95 w55 h20 vMemText BackgroundTrans", "0%")
+    guiMain.Add("Text", "x360 y120 w300 h20 vMemDetails BackgroundTrans", "Getting info...")
+    
+    ; Process List
+    guiMain.Add("GroupBox", "x10 y160 w680 h280", "Top Processes (by Memory Usage)")
+    lvProcesses := guiMain.Add("ListView", "x20 y180 w660 h250 vProcessList -Multi Grid", 
+        ["Process Name", "Memory (MB)", "PID", "Threads", "Status"])
+    
+    ; Set column widths
+    lvProcesses.ModifyCol(1, 250)  ; Process Name
+    lvProcesses.ModifyCol(2, 100)  ; Memory MB
+    lvProcesses.ModifyCol(3, 80)   ; PID
+    lvProcesses.ModifyCol(4, 80)   ; Threads
+    lvProcesses.ModifyCol(5, 100)  ; Status
+    
+    ; Control buttons
+    guiMain.Add("Button", "x10 y450 w100 h30", "Refresh").OnEvent("Click", (*) => UpdateSystemInfo())
+    guiMain.Add("Button", "x120 y450 w100 h30", "Copy Info").OnEvent("Click", (*) => CopySystemInfo())
+    guiMain.Add("Button", "x230 y450 w100 h30", "Task Mgr").OnEvent("Click", (*) => Run("taskmgr.exe"))
+    guiMain.Add("Button", "x340 y450 w100 h30", "Hide").OnEvent("Click", (*) => guiMain.Hide())
+    
+    ; Status Bar
+    sbMain := guiMain.Add("StatusBar",, "Initializing...")
+    sbMain.SetParts(400, 200)
+    
+    ; Show the window
+    guiMain.Show("w700 h510")
+}
+
+; =============================================================================
+; SYSTEM MONITORING FUNCTIONS
+; =============================================================================
+UpdateSystemInfo(*) {
+    try {
+        ; Update CPU
+        cpuUsage := GetCpuUsage()
+        guiMain["CpuMeter"].Value := cpuUsage
+        guiMain["CpuText"].Text := cpuUsage "%"
+        guiMain["CpuCores"].Text := A_ProcessorCount " cores detected"
+        
+        ; Update Memory
+        mem := GetMemoryInfo()
+        guiMain["MemMeter"].Value := mem.usage
+        guiMain["MemText"].Text := mem.usage "%"
+        guiMain["MemDetails"].Text := Format("Used: {:.1f} GB / Total: {:.1f} GB", 
+            mem.used, mem.total)
+        
+        ; Update process list
+        UpdateProcessList()
+        
+        ; Update status bar
+        currentTime := A_Hour . ":" . (A_Min < 10 ? "0" . A_Min : A_Min) . ":" . (A_Sec < 10 ? "0" . A_Sec : A_Sec)
+        guiMain["StatusBar"].SetText("Last update: " . currentTime, 1)
+        guiMain["StatusBar"].SetText("Processes: " . lvProcesses.GetCount(), 2)
+        
+    } catch as e {
+        guiMain["StatusBar"].SetText("Error: " . e.Message, 1)
+        OutputDebug("Update error: " . e.Message . "`n")
     }
-    
-    ; Memory Usage
-    MEMORYSTATUSEX(mem)
-    memUsage := 100 - mem.MemoryLoad
-    usedMemGB := Round((mem.TotalPhys - mem.AvailPhys) / 1024 / 1024 / 1024, 2)
-    totalMemGB := Round(mem.TotalPhys / 1024 / 1024 / 1024, 2)
-    GuiControl,, MemProgress, %memUsage%
-    GuiControl,, MemPercent, %usedMemGB% / %totalMemGB% GB
-    
-    ; Disk Usage
-    DriveSpace, freeSpace, C:\, free
-    DriveSpace, totalSpace, C:\
-    diskUsage := 100 - (freeSpace / totalSpace * 100)
-    diskUsage := Round(diskUsage, 1)
-    GuiControl,, DiskProgress, %diskUsage%
-    GuiControl,, DiskPercent, %diskUsage%`%
-    
-    ; Network Usage
-    static lastNetIn := 0, lastNetOut := 0
-    currentNetIn := GetNetInOut("in")
-    currentNetOut := GetNetInOut("out")
-    
-    ; Calculate bytes per second
-    elapsed := (A_TickCount - lastNetTime) / 1000  ; in seconds
-    if (elapsed > 0) {
-        dlSpeed := (currentNetIn - lastNetIn) / elapsed
-        ulSpeed := (currentNetOut - lastNetOut) / elapsed
-        
-        ; Convert to KB/s
-        dlSpeedKB := Round(dlSpeed / 1024, 1)
-        ulSpeedKB := Round(ulSpeed / 1024, 1)
-        
-        GuiControl,, NetworkInfo, Download: %dlSpeedKB% KB/s  Upload: %ulSpeedKB% KB/s
-    }
-    
-    lastNetIn := currentNetIn
-    lastNetOut := currentNetOut
-    lastNetTime := A_TickCount
-    
-    ; Update process list
-    UpdateProcessList()
-    
-    ; Update system info
-    FormatTime, timeNow,, HH:mm:ss
-    GuiControl,, SystemInfo, Last updated: %timeNow%  |  CPU: %A_CPUName%  |  OS: %A_OSVersion%
-    
-    ; Update last values for next iteration
-    lastIdle := A_TimeIdlePhysical
-    lastKernel := A_TimeSincePriorIdle
-    lastUser := A_TimeSincePriorInterrupt
-return
+}
 
-UpdateProcessList() {
-    global
+GetCpuUsage() {
+    static lastIdle := 0, lastKernel := 0, lastUser := 0
     
-    ; Clear the list
-    LV_Delete()
-    
-    ; Get process list using WMI
-    wmi := ComObjGet("winmgmts:")
-    queryStr := "Select Name, PercentProcessorTime, WorkingSetSize from Win32_PerfFormattedData_PerfProc_Process where Name != '_Total' and Name != 'Idle'"
-    processes := wmi.ExecQuery(queryStr)
-    
-    ; Create array to sort processes
-    procArray := []
-    
-    for process in processes {
-        procName := process.Name
-        cpuUsage := process.PercentProcessorTime
-        memUsage := Round(process.WorkingSetSize / 1024 / 1024, 1)  ; Convert to MB
+    try {
+        ; Get system times using GetSystemTimes API
+        idleTime := Buffer(8, 0)
+        kernelTime := Buffer(8, 0)  
+        userTime := Buffer(8, 0)
         
-        ; Skip processes with 0 CPU usage and minimal memory
-        if (cpuUsage = 0 && memUsage < 1) {
-            continue
+        if (!DllCall("kernel32\GetSystemTimes", "Ptr", idleTime, "Ptr", kernelTime, "Ptr", userTime)) {
+            return 0
         }
         
-        procArray.Push({name: procName, cpu: cpuUsage, mem: memUsage})
-    }
-    
-    ; Sort by CPU usage (descending)
-    sortedArray := []
-    for i, proc in procArray {
-        inserted := false
-        for j, sortedProc in sortedArray {
-            if (proc.cpu > sortedProc.cpu) {
-                sortedArray.InsertAt(j, proc)
-                inserted := true
-                break
+        currentIdle := NumGet(idleTime, 0, "UInt64")
+        currentKernel := NumGet(kernelTime, 0, "UInt64")
+        currentUser := NumGet(userTime, 0, "UInt64")
+        
+        if (lastIdle != 0) {
+            idleDiff := currentIdle - lastIdle
+            kernelDiff := currentKernel - lastKernel
+            userDiff := currentUser - lastUser
+            totalDiff := kernelDiff + userDiff
+            
+            if (totalDiff > 0) {
+                usage := Round(100 - (idleDiff * 100 / totalDiff), 1)
+                
+                ; Update static variables for next calculation
+                lastIdle := currentIdle
+                lastKernel := currentKernel
+                lastUser := currentUser
+                
+                return Max(0, Min(100, usage))  ; Ensure 0-100 range
             }
         }
-        if (!inserted) {
-            sortedArray.Push(proc)
+        
+        ; First run - store values
+        lastIdle := currentIdle
+        lastKernel := currentKernel
+        lastUser := currentUser
+        return 0
+        
+    } catch Error as e {
+        OutputDebug("CPU usage error: " e.Message "`n")
+        return 0
+    }
+}
+
+GetMemoryInfo() {
+    try {
+        ; Use MEMORYSTATUSEX structure
+        memStatus := Buffer(64, 0)
+        NumPut("UInt", 64, memStatus, 0)  ; dwLength
+        
+        if (!DllCall("kernel32\GlobalMemoryStatusEx", "Ptr", memStatus)) {
+            throw Error("GlobalMemoryStatusEx failed")
         }
+        
+        ; Extract memory info
+        totalPhys := NumGet(memStatus, 8, "UInt64")   ; Total physical memory
+        availPhys := NumGet(memStatus, 16, "UInt64")  ; Available physical memory
+        usedPhys := totalPhys - availPhys
+        
+        ; Calculate usage percentage
+        memLoad := Round((usedPhys / totalPhys) * 100, 1)
+        
+        return {
+            total: totalPhys / (1024**3),  ; Convert to GB
+            used: usedPhys / (1024**3),    ; Convert to GB  
+            usage: memLoad
+        }
+        
+    } catch Error as e {
+        OutputDebug("Memory info error: " e.Message "`n")
+        return {total: 0, used: 0, usage: 0}
     }
-    
-    ; Add top 10 processes to the list
-    loop % (sortedArray.Length() > 10 ? 10 : sortedArray.Length()) {
-        proc := sortedArray[A_Index]
-        LV_Add("", proc.name, proc.cpu "%", proc.mem " MB")
-    }
-    
-    ; Auto-size columns
-    LV_ModifyCol()
 }
 
-GetNetInOut(direction) {
-    static lastIn, lastOut, lastTime
+UpdateProcessList() {
+    global lvProcesses
     
-    ; Get network statistics using WMI
-    wmi := ComObjGet("winmgmts:")
-    queryStr := "Select BytesReceivedPersec, BytesSentPersec from Win32_PerfFormattedData_Tcpip_IPv4"
-    netStats := wmi.ExecQuery(queryStr)
-    
-    ; Get current values
-    for stat in netStats {
-        bytesIn := stat.BytesReceivedPersec
-        bytesOut := stat.BytesSentPersec
-        break
-    }
-    
-    return (direction = "in") ? bytesIn : bytesOut
-}
-
-MEMORYSTATUSEX(ByRef mem) {
-    static MEMORYSTATUSEX, init := VarSetCapacity(MEMORYSTATUSEX, 64, 0) && NumPut(64, MEMORYSTATUSEX, "UInt")
-    if !(DllCall("kernel32.dll\GlobalMemoryStatusEx", "Ptr", &MEMORYSTATUSEX))
-        return false
-    
-    mem := {}
-    mem.MemoryLoad := NumGet(&MEMORYSTATUSEX + 4, "UInt")
-    mem.TotalPhys := NumGet(&MEMORYSTATUSEX + 8, "UInt64")
-    mem.AvailPhys := NumGet(&MEMORYSTATUSEX + 16, "UInt64")
-    mem.TotalPageFile := NumGet(&MEMORYSTATUSEX + 24, "UInt64")
-    mem.AvailPageFile := NumGet(&MEMORYSTATUSEX + 32, "UInt64")
-    mem.TotalVirtual := NumGet(&MEMORYSTATUSEX + 40, "UInt64")
-    mem.AvailVirtual := NumGet(&MEMORYSTATUSEX + 48, "UInt64")
-    
-    return true
-}
-
-Refresh:
-    GoSub, UpdateSystemInfo
-return
-
-GuiClose:
-ExitApp
-
-^!S::  ; Ctrl+Alt+S to show/hide
-    if (WinExist("System Monitor")) {
-        if (WinActive("System Monitor")) {
-            WinHide, System Monitor
+    try {
+        ; Clear existing entries
+        lvProcesses.Delete()
+        
+        ; Get process list using WMI with error handling
+        processes := []
+        
+        try {
+            wmi := ComObjGet("winmgmts:")
+            
+            ; Get running processes with memory info
+            queryStr := "SELECT Name, ProcessId, WorkingSetSize, ThreadCount FROM Win32_Process WHERE WorkingSetSize > 5000000"
+            
+            for process in wmi.ExecQuery(queryStr) {
+                procInfo := {}
+                procInfo.name := process.Name
+                procInfo.pid := process.ProcessId
+                procInfo.memory := Round(process.WorkingSetSize / 1048576, 1)  ; Convert to MB
+                procInfo.threads := process.ThreadCount
+                procInfo.status := "Running"
+                processes.Push(procInfo)
+            }
+            
+        } catch Error as e {
+            ; Fallback: Add some basic system processes manually
+            processes := [
+                {name: "System", memory: 0.1, pid: 4, threads: 1, status: "System"},
+                {name: "explorer.exe", memory: 50.0, pid: 1000, threads: 10, status: "Running"},
+                {name: "autohotkey.exe", memory: 20.0, pid: A_PID, threads: 5, status: "Running"}
+            ]
+            guiMain["StatusBar"].SetText("WMI Error - showing fallback data: " e.Message, 1)
+        }
+        
+        ; Sort by memory usage (descending) 
+        if (processes.Length > 0) {
+            ; Simple bubble sort by memory
+            Loop processes.Length - 1 {
+                i := A_Index
+                Loop processes.Length - i {
+                    j := A_Index + i
+                    if (processes[i].memory < processes[j].memory) {
+                        temp := processes[i]
+                        processes[i] := processes[j]
+                        processes[j] := temp
+                    }
+                }
+            }
+            
+            ; Add top 20 processes to ListView
+            loop Min(processes.Length, 20) {
+                p := processes[A_Index]
+                lvProcesses.Add(, p.name, p.memory, p.pid, p.threads, p.status)
+            }
         } else {
-            WinShow, System Monitor
-            WinActivate, System Monitor
+            ; No processes found - add placeholder
+            lvProcesses.Add(, "No processes found", "N/A", "N/A", "N/A", "Error")
         }
+        
+    } catch Error as e {
+        OutputDebug("Process list error: " e.Message "`n")
+        ; Add error message to list
+        lvProcesses.Add(, "Error loading processes", "N/A", "N/A", "N/A", e.Message)
     }
-return
+}
+
+; =============================================================================
+; HELPER FUNCTIONS
+; =============================================================================
+ToggleWindow(*) {
+    try {
+        if (WinExist("System Monitor v2.0")) {
+            if (WinActive("System Monitor v2.0")) {
+                guiMain.Hide()
+            } else {
+                guiMain.Show()
+                WinActivate("System Monitor v2.0")
+            }
+        } else {
+            CreateGUI()
+        }
+    } catch Error as e {
+        ; GUI doesn't exist, create it
+        CreateGUI()
+    }
+}
+
+CopySystemInfo(*) {
+    try {
+        cpuUsage := guiMain["CpuText"].Text
+        memUsage := guiMain["MemText"].Text
+        memDetails := guiMain["MemDetails"].Text
+        
+        info := "=== SYSTEM MONITOR REPORT ===`n"
+        info .= "Computer: " A_ComputerName "`n"
+        info .= "OS: " A_OSVersion "`n" 
+        info .= "CPU Cores: " A_ProcessorCount "`n"
+        info .= "CPU Usage: " cpuUsage "`n"
+        info .= "Memory Usage: " memUsage "`n"
+        info .= "Memory Details: " memDetails "`n"
+        info .= "Timestamp: " A_Now "`n`n"
+        
+        info .= "=== TOP PROCESSES ===`n"
+        Loop lvProcesses.GetCount() {
+            name := lvProcesses.GetText(A_Index, 1)
+            mem := lvProcesses.GetText(A_Index, 2)
+            pid := lvProcesses.GetText(A_Index, 3)
+            threads := lvProcesses.GetText(A_Index, 4)
+            info .= name " - Memory: " mem "MB - PID: " pid " - Threads: " threads "`n"
+        }
+        
+        A_Clipboard := info
+        guiMain["StatusBar"].SetText("System info copied to clipboard!", 1)
+        
+    } catch Error as e {
+        guiMain["StatusBar"].SetText("Copy failed: " e.Message, 1)
+    }
+}
+
+; =============================================================================
+; EVENT HANDLERS
+; =============================================================================
+
+; Handle window close
+guiMain.OnEvent("Close", (*) => ExitApp())
+guiMain.OnEvent("Escape", (*) => guiMain.Hide())
+
+; Clean up on exit
+OnExit(ExitFunc)
+ExitFunc(ExitReason, ExitCode) {
+    return 0
+}

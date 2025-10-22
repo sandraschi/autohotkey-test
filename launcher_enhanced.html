@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHotkey Scriptlet Launcher - Enhanced</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #343a40;
+            --light: #f8f9fa;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --primary: #5a7fb5;
+            --secondary: #8a9ba8;
+            --success: #2dce89;
+            --danger: #f5365c;
+            --warning: #ffd600;
+            --dark: #1a1a1a;
+            --light: #2d2d2d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, var(--dark) 0%, #2d2d2d 100%);
+            color: var(--light);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(45, 45, 45, 0.9);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 20px;
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Command Palette */
+        .command-palette {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            max-height: 400px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+
+        [data-theme="dark"] .command-palette {
+            background: var(--dark);
+        }
+
+        .command-palette.active {
+            display: block;
+        }
+
+        .command-palette input {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            font-size: 1.1rem;
+            background: transparent;
+            outline: none;
+        }
+
+        .command-palette-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .command-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        [data-theme="dark"] .command-item {
+            border-bottom-color: #444;
+        }
+
+        .command-item:hover {
+            background: var(--light);
+        }
+
+        [data-theme="dark"] .command-item:hover {
+            background: var(--dark);
+        }
+
+        .command-item.selected {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] .search-bar {
+            background: var(--dark);
+            border-color: #444;
+            color: white;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Help Button */
+        .help-button {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .help-button:hover {
+            background: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .help-button i {
+            font-size: 16px;
+        }
+
+        [data-theme="dark"] .help-button {
+            background: var(--success);
+        }
+
+        [data-theme="dark"] .help-button:hover {
+            background: #2dce89;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .tabs {
+            background: var(--dark);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            flex: 1;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab:hover {
+            background: rgba(74, 111, 165, 0.1);
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            border-bottom-color: var(--primary);
+        }
+
+        .tab i {
+            margin-right: 0.5rem;
+        }
+
+        /* Content */
+        .content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 500px;
+        }
+
+        [data-theme="dark"] .content {
+            background: var(--dark);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Scriptlet Grid */
+        .scriptlet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .scriptlet-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        [data-theme="dark"] .scriptlet-card {
+            background: var(--light);
+        }
+
+        .scriptlet-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .scriptlet-card.running {
+            border-color: var(--success);
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .scriptlet-card.error {
+            border-color: var(--danger);
+            background: rgba(220, 53, 69, 0.05);
+        }
+
+        .scriptlet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .scriptlet-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .scriptlet-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+
+        .scriptlet-status.running {
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .scriptlet-status.error {
+            background: var(--danger);
+        }
+
+        .scriptlet-description {
+            color: #6c757d;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        [data-theme="dark"] .scriptlet-description {
+            color: #8a9ba8;
+        }
+
+        .scriptlet-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        [data-theme="dark"] .scriptlet-meta {
+            color: #8a9ba8;
+        }
+
+        .scriptlet-category {
+            background: rgba(74, 111, 165, 0.1);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .scriptlet-hotkeys {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .hotkey {
+            background: var(--light);
+            color: var(--secondary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-family: monospace;
+        }
+
+        [data-theme="dark"] .hotkey {
+            background: var(--dark);
+            color: var(--secondary);
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        [data-theme="dark"] .stat-card {
+            background: var(--light);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        [data-theme="dark"] .stat-label {
+            color: #8a9ba8;
+        }
+
+        /* Loading States */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            .scriptlet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                border-bottom: none;
+                border-right: 3px solid transparent;
+            }
+
+            .tab.active {
+                border-right-color: var(--primary);
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Test element to verify theme switching */
+        .theme-test {
+            position: fixed;
+            top: 10px;
+            right: 200px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+
+        /* Scriptlet Action Buttons */
+        .scriptlet-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        [data-theme="dark"] .scriptlet-actions {
+            border-top-color: #444;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .run-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .run-btn:hover:not(:disabled) {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .stop-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .stop-btn:hover:not(:disabled) {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme test element -->
+    <div class="theme-test" title="Theme Test - Should change color when theme toggles"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <h1>AutoHotkey Scriptlet Launcher</h1>
+            </div>
+            <div class="header-controls">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Bridge Connected</span>
+                </div>
+                <button class="help-button" onclick="showHelp()" title="Get Help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-bar" placeholder="Search scriptlets..." id="searchInput">
+        </div>
+
+        <!-- Command Palette -->
+        <div class="command-palette" id="commandPalette">
+            <input type="text" placeholder="Type a command..." id="commandInput">
+            <div class="command-palette-results" id="commandResults">
+                <!-- Command results will be populated here -->
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalScriptlets">0</div>
+                <div class="stat-label">Total Scriptlets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="runningScriptlets">0</div>
+                <div class="stat-label">Running</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="categoriesCount">0</div>
+                <div class="stat-label">Categories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="uptime">0s</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="all">
+                <i class="fas fa-th-large"></i>
+                All Scriptlets
+            </div>
+            <div class="tab" data-tab="utilities">
+                <i class="fas fa-tools"></i>
+                Utilities
+            </div>
+            <div class="tab" data-tab="development">
+                <i class="fas fa-code"></i>
+                Development
+            </div>
+            <div class="tab" data-tab="media">
+                <i class="fas fa-music"></i>
+                Media
+            </div>
+            <div class="tab" data-tab="games">
+                <i class="fas fa-gamepad"></i>
+                Games
+            </div>
+            <div class="tab" data-tab="settings">
+                <i class="fas fa-cog"></i>
+                Settings
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- All Scriptlets Tab -->
+            <div class="tab-content active" id="all">
+                <h2>All Scriptlets</h2>
+                <div class="scriptlet-grid" id="allScriptlets">
+                    <!-- Scriptlets will be populated here -->
+                </div>
+            </div>
+
+            <!-- Utilities Tab -->
+            <div class="tab-content" id="utilities">
+                <h2>Utility Scriptlets</h2>
+                <div class="scriptlet-grid" id="utilitiesScriptlets">
+                    <!-- Utility scriptlets will be populated here -->
+                </div>
+            </div>
+
+            <!-- Development Tab -->
+            <div class="tab-content" id="development">
+                <h2>Development Tools</h2>
+                <div class="scriptlet-grid" id="developmentScriptlets">
+                    <!-- Development scriptlets will be populated here -->
+                </div>
+            </div>
+
+            <!-- Media Tab -->
+            <div class="tab-content" id="media">
+                <h2>Media Controls</h2>
+                <div class="scriptlet-grid" id="mediaScriptlets">
+                    <!-- Media scriptlets will be populated here -->
+                </div>
+            </div>
+
+            <!-- Games Tab -->
+            <div class="tab-content" id="games">
+                <h2>Games & Entertainment</h2>
+                <div class="scriptlet-grid" id="gamesScriptlets">
+                    <!-- Game scriptlets will be populated here -->
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings">
+                <h2>Settings</h2>
+                <div class="settings-content">
+                    <div class="setting-group">
+                        <h3>General Settings</h3>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="autoStart" checked>
+                                Auto-start enabled scriptlets
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="showNotifications" checked>
+                                Show notifications
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="enableHotkeys" checked>
+                                Enable global hotkeys
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Display Settings</h3>
+                        <div class="setting-item">
+                            <label>
+                                Theme:
+                                <select id="themeSelect">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="auto">Auto</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="range" id="fontSize" min="12" max="18" value="14">
+                                Font Size: <span id="fontSizeValue">14px</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let scriptlets = [];
+        let currentTab = 'all';
+        let searchQuery = '';
+        let commandPaletteOpen = false;
+        let startTime = Date.now();
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            loadScriptlets();
+            setupEventListeners();
+            startStatusUpdates();
+        });
+
+        function initializeApp() {
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            // Update theme select if it exists
+            const themeSelect = document.getElementById('themeSelect');
+            if (themeSelect) {
+                themeSelect.value = savedTheme;
+            }
+            
+            // Update theme toggle icon
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                themeToggleIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+
+            // Load saved settings
+            loadSettings();
+        }
+
+        async function loadScriptlets() {
+            try {
+                const response = await fetch('http://localhost:8765/scriptlets');
+                if (response.ok) {
+                    const data = await response.json();
+                    scriptlets = data.map(scriptlet => ({
+                        id: scriptlet.id,
+                        name: scriptlet.name,
+                        description: getScriptletDescription(scriptlet.id),
+                        category: getScriptletCategory(scriptlet.id),
+                        hotkeys: getScriptletHotkeys(scriptlet.id),
+                        enabled: scriptlet.enabled,
+                        running: scriptlet.running,
+                        version: '1.0.0'
+                    }));
+                } else {
+                    console.error('Failed to load scriptlets:', response.status);
+                    loadFallbackScriptlets();
+                }
+            } catch (error) {
+                console.error('Error loading scriptlets:', error);
+                loadFallbackScriptlets();
+            }
+            
+            updateStatistics();
+            renderScriptlets();
+        }
+
+        function getScriptletDescription(id) {
+            const descriptions = {
+                'smart_clipboard_manager': 'Advanced clipboard management with history, formatting, and smart paste',
+                'text_transformer_pro': 'Advanced text manipulation with case conversion, formatting, and encoding',
+                'window_manager_pro': 'Advanced window management with snapping, tiling, and organization',
+                'code_formatter_pro': 'Multi-language code formatting with syntax highlighting and beautification',
+                'git_assistant_pro': 'Advanced Git workflow automation with commit templates and branch management',
+                'music_controller_pro': 'Advanced music control with playlist management and visualizer',
+                'mini_games_collection': 'Collection of fun mini-games including Snake, Tetris, and Memory',
+                'smart_assistant_pro': 'AI-powered assistant with voice commands, automation, and smart workflows',
+                'workflow_automator_pro': 'Advanced workflow automation with triggers, conditions, and actions',
+                'help_system_pro': 'Comprehensive help system explaining AutoHotkey, the bridge, UI, and all features',
+                'security_guide_pro': 'Comprehensive security guide for AutoHotkey scriptlets - warnings, limitations, and best practices',
+                'clipboard_manager': 'Enhanced clipboard operations with history and management',
+                'system_monitor': 'Real-time system resource monitoring with GUI',
+                'window_management': 'Advanced window management and positioning tools',
+                'ollama_chatbot': 'AI chatbot integration with Ollama local models',
+                'sudoku': 'Sudoku puzzle game with solver and hints'
+            };
+            return descriptions[id] || 'AutoHotkey scriptlet for enhanced productivity';
+        }
+
+        function getScriptletCategory(id) {
+            const categories = {
+                'smart_clipboard_manager': 'utilities',
+                'text_transformer_pro': 'utilities',
+                'window_manager_pro': 'utilities',
+                'code_formatter_pro': 'development',
+                'git_assistant_pro': 'development',
+                'music_controller_pro': 'media',
+                'mini_games_collection': 'games',
+                'smart_assistant_pro': 'ai',
+                'workflow_automator_pro': 'ai',
+                'help_system_pro': 'utilities',
+                'security_guide_pro': 'utilities',
+                'clipboard_manager': 'utilities',
+                'system_monitor': 'system',
+                'window_management': 'utilities',
+                'ollama_chatbot': 'ai',
+                'sudoku': 'games'
+            };
+            return categories[id] || 'utilities';
+        }
+
+        function getScriptletHotkeys(id) {
+            const hotkeys = {
+                'smart_clipboard_manager': ['#v', '^!c', '^!v'],
+                'text_transformer_pro': ['^!t', '^!u', '^!l', '^!s'],
+                'window_manager_pro': ['#Left', '#Right', '#Up', '#Down', '#Space', '#Tab'],
+                'code_formatter_pro': ['^!f', '^!b', '^!c'],
+                'git_assistant_pro': ['^!g', '^!commit', '^!branch'],
+                'music_controller_pro': ['#Space', '#Left', '#Right', '#Up', '#Down', '#M'],
+                'mini_games_collection': ['^!g', '#s', '#t', '#m'],
+                'smart_assistant_pro': ['^!a', '#v', '^!s'],
+                'workflow_automator_pro': ['^!w', '^!r', '^!t'],
+                'help_system_pro': ['F1', '^!h', '^!?'],
+                'security_guide_pro': ['^!s', 'F2'],
+                'clipboard_manager': ['#v', '^!v'],
+                'system_monitor': ['^!s'],
+                'window_management': ['^!w', '^!c'],
+                'ollama_chatbot': ['^!o'],
+                'sudoku': ['^!s']
+            };
+            return hotkeys[id] || [];
+        }
+
+        function loadFallbackScriptlets() {
+            // Fallback hardcoded scriptlets if server is not available
+            scriptlets = [
+                {
+                    id: 'clipboard_manager',
+                    name: 'Clipboard Manager',
+                    description: 'Enhanced clipboard operations with history and management',
+                    category: 'utilities',
+                    hotkeys: ['#v', '^!v'],
+                    enabled: true,
+                    running: false,
+                    version: '1.0.0'
+                },
+                {
+                    id: 'system_monitor',
+                    name: 'System Monitor',
+                    description: 'Real-time system resource monitoring with GUI',
+                    category: 'system',
+                    hotkeys: ['^!s'],
+                    enabled: true,
+                    running: true,
+                    version: '1.0.0'
+                },
+                {
+                    id: 'window_management',
+                    name: 'Window Management',
+                    description: 'Advanced window management and positioning tools',
+                    category: 'utilities',
+                    hotkeys: ['^!w', '^!c'],
+                    enabled: true,
+                    running: false,
+                    version: '1.0.0'
+                },
+                {
+                    id: 'ollama_chatbot',
+                    name: 'Ollama Chatbot',
+                    description: 'AI chatbot integration with Ollama local models',
+                    category: 'ai',
+                    hotkeys: ['^!o'],
+                    enabled: true,
+                    running: false,
+                    version: '1.0.0'
+                },
+                {
+                    id: 'sudoku',
+                    name: 'Sudoku Game',
+                    description: 'Complete Sudoku game with solver and hints',
+                    category: 'games',
+                    hotkeys: ['^!s'],
+                    enabled: true,
+                    running: false,
+                    version: '1.0.0'
+                }
+            ];
+        }
+
+        function setupEventListeners() {
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                });
+            });
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function() {
+                searchQuery = this.value.toLowerCase();
+                filterScriptlets();
+            });
+
+            // Command palette
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'k') {
+                    e.preventDefault();
+                    toggleCommandPalette();
+                }
+                if (e.key === 'F1') {
+                    e.preventDefault();
+                    showHelp();
+                }
+                if (e.key === 'Escape') {
+                    closeCommandPalette();
+                    closeHelp();
+                }
+            });
+
+            // Theme toggle
+            document.getElementById('themeSelect').addEventListener('change', function() {
+                const theme = this.value;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            });
+
+            // Font size
+            document.getElementById('fontSize').addEventListener('input', function() {
+                const size = this.value;
+                document.getElementById('fontSizeValue').textContent = size + 'px';
+                document.body.style.fontSize = size + 'px';
+                localStorage.setItem('fontSize', size);
+            });
+        }
+
+        function switchTab(tabName) {
+            // Update tab appearance
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Update content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+
+            currentTab = tabName;
+            renderScriptlets();
+        }
+
+        function renderScriptlets() {
+            const container = document.getElementById(currentTab + 'Scriptlets') || 
+                            document.getElementById('allScriptlets');
+            
+            if (!container) return;
+
+            let filteredScriptlets = scriptlets;
+
+            // Filter by tab
+            if (currentTab !== 'all') {
+                filteredScriptlets = scriptlets.filter(s => s.category === currentTab);
+            }
+
+            // Filter by search query
+            if (searchQuery) {
+                filteredScriptlets = filteredScriptlets.filter(s => 
+                    s.name.toLowerCase().includes(searchQuery) ||
+                    s.description.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            container.innerHTML = '';
+
+            if (filteredScriptlets.length === 0) {
+                container.innerHTML = '<div class="loading"><p>No scriptlets found</p></div>';
+                return;
+            }
+
+            filteredScriptlets.forEach(scriptlet => {
+                const card = createScriptletCard(scriptlet);
+                container.appendChild(card);
+            });
+        }
+
+        function createScriptletCard(scriptlet) {
+            const card = document.createElement('div');
+            card.className = `scriptlet-card ${scriptlet.running ? 'running' : ''}`;
+            card.innerHTML = `
+                <div class="scriptlet-header">
+                    <div class="scriptlet-title">${scriptlet.name}</div>
+                    <div class="scriptlet-status ${scriptlet.running ? 'running' : ''}"></div>
+                </div>
+                <div class="scriptlet-description">${scriptlet.description}</div>
+                <div class="scriptlet-meta">
+                    <div class="scriptlet-category">${scriptlet.category}</div>
+                    <div class="scriptlet-hotkeys">
+                        ${scriptlet.hotkeys.map(hk => `<span class="hotkey">${hk}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="scriptlet-actions">
+                    <button class="action-btn run-btn" onclick="event.stopPropagation(); runScriptlet('${scriptlet.id}')" ${scriptlet.running ? 'disabled' : ''}>
+                        <i class="fas fa-play"></i> Run
+                    </button>
+                    <button class="action-btn stop-btn" onclick="event.stopPropagation(); stopScriptlet('${scriptlet.id}')" ${!scriptlet.running ? 'disabled' : ''}>
+                        <i class="fas fa-stop"></i> Stop
+                    </button>
+                </div>
+            `;
+
+            card.addEventListener('click', () => {
+                toggleScriptlet(scriptlet.id);
+            });
+
+            return card;
+        }
+
+        function toggleScriptlet(scriptletId) {
+            const scriptlet = scriptlets.find(s => s.id === scriptletId);
+            if (!scriptlet) return;
+
+            if (scriptlet.running) {
+                // Stop the scriptlet
+                stopScriptlet(scriptletId);
+            } else {
+                // Run the scriptlet
+                runScriptlet(scriptletId);
+            }
+        }
+
+        function runScriptlet(scriptletId) {
+            const scriptlet = scriptlets.find(s => s.id === scriptletId);
+            if (!scriptlet) return;
+
+            console.log('Running scriptlet:', scriptletId);
+            
+            // Update UI immediately
+            scriptlet.running = true;
+            updateStatistics();
+            renderScriptlets();
+
+            // Call the COM bridge
+            fetch(`http://localhost:8765/run/${scriptletId}.ahk`)
+                .then(response => response.text())
+                .then(result => {
+                    console.log('Scriptlet started:', result);
+                    // Keep running state as true
+                })
+                .catch(error => {
+                    console.error('Error starting scriptlet:', error);
+                    // Revert running state on error
+                    scriptlet.running = false;
+                    updateStatistics();
+                    renderScriptlets();
+                });
+        }
+
+        function stopScriptlet(scriptletId) {
+            const scriptlet = scriptlets.find(s => s.id === scriptletId);
+            if (!scriptlet) return;
+
+            console.log('Stopping scriptlet:', scriptletId);
+            
+            // Update UI immediately
+            scriptlet.running = false;
+            updateStatistics();
+            renderScriptlets();
+
+            // Call the COM bridge
+            fetch(`http://localhost:8765/stop/${scriptletId}.ahk`)
+                .then(response => response.text())
+                .then(result => {
+                    console.log('Scriptlet stopped:', result);
+                    // Keep running state as false
+                })
+                .catch(error => {
+                    console.error('Error stopping scriptlet:', error);
+                    // Revert running state on error
+                    scriptlet.running = true;
+                    updateStatistics();
+                    renderScriptlets();
+                });
+        }
+
+        function filterScriptlets() {
+            renderScriptlets();
+        }
+
+        function updateStatistics() {
+            document.getElementById('totalScriptlets').textContent = scriptlets.length;
+            document.getElementById('runningScriptlets').textContent = 
+                scriptlets.filter(s => s.running).length;
+            document.getElementById('categoriesCount').textContent = 
+                new Set(scriptlets.map(s => s.category)).size;
+        }
+
+        function startStatusUpdates() {
+            setInterval(() => {
+                const uptime = Math.floor((Date.now() - startTime) / 1000);
+                document.getElementById('uptime').textContent = formatUptime(uptime);
+            }, 1000);
+        }
+
+        function formatUptime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes}m ${secs}s`;
+            } else if (minutes > 0) {
+                return `${minutes}m ${secs}s`;
+            } else {
+                return `${secs}s`;
+            }
+        }
+
+        function toggleCommandPalette() {
+            const palette = document.getElementById('commandPalette');
+            const input = document.getElementById('commandInput');
+            
+            commandPaletteOpen = !commandPaletteOpen;
+            
+            if (commandPaletteOpen) {
+                palette.classList.add('active');
+                input.focus();
+                updateCommandResults();
+            } else {
+                palette.classList.remove('active');
+            }
+        }
+
+        function closeCommandPalette() {
+            commandPaletteOpen = false;
+            document.getElementById('commandPalette').classList.remove('active');
+        }
+
+        function updateCommandResults() {
+            const results = document.getElementById('commandResults');
+            const commands = [
+                { name: 'Toggle Clipboard Manager', action: () => toggleScriptlet('clipboard_manager') },
+                { name: 'Toggle System Monitor', action: () => toggleScriptlet('system_monitor') },
+                { name: 'Switch to Utilities Tab', action: () => switchTab('utilities') },
+                { name: 'Switch to Development Tab', action: () => switchTab('development') },
+                { name: 'Open Settings', action: () => switchTab('settings') },
+                { name: 'Toggle Theme', action: () => toggleTheme() }
+            ];
+
+            results.innerHTML = commands.map(cmd => `
+                <div class="command-item" onclick="${cmd.action.name}()">
+                    <i class="fas fa-terminal"></i>
+                    <span>${cmd.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            console.log('Current theme:', currentTheme);
+            console.log('New theme:', newTheme);
+            console.log('HTML element:', document.documentElement);
+            
+            // Apply theme
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Verify the attribute was set
+            const verifyTheme = document.documentElement.getAttribute('data-theme');
+            console.log('Verified theme after setting:', verifyTheme);
+            
+            // Update theme select if it exists
+            const themeSelect = document.getElementById('themeSelect');
+            if (themeSelect) {
+                themeSelect.value = newTheme;
+            }
+            
+            // Update theme toggle icon
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                themeToggleIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            
+            console.log('Theme toggled to:', newTheme);
+        }
+
+        function showHelp() {
+            // Create help modal
+            const helpModal = document.createElement('div');
+            helpModal.className = 'help-modal';
+            helpModal.innerHTML = `
+                <div class="help-content">
+                    <div class="help-header">
+                        <h2><i class="fas fa-question-circle"></i> AutoHotkey Scriptlet Launcher Help</h2>
+                        <button class="help-close" onclick="closeHelp()">&times;</button>
+                    </div>
+                    <div class="help-body">
+                        <div class="help-section">
+                            <h3><i class="fas fa-rocket"></i> What is this?</h3>
+                            <p>This is a modern web interface for managing AutoHotkey scriptlets - small, focused automation scripts that enhance your Windows productivity.</p>
+                        </div>
+                        
+                        <div class="help-section">
+                            <h3><i class="fas fa-play"></i> How to Use</h3>
+                            <ul>
+                                <li><strong>Browse:</strong> Use the tabs to explore scriptlets by category</li>
+                                <li><strong>Search:</strong> Type in the search bar to find specific scriptlets</li>
+                                <li><strong>Run:</strong> Click the "Run" button on any scriptlet to start it</li>
+                                <li><strong>Stop:</strong> Click "Stop" to terminate a running scriptlet</li>
+                                <li><strong>Hotkeys:</strong> Many scriptlets have keyboard shortcuts (shown in descriptions)</li>
+                            </ul>
+                        </div>
+
+                        <div class="help-section">
+                            <h3><i class="fas fa-keyboard"></i> Quick Actions</h3>
+                            <ul>
+                                <li><strong>Ctrl+K:</strong> Open command palette</li>
+                                <li><strong>F1:</strong> Launch Help System Pro (if running)</li>
+                                <li><strong>Ctrl+Alt+S:</strong> Launch Security Guide Pro (if running)</li>
+                                <li><strong>Theme Toggle:</strong> Switch between light/dark modes</li>
+                            </ul>
+                        </div>
+
+                        <div class="help-section">
+                            <h3><i class="fas fa-shield-alt"></i> Security</h3>
+                            <p><strong>⚠️ Important:</strong> AutoHotkey can do anything on your computer. Always review scriptlets before running them. Use the Security Guide Pro for detailed safety information.</p>
+                        </div>
+
+                        <div class="help-section">
+                            <h3><i class="fas fa-cogs"></i> Advanced Help</h3>
+                            <p>For comprehensive help, run the <strong>Help System Pro</strong> scriptlet from the Utilities category. It provides detailed information about AutoHotkey, the COM bridge, and all features.</p>
+                        </div>
+
+                        <div class="help-actions">
+                            <button class="help-action-btn" onclick="runHelpSystem()">
+                                <i class="fas fa-question-circle"></i> Launch Help System Pro
+                            </button>
+                            <button class="help-action-btn" onclick="runSecurityGuide()">
+                                <i class="fas fa-shield-alt"></i> Launch Security Guide
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(helpModal);
+            
+            // Add modal styles
+            const modalStyles = document.createElement('style');
+            modalStyles.textContent = `
+                .help-modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.3s ease;
+                }
+                
+                .help-content {
+                    background: white;
+                    border-radius: 12px;
+                    max-width: 600px;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    animation: slideIn 0.3s ease;
+                }
+                
+                [data-theme="dark"] .help-content {
+                    background: var(--dark);
+                    color: white;
+                }
+                
+                .help-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 20px;
+                    border-bottom: 1px solid #eee;
+                }
+                
+                [data-theme="dark"] .help-header {
+                    border-bottom-color: #444;
+                }
+                
+                .help-header h2 {
+                    margin: 0;
+                    color: var(--primary);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+                
+                .help-close {
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                    color: #666;
+                    padding: 5px;
+                }
+                
+                .help-close:hover {
+                    color: var(--danger);
+                }
+                
+                .help-body {
+                    padding: 20px;
+                }
+                
+                .help-section {
+                    margin-bottom: 25px;
+                }
+                
+                .help-section h3 {
+                    color: var(--primary);
+                    margin-bottom: 10px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+                
+                .help-section ul {
+                    margin: 10px 0;
+                    padding-left: 20px;
+                }
+                
+                .help-section li {
+                    margin-bottom: 5px;
+                }
+                
+                .help-actions {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 20px;
+                    flex-wrap: wrap;
+                }
+                
+                .help-action-btn {
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    padding: 10px 16px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    transition: all 0.3s ease;
+                }
+                
+                .help-action-btn:hover {
+                    background: #3a5a7a;
+                    transform: translateY(-2px);
+                }
+            `;
+            document.head.appendChild(modalStyles);
+        }
+
+        function closeHelp() {
+            const modal = document.querySelector('.help-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function runHelpSystem() {
+            // Try to run Help System Pro scriptlet
+            const helpScriptlet = scriptlets.find(s => s.id === 'help_system_pro');
+            if (helpScriptlet) {
+                runScriptlet('help_system_pro');
+                closeHelp();
+            } else {
+                alert('Help System Pro scriptlet not found. Please check if it exists in the scriptlets folder.');
+            }
+        }
+
+        function runSecurityGuide() {
+            // Try to run Security Guide Pro scriptlet
+            const securityScriptlet = scriptlets.find(s => s.id === 'security_guide_pro');
+            if (securityScriptlet) {
+                runScriptlet('security_guide_pro');
+                closeHelp();
+            } else {
+                alert('Security Guide Pro scriptlet not found. Please check if it exists in the scriptlets folder.');
+            }
+        }
+
+        function loadSettings() {
+            const fontSize = localStorage.getItem('fontSize') || '14';
+            document.getElementById('fontSize').value = fontSize;
+            document.getElementById('fontSizeValue').textContent = fontSize + 'px';
+            document.body.style.fontSize = fontSize + 'px';
+        }
+
+        // Add fade-in animation to cards
+        function addFadeInAnimation() {
+            document.querySelectorAll('.scriptlet-card').forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in');
+            });
+        }
+
+        // Call animation after rendering
+        setTimeout(addFadeInAnimation, 100);
+    </script>
+</body>
+</html>

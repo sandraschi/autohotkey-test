@@ -1,81 +1,128 @@
-#NoEnv
+; AutoHotkey v2 script - Dev Context Music (System Sounds Edition)
 #SingleInstance Force
-#MaxHotkeysPerInterval 200
-#Persistent
-SetWorkingDir %A_ScriptDir%
+Persistent
 
 ; ========================================
 ; CONFIGURATION
 ; ========================================
 
-; Plex configuration (optional)
-PlexServer := "http://localhost:32400"
-PlexToken := "YOUR_PLEX_TOKEN"  ; Replace with your Plex token
-
-; Music library paths (fallback if Plex is not available)
-MusicLibrary := "C:\Users\%A_UserName%\Music\"
+; System sound mappings - using Windows built-in sounds and beep patterns
+; Each sound type has different beep patterns and system sounds
 
 ; ========================================
-; MUSIC TRACKS
+; SOUND FUNCTIONS
 ; ========================================
 
-; Build Status Tracks
-BuildSuccessTracks := ["military_reveille.mp3", "hallelujah_chorus.mp3"]
-BuildFailureTracks := ["taps.mp3", "chopin_funeral_march.mp3"]
-
-; Repository Health Tracks
-RepoBadTracks := ["the_good_the_bad.mp3", "o_fortuna.mp3"]
-RepoDirtyTracks := ["flight_of_the_bumblebee.mp3", "william_tell_overture.mp3"]
-
-; Code Quality Tracks
-TestFailureTracks := ["another_one_bites_the_dust.mp3", "chopin_raindrop_prelude.mp3"]
-TestSuccessTracks := ["we_are_the_champions.mp3", "beethoven_ode_to_joy.mp3"]
-
-; Time-based Tracks
-LateNightTracks := ["chopsticks.mp3", "moonlight_sonata_3rd_mov.mp3"]
-EarlyMorningTracks := ["here_comes_the_sun.mp3", "vivaldi_spring.mp3"]
-LongSessionTracks := ["time_pink_floyd.mp3", "bohemian_rhapsody.mp3"]
-
-; Emotional Tracks
-SadMarches := ["chopin_funeral_march.mp3", "beethoven_eroica_funeral_march.mp3"]
-TriumphantTracks := ["pomp_and_circumstance.mp3", "ride_of_the_valkyries.mp3"]
-
-; ========================================
-; MAIN FUNCTIONS
-; ========================================
-
-; Play a random track from a list
-PlayTrack(trackList) {
-    Random, rand, 1, % trackList.MaxIndex()
-    track := trackList[rand]
-    
-    ; First try Plex
-    if (PlexToken != "YOUR_PLEX_TOKEN") {
-        if (PlayPlexTrack(track)) {
-            return true
-        }
+; Play a beep pattern for different contexts
+PlayContextSound(context) {
+    switch context {
+        case "build_success":
+            ; Happy ascending beeps
+            SoundBeep(800, 100)
+            Sleep(50)
+            SoundBeep(1000, 100)
+            Sleep(50)
+            SoundBeep(1200, 200)
+            SoundPlay("*64")  ; Asterisk (success sound)
+            
+        case "build_failure":
+            ; Sad descending beeps
+            SoundBeep(600, 200)
+            Sleep(100)
+            SoundBeep(400, 200)
+            Sleep(100)
+            SoundBeep(200, 300)
+            SoundPlay("*16")  ; Hand (stop/error sound)
+            
+        case "repo_bad":
+            ; Dramatic low beeps
+            SoundBeep(100, 500)
+            Sleep(200)
+            SoundBeep(150, 500)
+            SoundPlay("*48")  ; Exclamation
+            
+        case "repo_dirty":
+            ; Busy rapid beeps
+            Loop 5 {
+                SoundBeep(800, 50)
+                Sleep(50)
+            }
+            SoundPlay("*32")  ; Question
+            
+        case "test_failure":
+            ; Funeral march pattern
+            SoundBeep(300, 400)
+            Sleep(200)
+            SoundBeep(250, 400)
+            Sleep(200)
+            SoundBeep(200, 600)
+            SoundPlay("*16")  ; Hand (error)
+            
+        case "test_success":
+            ; Victory fanfare
+            SoundBeep(523, 200)  ; C
+            SoundBeep(659, 200)  ; E
+            SoundBeep(784, 200)  ; G
+            SoundBeep(1047, 400) ; C high
+            SoundPlay("*64")  ; Success
+            
+        case "late_night":
+            ; Slow, tired beeps
+            SoundBeep(400, 300)
+            Sleep(500)
+            SoundBeep(350, 300)
+            Sleep(500)
+            SoundBeep(300, 400)
+            
+        case "early_morning":
+            ; Cheerful wake-up beeps
+            SoundBeep(600, 150)
+            SoundBeep(800, 150)
+            SoundBeep(1000, 150)
+            SoundBeep(1200, 200)
+            SoundPlay("*64")
+            
+        case "sad_march":
+            ; Classic funeral march rhythm
+            SoundBeep(200, 600)
+            Sleep(100)
+            SoundBeep(180, 600)
+            Sleep(100)
+            SoundBeep(160, 800)
+            Sleep(300)
+            SoundBeep(140, 1000)
+            
+        case "triumphant":
+            ; Royal fanfare
+            SoundBeep(1000, 200)
+            SoundBeep(1200, 200)
+            SoundBeep(1500, 200)
+            Sleep(100)
+            SoundBeep(1000, 200)
+            SoundBeep(1200, 200)
+            SoundBeep(1500, 400)
+            SoundPlay("*64")
+            
+        case "betty_boop":
+            ; Playful cartoon-like beeps
+            SoundBeep(800, 100)
+            SoundBeep(1000, 100)
+            SoundBeep(800, 100)
+            SoundBeep(600, 100)
+            SoundBeep(800, 200)
+            
+        case "classical":
+            ; Simple classical melody pattern
+            SoundBeep(523, 200)  ; C
+            SoundBeep(587, 200)  ; D
+            SoundBeep(659, 200)  ; E
+            SoundBeep(698, 200)  ; F
+            SoundBeep(784, 400)  ; G
+            
+        default:
+            ; Default system beep
+            SoundPlay("*64")
     }
-    
-    ; Fallback to local files
-    if (FileExist(MusicLibrary . track)) {
-        SoundPlay, % MusicLibrary . track
-        return true
-    }
-    
-    ; Fallback to system sounds
-    SoundPlay, *
-    return false
-}
-
-; Play a track from Plex
-PlayPlexTrack(trackName) {
-    try {
-        ; This is a simplified example - you'd need to implement Plex API calls
-        ; to search and play tracks from your Plex library
-        Run, "C:\Program Files (x86)\Plex\Plex Media Player\PlexMediaPlayer.exe" --fullscreen --tv --playback=1 "Plex Track"
-        return true
-    }
-    return false
 }
 
 ; ========================================
@@ -86,30 +133,30 @@ PlayPlexTrack(trackName) {
 CheckBuildStatus() {
     ; This would check your build system
     ; For now, we'll just return a random status
-    Random, status, 1, 10
+    status := Random(1, 10)
     if (status > 7) {
-        PlayTrack(BuildFailureTracks)
-        TrayTip, Build Status, Build failed! Playing sad music..., , 1
+        PlayContextSound("build_failure")
+        TrayTip("Build failed! Playing sad music...", "Build Status", 1)
     } else {
-        PlayTrack(BuildSuccessTracks)
-        TrayTip, Build Status, Build succeeded! Celebrating..., , 1
+        PlayContextSound("build_success")
+        TrayTip("Build succeeded! Celebrating...", "Build Status", 1)
     }
-    SetTimer, RemoveTrayTip, -3000
+    SetTimer(() => TrayTip(), -3000)
 }
 
 ; Check repository health (example implementation)
 CheckRepoHealth() {
     ; This would check git status, number of changes, etc.
     ; For now, we'll just return a random status
-    Random, status, 1, 10
+    status := Random(1, 10)
     if (status > 8) {
-        PlayTrack(RepoBadTracks)
-        TrayTip, Repository Health, Critical issues found! Playing dramatic music..., , 1
+        PlayContextSound("repo_bad")
+        TrayTip("Critical issues found! Playing dramatic music...", "Repository Health", 1)
     } else if (status > 5) {
-        PlayTrack(RepoDirtyTracks)
-        TrayTip, Repository Health, Many uncommitted changes. Time to commit!, , 1
+        PlayContextSound("repo_dirty")
+        TrayTip("Many uncommitted changes. Time to commit!", "Repository Health", 1)
     }
-    SetTimer, RemoveTrayTip, -3000
+    SetTimer(() => TrayTip(), -3000)
 }
 
 ; ========================================
@@ -117,33 +164,32 @@ CheckRepoHealth() {
 ; ========================================
 
 ; Play a sad march
-^!s::  ; Ctrl+Alt+S for sad march
-    PlayTrack(SadMarches)
-    TrayTip, Mood Music, Playing a sad march..., , 1
-    SetTimer, RemoveTrayTip, -3000
-    return
+^!s:: {  ; Ctrl+Alt+S for sad march
+    PlayContextSound("sad_march")
+    TrayTip("Playing a sad march... 🎵", "Mood Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
 ; Play a triumphant piece
-^!t::  ; Ctrl+Alt+T for triumphant music
-    PlayTrack(TriumphantTracks)
-    TrayTip, Mood Music, Playing something triumphant!, , 1
-    SetTimer, RemoveTrayTip, -3000
-    return
+^!t:: {  ; Ctrl+Alt+T for triumphant music
+    PlayContextSound("triumphant")
+    TrayTip("Playing something triumphant! 🎺", "Mood Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-; Play a random Betty Boop cartoon (Plex)
-^!b::  ; Ctrl+Alt+B for Betty Boop
-    PlayPlexTrack("Betty Boop")
-    TrayTip, Plex, Playing Betty Boop..., , 1
-    SetTimer, RemoveTrayTip, -3000
-    return
+; Play a random Betty Boop cartoon
+^!b:: {  ; Ctrl+Alt+B for Betty Boop
+    PlayContextSound("betty_boop")
+    TrayTip("Betty Boop beep-a-boop! 🎭", "Plex", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-; Play a random classical piece
-^!c::  ; Ctrl+Alt+C for classical
-    allClassical := [].Append(BuildSuccessTracks, BuildFailureTracks, SadMarches, TriumphantTracks)
-    PlayTrack(allClassical)
-    TrayTip, Classical Music, Playing a classical piece..., , 1
-    SetTimer, RemoveTrayTip, -3000
-    return
+; Play a classical piece
+^!c:: {  ; Ctrl+Alt+C for classical
+    PlayContextSound("classical")
+    TrayTip("Playing a classical piece... 🎼", "Classical Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
 ; ========================================
 ; TIME-BASED TRIGGERS
@@ -151,105 +197,92 @@ CheckRepoHealth() {
 
 ; Check time and play appropriate music
 CheckTime() {
-    FormatTime, hour,, H  ; 24-hour format
+    hour := Integer(FormatTime(, "H"))  ; 24-hour format
     
     if (hour >= 22 || hour < 6) {
         ; Late night coding
-        if (Random(1, 3) = 1) {  ; 1 in 3 chance
-            PlayTrack(LateNightTracks)
-            TrayTip, Late Night, Playing some late night coding music..., , 1
-            SetTimer, RemoveTrayTip, -3000
+        chance := Random(1, 3)
+        if (chance = 1) {  ; 1 in 3 chance
+            PlayContextSound("late_night")
+            TrayTip("Playing some late night coding music... 🌙", "Late Night", 1)
+            SetTimer(() => TrayTip(), -3000)
         }
     } else if (hour >= 5 && hour < 9) {
         ; Early morning
-        if (Random(1, 4) = 1) {  ; 1 in 4 chance
-            PlayTrack(EarlyMorningTracks)
-            TrayTip, Good Morning, Rise and shine!, , 1
-            SetTimer, RemoveTrayTip, -3000
+        chance := Random(1, 4)
+        if (chance = 1) {  ; 1 in 4 chance
+            PlayContextSound("early_morning")
+            TrayTip("Rise and shine! ☀️", "Good Morning", 1)
+            SetTimer(() => TrayTip(), -3000)
         }
     }
 }
-
-; ========================================
-; HELPER FUNCTIONS
-; ========================================
-
-; Generate random number between min and max
-Random(min, max) {
-    Random, r, min, max
-    return r
-}
-
-RemoveTrayTip:
-    TrayTip
-    return
 
 ; ========================================
 ; AUTOMATIC CHECKS
 ; ========================================
 
 ; Check time every 30 minutes
-SetTimer, CheckTime, 1800000
+SetTimer(CheckTime, 1800000)
 
 ; Check repository health every hour
-SetTimer, CheckRepoHealth, 3600000
+SetTimer(CheckRepoHealth, 3600000)
 
 ; ========================================
 ; TRAY MENU
 ; ========================================
 
-Menu, Tray, NoStandard
-Menu, Tray, Add, &Open Launcher, ShowLauncher
-Menu, Tray, Add
-Menu, Tray, Add, &Sad March (Ctrl+Alt+S), PlaySadMarch
-Menu, Tray, Add, &Triumphant Music (Ctrl+Alt+T), PlayTriumphant
-Menu, Tray, Add, &Betty Boop (Ctrl+Alt+B), PlayBettyBoop
-Menu, Tray, Add, &Classical (Ctrl+Alt+C), PlayClassical
-Menu, Tray, Add
-Menu, Tray, Add, &Check Build Status, CheckBuildStatus
-Menu, Tray, Add, Check &Repository Health, CheckRepoHealth
-Menu, Tray, Add
-Menu, Tray, Add, &Reload, ReloadScript
-Menu, Tray, Add, E&xit, ExitScript
-Menu, Tray, Default, &Open Launcher
-Menu, Tray, Tip, Dev Context Music
+A_TrayMenu.Delete()
+A_TrayMenu.Add("🎵 &Open Launcher", (*) => ShowLauncher())
+A_TrayMenu.Add()
+A_TrayMenu.Add("😢 &Sad March (Ctrl+Alt+S)", (*) => PlaySadMarch())
+A_TrayMenu.Add("🎺 &Triumphant Music (Ctrl+Alt+T)", (*) => PlayTriumphant())
+A_TrayMenu.Add("🎭 &Betty Boop (Ctrl+Alt+B)", (*) => PlayBettyBoop())
+A_TrayMenu.Add("🎼 &Classical (Ctrl+Alt+C)", (*) => PlayClassical())
+A_TrayMenu.Add()
+A_TrayMenu.Add("🔧 &Check Build Status", (*) => CheckBuildStatus())
+A_TrayMenu.Add("📁 Check &Repository Health", (*) => CheckRepoHealth())
+A_TrayMenu.Add()
+A_TrayMenu.Add("🔄 &Reload", (*) => Reload())
+A_TrayMenu.Add("❌ E&xit", (*) => ExitApp())
+A_TrayMenu.Default := "🎵 &Open Launcher"
 
-PlaySadMarch:
-    Gosub, ^!s
-    return
+PlaySadMarch() {
+    PlayContextSound("sad_march")
+    TrayTip("Playing a sad march... 😢", "Mood Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-PlayTriumphant:
-    Gosub, ^!t
-    return
+PlayTriumphant() {
+    PlayContextSound("triumphant")
+    TrayTip("Playing something triumphant! 🎺", "Mood Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-PlayBettyBoop:
-    Gosub, ^!b
-    return
+PlayBettyBoop() {
+    PlayContextSound("betty_boop")
+    TrayTip("Betty Boop beep-a-boop! 🎭", "Plex", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-PlayClassical:
-    Gosub, ^!c
-    return
+PlayClassical() {
+    PlayContextSound("classical")
+    TrayTip("Playing a classical piece... 🎼", "Classical Music", 1)
+    SetTimer(() => TrayTip(), -3000)
+}
 
-ReloadScript:
-    Reload
-    return
-
-ExitScript:
-    ExitApp
-    return
-
-ShowLauncher:
-    ; You could add a GUI launcher here
-    MsgBox, 64, Dev Context Music, Use the tray menu or hotkeys to control music.`n`nHotkeys:`n- Ctrl+Alt+S: Sad March`n- Ctrl+Alt+T: Triumphant Music`n- Ctrl+Alt+B: Betty Boop`n- Ctrl+Alt+C: Classical Music
-    return
+ShowLauncher() {
+    MsgBox("Dev Context Music - System Beeper Edition`n`nHotkeys:`n- Ctrl+Alt+S: Sad March`n- Ctrl+Alt+T: Triumphant Music`n- Ctrl+Alt+B: Betty Boop`n- Ctrl+Alt+C: Classical Music`n`nAuto Features:`n- Build status sounds`n- Repository health alerts`n- Time-based ambiance`n`nAll sounds use system beeper!", "Dev Context Music", 64)
+}
 
 ; ========================================
 ; INITIALIZATION
 ; ========================================
 
-; Show welcome message
-TrayTip, Dev Context Music, Music system ready!, , 1
-SetTimer, RemoveTrayTip, -3000
+; Show welcome message with startup fanfare
+PlayContextSound("early_morning")
+TrayTip("🎵 Music system ready! Press Ctrl+Alt+S/T/B/C to test!", "Dev Context Music", 1)
+SetTimer(() => TrayTip(), -4000)
 
 ; Initial time check
-Gosub, CheckTime
+CheckTime()

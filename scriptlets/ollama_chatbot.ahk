@@ -1,573 +1,588 @@
-#NoEnv
+#Requires AutoHotkey v2.0
 #SingleInstance Force
-#Persistent
-SetWorkingDir %A_ScriptDir%
-SetBatchLines -1
+#Warn All, MsgBox
+#Warn LocalSameAsGlobal, Off
 
-; Configuration
-ollamaUrl := "http://localhost:11434"  ; Default Ollama API endpoint
-currentModel := "llama3"  ; Default model, change to your preferred model
-chatHistory := []
-maxHistory := 10  ; Number of messages to keep in history
+; =============================================================================
+; CONFIGURATION
+; =============================================================================
+APP_TITLE := "Ollama Chat"
+OLLAMA_URL := "http://localhost:11434"
+DEFAULT_MODEL := "llama3"
 
-; Create the GUI
-Gui, +Resize +MinSize640x480
-Gui, Font, s10, Segoe UI
-
-; Chat display
-Gui, Add, Edit, x10 y10 w620 h300 vChatDisplay ReadOnly +HScroll
-
-; User input
-Gui, Add, Edit, x10 y320 w520 h80 vUserInput gSendMessage
-Gui, Add, Button, x540 y320 w90 h35 gSendMessage, &Send
-Gui, Add, Button, x540 y365 w90 h35 gClearChat, C&lear
-
-; Model selection
-Gui, Add, Text, x10 y410 w80 h20, Model:
-Gui, Add, DropDownList, x60 y405 w200 vModelSelect gUpdateModel, llama3||mistral|gemma|phi3
-
-; Options
-Gui, Add, CheckBox, x270 y405 vUseTTS gToggleTTS, Text-to-Speech
-Gui, Add, CheckBox, x270 y430 vDarkMode gToggleDarkMode, Dark Mode
-
-; Status bar
-Gui, Add, StatusBar,, Ready. Connected to Ollama at %ollamaUrl%
-
-; Set up TTS
-try {
-    oVoice := ComObjCreate("SAPI.SpVoice")
-    oVoice.Rate := 0  ; -10 to 10
-    oVoice.Volume := 100
-    TTSEnabled := true
-} catch {
-    TTSEnabled := false
-    SB_SetText("TTS initialization failed. Speech disabled.")
+; Colors
+COLORS := {
+    light: {
+        bg: 0xFFFFFF, text: 0x000000, inputBg: 0xF8F9FA,
+        userMsg: 0xE3F2FD, assistantMsg: 0xF5F5F5, systemMsg: 0xFFEBEE
+    },
+    dark: {
+        bg: 0x1E1E1E, text: 0xE0E0E0, inputBg: 0x252526,
+        userMsg: 0x0D47A1, assistantMsg: 0x2D2D2D, systemMsg: 0x4A148C
+    }
 }
 
-; Load settings
-LoadSettings()
+; =============================================================================
+; GLOBAL STATE
+; =============================================================================
+chatHistory := []
+currentTheme := "light"
+selectedModel := ""
+models := []
+settings := {
+    temperature: 0.7,
+    maxTokens: 2000,
+    maxHistorySize: 50,
+    systemPrompt: "You are a helpful AI assistant.",
+    darkMode: false
+}
 
-; Show the GUI
-Gui, Show, w640 h480, Ollama Chatbot
+; Global variables for GUI controls
+guiMain := ""
+chatDisplay := ""
+userInputBox := ""
+modelSelector := ""
+statusBar := ""
+btnSend := ""
 
-; Get available models
-GetAvailableModels()
-
-; Set up hotkey to show/hide the chat
-^!O::  ; Ctrl+Alt+O
-    if (WinExist("Ollama Chatbot")) {
-        if (WinActive("Ollama Chatbot")) {
-            WinHide, Ollama Chatbot
-        } else {
-            WinShow, Ollama Chatbot
-            WinActivate, Ollama Chatbot
+; =============================================================================
+; HELPER FUNCTIONS
+; =============================================================================
+HasValue(arr, val) {
+    for item in arr {
+        if (item = val) {
+            return true
         }
     }
-return
+    return false
+}
 
-SendMessage:
-    Gui, Submit, NoHide
+; =============================================================================
+; MAIN WINDOW
+; =============================================================================
+CreateGUI()
+
+; =============================================================================
+; GUI CREATION
+; =============================================================================
+CreateGUI() {
+    global guiMain, chatDisplay, userInputBox, modelSelector, statusBar, btnSend
     
-    ; Get user input
-    userMessage := UserInput
+    ; Create main window
+    guiMain := Gui("+Resize +MinSize800x600", APP_TITLE)
+    guiMain.OnEvent("Close", (*) => ExitApp())
+    guiMain.OnEvent("Size", OnWindowResize)
+    
+    ; Apply theme
+    ApplyTheme(currentTheme)
+    
+    ; Chat display - use plain text display for better compatibility
+    chatDisplay := guiMain.Add("Edit", "x10 y10 w780 h500 +ReadOnly +VScroll +Multi")
+    chatDisplay.SetFont("s10", "Segoe UI")
+    
+    ; Input area
+    userInputBox := guiMain.Add("Edit", "x10 y520 w680 h70 +Multi")
+    userInputBox.OnEvent("Change", OnInputChange)
+    userInputBox.SetFont("s10", "Segoe UI")
+    
+    ; Send button
+    btnSend := guiMain.Add("Button", "x700 y520 w90 h30 Default", "&Send")
+    btnSend.OnEvent("Click", SendMessage)
+    
+    ; Model selector
+    guiMain.Add("Text", "x10 y600 w50 h23", "Model:")
+    modelSelector := guiMain.Add("DropDownList", "x60 y600 w200")
+    modelSelector.OnEvent("Change", OnModelChange)
+    
+    ; Clear button
+    btnClear := guiMain.Add("Button", "x270 y600 w80 h25", "&Clear")
+    btnClear.OnEvent("Click", (*) => ClearChat())
+    
+    ; Theme toggle button
+    btnTheme := guiMain.Add("Button", "x360 y600 w80 h25", "&Theme")
+    btnTheme.OnEvent("Click", (*) => ToggleTheme())
+    
+    ; Status bar
+    statusBar := guiMain.Add("StatusBar")
+    statusBar.SetText("Ready | Models: Loading...")
+    
+    ; Load settings and models
+    LoadSettings()
+    LoadModels()
+    
+    ; Show window
+    guiMain.Show("w800 h640")
+    userInputBox.Focus()
+}
+
+ApplyTheme(theme) {
+    global guiMain, COLORS, currentTheme, chatDisplay, userInputBox
+    currentTheme := theme
+    colors := COLORS.%theme%
+    
+    guiMain.BackColor := colors.bg
+    
+    ; Update chat display colors - convert hex to proper format
+    if (chatDisplay) {
+        chatDisplay.Opt("+Background" . Format("0x{:X}", colors.inputBg))
+    }
+    
+    ; Update input box colors
+    if (userInputBox) {
+        userInputBox.Opt("+Background" . Format("0x{:X}", colors.inputBg))
+    }
+}
+
+; =============================================================================
+; EVENT HANDLERS
+; =============================================================================
+OnWindowResize(guiObj, minMax, width, height) {
+    global chatDisplay, userInputBox, btnSend
+    if (minMax = -1)
+        return
+    
+    chatDisplay.Move(10, 10, width - 20, height - 130)
+    userInputBox.Move(10, height - 110, width - 120, 70)
+    btnSend.Move(width - 100, height - 110, 80, 30)
+}
+
+OnInputChange(ctrl, info) {
+    global btnSend
+    btnSend.Enabled := (Trim(ctrl.Value) != "")
+}
+
+OnModelChange(ctrl, info) {
+    global selectedModel, statusBar
+    selectedModel := ctrl.Text
+    statusBar.SetText("Model: " . selectedModel)
+    SaveSettings()
+}
+
+SendMessage(ctrl, info) {
+    global userInputBox, chatDisplay, selectedModel, chatHistory, settings, statusBar, btnSend
+    
+    ; Get and validate user input
+    userMessage := Trim(userInputBox.Value)
     if (userMessage = "") {
+        return  ; Don't send empty messages
+    }
+    
+    ; Check if model is selected
+    if (selectedModel = "") {
+        MsgBox("Please select a model first.", "No Model Selected", "OK")
         return
     }
     
-    ; Add to chat
-    AddToChat("You: " . userMessage, "user")
+    ; Clear input box and disable it during processing
+    userInputBox.Value := ""
+    userInputBox.Enabled := false
+    btnSend.Enabled := false
     
-    ; Clear input
-    GuiControl,, UserInput
-    
-    ; Show typing indicator
-    SB_SetText("Thinking...")
-    
-    ; Add to history
-    chatHistory.Push({"role": "user", "content": userMessage})
-    
-    ; Keep history within limits
-    if (chatHistory.Length() > maxHistory * 2) {  ; *2 for user/assistant pairs
-        chatHistory.RemoveAt(1, 2)  ; Remove oldest user/assistant pair
-    }
-    
-    ; Prepare the API request
-    requestBody := {}
-    requestBody.model := currentModel
-    requestBody.messages := chatHistory
-    requestBody.stream := false
-    
-    ; Convert to JSON
-    jsonBody := JSON.Dump(requestBody)
-    
-    ; Send request to Ollama
-    whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     try {
-        whr.Open("POST", ollamaUrl . "/api/chat", 0)
-        whr.SetRequestHeader("Content-Type", "application/json")
-        whr.Send(jsonBody)
+        ; Show typing indicator
+        statusBar.SetText("Sending message...")
         
-        if (whr.Status = 200) {
-            response := JSON.Load(whr.ResponseText)
-            assistantMessage := response.message.content
-            
-            ; Add to chat and history
-            AddToChat("Assistant: " . assistantMessage, "assistant")
-            chatHistory.Push({"role": "assistant", "content": assistantMessage})
-            
-            ; Read response with TTS if enabled
-            if (TTSEnabled && UseTTS) {
-                oVoice.Speak(assistantMessage, 1)  ; 1 = async
+        ; Add user message to chat
+        AddMessage("user", userMessage)
+        
+        ; Prepare API request
+        request := {
+            model: selectedModel,
+            messages: [],
+            stream: false,
+            options: {
+                temperature: settings.temperature,
+                num_ctx: settings.maxTokens
             }
-            
-            SB_SetText("Response received from " . currentModel)
-        } else {
-            errorMsg := "Error: " . whr.StatusText
-            AddToChat(errorMsg, "system")
-            SB_SetText(errorMsg)
         }
-    } catch e {
+        
+        ; Add system prompt if configured
+        if (settings.systemPrompt != "") {
+            request.messages.Push({
+                role: "system",
+                content: settings.systemPrompt
+            })
+        }
+        
+        ; Add chat history
+        for msg in chatHistory {
+            request.messages.Push({
+                role: msg.role,
+                content: msg.content
+            })
+        }
+        
+        ; Send request with timeout
+        try {
+            response := SendOllamaRequest("chat", request, 120000)  ; 2 minute timeout
+        } catch Error as e {
+            throw Error("Failed to get response from Ollama: " . e.Message)
+        }
+        
+        ; Validate and process response
+        if (!response.HasProp("message") || !response.message.HasProp("content")) {
+            throw Error("Invalid response format from Ollama API")
+        }
+        
+        ; Add assistant's response to chat
+        AddMessage("assistant", response.message.content)
+        
+        ; Update status
+        statusBar.SetText("Message sent")
+        
+    } catch Error as e {
+        ; Show error to user
         errorMsg := "Error: " . e.Message
-        AddToChat(errorMsg, "system")
-        SB_SetText(errorMsg)
+        AddMessage("system", errorMsg)
+        statusBar.SetText("Error: " . e.Message)
+        
+        ; Log detailed error for debugging
+        OutputDebug("Ollama Chat Error: " . errorMsg . "`n" . e.Stack)
+        
+    } finally {
+        ; Re-enable input box and send button
+        userInputBox.Enabled := true
+        btnSend.Enabled := true
+        
+        ; Focus the input box for next message
+        try {
+            userInputBox.Focus()
+        }
     }
-return
-
-AddToChat(message, sender := "") {
-    global ChatDisplay
-    
-    ; Get current time
-    FormatTime, currentTime,, HH:mm:ss
-    
-    ; Format message with timestamp and sender
-    formattedMessage := "[" . currentTime . "] " . message . "`n"
-    
-    ; Add to chat display
-    GuiControlGet, currentChat,, ChatDisplay
-    GuiControl,, ChatDisplay, %currentChat%%formattedMessage%
-    
-    ; Auto-scroll to bottom
-    SendMessage, 0x115, 7, 0,, ahk_id %ChatDisplayHwnd%  ; WM_VSCROLL
 }
 
-ClearChat:
-    GuiControl,, ChatDisplay
-    chatHistory := []
-    SB_SetText("Chat cleared")
-return
-
-UpdateModel:
-    Gui, Submit, NoHide
-    currentModel := ModelSelect
-    SB_SetText("Model changed to: " . currentModel)
+; =============================================================================
+; OLLAMA API FUNCTIONS
+; =============================================================================
+SendOllamaRequest(endpoint, data, timeout := 30000) {
+    static whr := 0
     
-    ; Save the setting
-    IniWrite, %currentModel%, %A_ScriptDir%\ollama_chat.ini, Settings, Model
-return
-
-ToggleTTS:
-    Gui, Submit, NoHide
-    TTSEnabled := UseTTS
-    status := TTSEnabled ? "enabled" : "disabled"
-    SB_SetText("Text-to-speech " . status)
-    
-    ; Save the setting
-    IniWrite, %TTSEnabled%, %A_ScriptDir%\ollama_chat.ini, Settings, UseTTS
-return
-
-ToggleDarkMode:
-    Gui, Submit, NoHide
-    
-    if (DarkMode) {
-        ; Dark theme
-        Gui, Color, 0x1E1E1E
-        Gui, Font, cSilver
-        GuiControl, Font, ChatDisplay
-        Gui, Font, cWhite
-        GuiControl, +Background0x2D2D2D, ChatDisplay
-        GuiControl, +cWhite, UserInput
-        GuiControl, +Background0x2D2D2D, UserInput
-    } else {
-        ; Light theme
-        Gui, Color, Default
-        Gui, Font, cBlack
-        GuiControl, Font, ChatDisplay
-        Gui, Font, cDefault
-        GuiControl, +BackgroundDefault, ChatDisplay
-        GuiControl, +cDefault, UserInput
-        GuiControl, +BackgroundDefault, UserInput
+    ; Initialize WinHttpRequest if not already done
+    if (!whr) {
+        try {
+            whr := ComObject("WinHttp.WinHttpRequest.5.1")
+        } catch Error as e {
+            throw Error("Failed to initialize HTTP client: " . e.Message)
+        }
     }
     
-    ; Save the setting
-    IniWrite, %DarkMode%, %A_ScriptDir%\ollama_chat.ini, Settings, DarkMode
-return
-
-GetAvailableModels() {
-    global ollamaUrl, ModelSelect
-    
-    whr := ComObjCreate("WinHttp.WinHttpRequest.5.1")
     try {
-        whr.Open("GET", ollamaUrl . "/api/tags", 0)
-        whr.Send()
+        url := OLLAMA_URL . "/api/" . endpoint
         
-        if (whr.Status = 200) {
-            response := JSON.Load(whr.ResponseText)
-            models := []
-            
-            for i, model in response.models {
-                modelName := model.name
-                ; Remove the tag if present (e.g., "llama3:latest" -> "llama3")
-                if (InStr(modelName, ":")) {
-                    modelName := SubStr(modelName, 1, InStr(modelName, ":") - 1)
+        ; Configure request
+        whr.Open("POST", url, false)
+        whr.SetRequestHeader("Content-Type", "application/json")
+        whr.Option(6, false)  ; Disable auto-redirect
+        
+        ; Set timeouts (in milliseconds)
+        whr.SetTimeouts(timeout, timeout, timeout, timeout)
+        
+        ; Send request with error handling
+        jsonData := JSON.Dump(data)
+        try {
+            whr.Send(jsonData)
+        } catch Error as e {
+            throw Error("Failed to send request: " . e.Message)
+        }
+        
+        ; Check response status
+        status := whr.Status
+        if (status != 200) {
+            errorMsg := "API request failed with status: " . status
+            try {
+                if (whr.ResponseText != "") {
+                    errorMsg .= "`nResponse: " . whr.ResponseText
                 }
+            }
+            throw Error(errorMsg)
+        }
+        
+        ; Parse and return response
+        try {
+            return JSON.Load(whr.ResponseText)
+        } catch Error as e {
+            throw Error("Failed to parse response: " . e.Message)
+        }
+    } catch Error as e {
+        throw Error("Request failed: " . e.Message)
+    }
+}
+
+LoadModels() {
+    global models, modelSelector, selectedModel, statusBar
+    
+    try {
+        ; Get available models from Ollama
+        response := SendOllamaRequest("tags", {})
+        
+        if (!response.HasProp("models")) {
+            throw Error("Invalid response format from Ollama API")
+        }
+        
+        ; Clear existing models
+        models := []
+        
+        ; Process each model
+        for model in response.models {
+            modelName := model.name
+            
+            ; Remove tag/version if present (e.g., "llama3:latest" -> "llama3")
+            if (InStr(modelName, ":")) {
+                modelName := SubStr(modelName, 1, InStr(modelName, ":") - 1)
+            }
+            
+            ; Add to list if not already present
+            if (!HasValue(models, modelName)) {
                 models.Push(modelName)
             }
-            
-            ; Update the dropdown
-            GuiControl,, ModelSelect, |% "llama3||" . Join("|", models)
-            SB_SetText(models.Length() . " models available")
         }
-    } catch {
-        ; Couldn't fetch models, use defaults
+        
+        ; Sort models alphabetically
+        if (models.Length > 1) {
+            models.Sort()
+        }
+        
+        ; Update the dropdown
+        modelSelector.Delete()
+        for model in models {
+            modelSelector.Add([model])
+        }
+        
+        ; Select the first model if none selected or if the selected model doesn't exist
+        if (selectedModel = "" && models.Length > 0) {
+            selectedModel := models[1]
+            modelSelector.Choose(1)
+        } else if (selectedModel != "" && HasValue(models, selectedModel)) {
+            ; Find and select the previously selected model
+            for i, model in models {
+                if (model = selectedModel) {
+                    modelSelector.Choose(i)
+                    break
+                }
+            }
+        } else if (models.Length > 0) {
+            ; Fallback to first model if selected model doesn't exist
+            selectedModel := models[1]
+            modelSelector.Choose(1)
+        }
+        
+        ; Update status bar
+        statusBar.SetText(models.Length . " models loaded")
+        return true
+        
+    } catch Error as e {
+        statusBar.SetText("Failed to load models: " . e.Message)
+        MsgBox("Failed to load models from Ollama.`n`nError: " . e.Message . "`n`nPlease ensure Ollama is running on " . OLLAMA_URL, "Connection Error", "OK")
+        return false
     }
 }
 
+; =============================================================================
+; CHAT MANAGEMENT
+; =============================================================================
+AddMessage(role, content) {
+    global chatHistory, chatDisplay, settings
+    
+    ; Add message to history
+    msgObj := {
+        role: role,
+        content: content,
+        timestamp: A_Now
+    }
+    
+    chatHistory.Push(msgObj)
+    
+    ; Limit chat history to prevent memory issues
+    if (chatHistory.Length > settings.maxHistorySize) {
+        chatHistory.RemoveAt(1, chatHistory.Length - settings.maxHistorySize)
+    }
+    
+    ; Update the display
+    UpdateChatDisplay()
+    
+    return msgObj
+}
+
+UpdateChatDisplay() {
+    global chatDisplay, chatHistory, currentTheme
+    
+    ; Create formatted text display
+    displayText := ""
+    
+    for msg in chatHistory {
+        time := FormatTime(msg.timestamp, "HH:mm:ss")
+        roleDisplay := ""
+        
+        switch msg.role {
+            case "user":
+                roleDisplay := "You"
+            case "assistant":
+                roleDisplay := "Assistant"
+            case "system":
+                roleDisplay := "System"
+            default:
+                roleDisplay := msg.role
+        }
+        
+        ; Add message to display
+        displayText .= "[" . time . "] " . roleDisplay . ":`n"
+        displayText .= msg.content . "`n`n"
+    }
+    
+    ; Update the display
+    try {
+        chatDisplay.Value := displayText
+        ; Scroll to bottom using DllCall for better compatibility
+        DllCall("SendMessage", "Ptr", chatDisplay.Hwnd, "UInt", 0x115, "Ptr", 7, "Ptr", 0)  ; WM_VSCROLL, SB_BOTTOM
+    } catch Error as e {
+        OutputDebug("Failed to update chat display: " . e.Message)
+    }
+}
+
+; =============================================================================
+; SETTINGS MANAGEMENT
+; =============================================================================
 LoadSettings() {
-    global currentModel, TTSEnabled, DarkMode, UseTTS
+    global settings, selectedModel, currentTheme
     
-    IniRead, model, %A_ScriptDir%\ollama_chat.ini, Settings, Model, %A_Space%
-    if (model != "") {
-        currentModel := model
-        GuiControl, ChooseString, ModelSelect, %currentModel%
-    }
+    iniFile := A_ScriptDir . "\ollama_chat.ini"
     
-    IniRead, useTTS, %A_ScriptDir%\ollama_chat.ini, Settings, UseTTS, 1
-    TTSEnabled := (useTTS = "1")
-    GuiControl,, UseTTS, %TTSEnabled%
-    
-    IniRead, darkMode, %A_ScriptDir%\ollama_chat.ini, Settings, DarkMode, 0
-    DarkMode := (darkMode = "1")
-    GuiControl,, DarkMode, %DarkMode%
-    
-    ; Apply dark mode if needed
-    if (DarkMode) {
-        Gui, Color, 0x1E1E1E
-        Gui, Font, cSilver
-        GuiControl, Font, ChatDisplay
-        Gui, Font, cWhite
-        GuiControl, +Background0x2D2D2D, ChatDisplay
-        GuiControl, +cWhite, UserInput
-        GuiControl, +Background0x2D2D2D, UserInput
+    ; Load settings with defaults
+    try {
+        if (FileExist(iniFile)) {
+            model := IniRead(iniFile, "Settings", "model", DEFAULT_MODEL)
+            darkMode := IniRead(iniFile, "Settings", "darkMode", "0")
+            
+            selectedModel := model
+            settings.darkMode := (darkMode = "1")
+            
+            if (settings.darkMode) {
+                currentTheme := "dark"
+            }
+        } else {
+            ; Create default settings file
+            selectedModel := DEFAULT_MODEL
+            settings.darkMode := false
+            SaveSettings()
+        }
+    } catch Error as e {
+        ; Fallback to defaults if there's an error reading the INI
+        selectedModel := DEFAULT_MODEL
+        settings.darkMode := false
     }
 }
 
-; JSON handling (simplified implementation)
+SaveSettings() {
+    global settings, selectedModel
+    
+    iniFile := A_ScriptDir . "\ollama_chat.ini"
+    
+    try {
+        IniWrite(selectedModel, iniFile, "Settings", "model")
+        IniWrite(settings.darkMode ? "1" : "0", iniFile, "Settings", "darkMode")
+    } catch Error as e {
+        OutputDebug("Failed to save settings: " . e.Message)
+    }
+}
+
+; =============================================================================
+; JSON HANDLING
+; =============================================================================
 class JSON {
     static Load(json) {
-        json := Trim(json)
-        if (SubStr(json, 1, 1) = "{" && SubStr(json, -1) = "}") {
-            return this.ParseObject(SubStr(json, 2, -1))
-        } else if (SubStr(json, 1, 1) = "[" && SubStr(json, -1) = "]") {
-            return this.ParseArray(SubStr(json, 2, -1))
+        static sc := 0
+        
+        ; Initialize ScriptControl if not already done
+        if (!sc) {
+            try {
+                sc := ComObject("ScriptControl")
+                sc.Language := "JScript"
+                sc.AddCode("function parseJson(s) { try { return JSON.parse(s); } catch(e) { throw new Error('JSON Parse Error: ' + e.message); } }")
+            } catch Error as e {
+                throw Error("Failed to initialize JSON parser: " . e.Message)
+            }
         }
-        throw Exception("Invalid JSON")
+        
+        try {
+            return sc.parseJson(json)
+        } catch Error as e {
+            throw Error("Failed to parse JSON: " . e.Message)
+        }
     }
     
     static Dump(obj) {
-        if (IsObject(obj)) {
-            if (obj.Length() > 0) {
-                ; Array
-                result := "["
-                for i, v in obj {
-                    if (A_Index > 1) {
-                        result .= ","
-                    }
-                    result .= this.Dump(v)
-                }
-                return result . "]"
-            } else {
-                ; Object
-                result := "{"
-                first := true
-                for k, v in obj {
-                    if (!first) {
-                        result .= ","
-                    }
-                    result .= """" . k . """:" . this.Dump(v)
-                    first := false
-                }
-                return result . "}"
-            }
-        } else if (obj = "") {
-            return """""
-        } else if (obj is number) {
-            return obj
-        } else if (obj is string) {
-            ; Escape special characters
-            str := StrReplace(obj, "\"\"", "\\")
-            str := StrReplace(str, """", "\"\"")
-            str := StrReplace(str, "`n", "\n")
-            str := StrReplace(str, "`r", "\r")
-            str := StrReplace(str, "`t", "\t")
-            return """" . str . """
-        } else if (obj = true) {
-            return "true"
-        } else if (obj = false) {
-            return "false"
-        } else if (obj = "") {
-            return "null"
-        }
-        return """" . obj . """"
-    }
-    
-    static ParseObject(str) {
-        obj := {}
-        str := Trim(str)
-        if (str = "") {
-            return obj
-        }
+        static sc := 0
         
-        pos := 1
-        while (pos <= StrLen(str)) {
-            ; Find the key
-            key := this.ParseString(str, pos)
-            if (key = "") {
-                break
-            }
-            
-            ; Find the colon
-            pos := InStr(str, ":", false, pos)
-            if (!pos) {
-                break
-            }
-            pos++
-            
-            ; Find the value
-            value := this.ParseValue(str, pos)
-            if (value = "" && pos <= StrLen(str)) {
-                break
-            }
-            
-            ; Add to object
-            obj[key] := value
-            
-            ; Skip comma
-            pos := InStr(str, ",", false, pos) + 1
-            if (!pos) {
-                break
+        ; Initialize ScriptControl if not already done
+        if (!sc) {
+            try {
+                sc := ComObject("ScriptControl")
+                sc.Language := "JScript"
+                sc.AddCode("function stringifyJson(obj) { try { return JSON.stringify(obj); } catch(e) { throw new Error('JSON Stringify Error: ' + e.message); } }")
+            } catch Error as e {
+                throw Error("Failed to initialize JSON stringifier: " . e.Message)
             }
         }
         
-        return obj
-    }
-    
-    static ParseArray(str) {
-        arr := []
-        str := Trim(str)
-        if (str = "") {
-            return arr
+        try {
+            return sc.stringifyJson(obj)
+        } catch Error as e {
+            throw Error("Failed to stringify object: " . e.Message)
         }
-        
-        pos := 1
-        while (pos <= StrLen(str)) {
-            ; Find the value
-            value := this.ParseValue(str, pos)
-            if (value = "" && pos <= StrLen(str)) {
-                break
-            }
-            
-            ; Add to array
-            arr.Push(value)
-            
-            ; Skip comma
-            pos := InStr(str, ",", false, pos) + 1
-            if (!pos) {
-                break
-            }
-        }
-        
-        return arr
-    }
-    
-    static ParseValue(str, ByRef pos) {
-        str := Trim(str)
-        if (pos > StrLen(str)) {
-            return ""
-        }
-        
-        char := SubStr(str, pos, 1)
-        if (char = "{") {
-            ; Object
-            end := FindMatchingBrace(str, pos, "{", "}")
-            if (!end) {
-                return ""
-            }
-            value := this.ParseObject(SubStr(str, pos + 1, end - pos - 1))
-            pos := end + 1
-            return value
-        } else if (char = "[") {
-            ; Array
-            end := FindMatchingBrace(str, pos, "[", "]")
-            if (!end) {
-                return ""
-            }
-            value := this.ParseArray(SubStr(str, pos + 1, end - pos - 1))
-            pos := end + 1
-            return value
-        } else if (char = """ || char = "'") {
-            ; String
-            value := this.ParseString(str, pos)
-            return value
-        } else if (char = "t" && SubStr(str, pos, 4) = "true") {
-            ; Boolean true
-            pos += 4
-            return true
-        } else if (char = "f" && SubStr(str, pos, 5) = "false") {
-            ; Boolean false
-            pos += 5
-            return false
-        } else if (char = "n" && SubStr(str, pos, 4) = "null") {
-            ; Null
-            pos += 4
-            return ""
-        } else if (RegExMatch(SubStr(str, pos), "^[\-0-9]", match)) {
-            ; Number
-            RegExMatch(SubStr(str, pos), "^[\-0-9]+\.?[0-9]*([eE][\-+]?[0-9]+)?", numStr)
-            pos += StrLen(numStr)
-            return numStr + 0
-        }
-        
-        return ""
-    }
-    
-    static ParseString(str, ByRef pos) {
-        if (SubStr(str, pos, 1) != """ && SubStr(str, pos, 1) != "'") {
-            return ""
-        }
-        
-        quote := SubStr(str, pos, 1)
-        pos++
-        result := ""
-        
-        while (pos <= StrLen(str)) {
-            char := SubStr(str, pos, 1)
-            
-            if (char = "\") {
-                ; Escape sequence
-                pos++
-                if (pos > StrLen(str)) {
-                    break
-                }
-                
-                char := SubStr(str, pos, 1)
-                switch char {
-                    case """": result .= """"
-                    case "'": result .= "'"
-                    case "\": result .= "\"
-                    case "/": result .= "/"
-                    case "b": result .= "`b"
-                    case "f": result .= "`f"
-                    case "n": result .= "`n"
-                    case "r": result .= "`r"
-                    case "t": result .= "`t"
-                    case "u":
-                        ; Unicode escape sequence
-                        if (pos + 4 <= StrLen(str)) {
-                            hex := SubStr(str, pos + 1, 4)
-                            if (RegExMatch(hex, "^[0-9A-Fa-f]{4}$")) {
-                                result .= Chr("0x" . hex)
-                                pos += 4
-                                continue
-                            }
-                        }
-                        result .= "\u"
-                }
-            } else if (char = quote) {
-                ; End of string
-                pos++
-                return result
-            } else {
-                result .= char
-            }
-            
-            pos++
-        }
-        
-        return result
     }
 }
 
-FindMatchingBrace(str, pos, open, close) {
-    if (SubStr(str, pos, 1) != open) {
-        return 0
-    }
-    
-    depth := 1
-    i := pos + 1
-    len := StrLen(str)
-    
-    while (i <= len) {
-        char := SubStr(str, i, 1)
-        
-        if (char = "\") {
-            ; Skip escaped characters
-            i += 2
-            continue
-        } else if (char = """ || char = "'") {
-            ; Skip strings
-            quote := char
-            i++
-            while (i <= len && SubStr(str, i, 1) != quote) {
-                if (SubStr(str, i, 1) = "\") {
-                    i++
-                }
-                i++
-            }
-            if (i > len) {
-                return 0
-            }
-        } else if (char = open) {
-            depth++
-        } else if (char = close) {
-            depth--
-            if (depth = 0) {
-                return i
-            }
+; =============================================================================
+; UTILITY FUNCTIONS
+; =============================================================================
+ToggleTheme() {
+    global currentTheme, settings
+    newTheme := (currentTheme = "light") ? "dark" : "light"
+    ApplyTheme(newTheme)
+    settings.darkMode := (newTheme = "dark")
+    SaveSettings()
+}
+
+ClearChat() {
+    global chatHistory, chatDisplay
+    if (chatHistory.Length > 0) {
+        result := MsgBox("Clear chat history?", "Confirm", "YesNo")
+        if (result = "Yes") {
+            chatHistory := []
+            chatDisplay.Value := ""
         }
-        
-        i++
     }
-    
-    return 0
 }
 
-Join(sep, params*) {
-    for i, param in params {
-        str .= (i > 1 ? sep : "") . param
-    }
-    return str
+; Function wrappers for hotkeys
+SendMessageHotkey() {
+    SendMessage("", "")
 }
 
-GuiSize:
-    if (A_EventInfo = 1)  ; The window has been minimized
-        return
-    
-    ; Resize controls
-    GuiControl, Move, ChatDisplay, % "w" . (A_GuiWidth - 20) . " h" . (A_GuiHeight - 160)
-    GuiControl, Move, UserInput, % "w" . (A_GuiWidth - 130) . " h80"
-    GuiControl, Move, Send, % "x" . (A_GuiWidth - 110) . " y" . (A_GuiHeight - 120)
-    GuiControl, Move, Clear, % "x" . (A_GuiWidth - 110) . " y" . (A_GuiHeight - 80)
-    
-    ; Reposition status bar
-    Gui, StatusBar
-    SB_SetParts(A_GuiWidth - 150, A_GuiWidth - 75)
-return
+LoadModelsHotkey() {
+    LoadModels()
+}
 
-GuiClose:
-    ; Save settings before exiting
-    IniWrite, %currentModel%, %A_ScriptDir%\ollama_chat.ini, Settings, Model
-    IniWrite, %TTSEnabled%, %A_ScriptDir%\ollama_chat.ini, Settings, UseTTS
-    IniWrite, %DarkMode%, %A_ScriptDir%\ollama_chat.ini, Settings, DarkMode
-    
-    ExitApp
-return
+ToggleThemeHotkey() {
+    ToggleTheme()
+}
+
+ClearChatHotkey() {
+    ClearChat()
+}
+
+; =============================================================================
+; HOTKEYS
+; =============================================================================
+#HotIf WinActive(APP_TITLE)
+{
+    ^Enter::SendMessageHotkey()
+    ^N::LoadModelsHotkey()
+    ^T::ToggleThemeHotkey()
+    ^L::ClearChatHotkey()
+    Escape::ExitApp()
+}
+#HotIf
+
+; Initialize
+; Script end

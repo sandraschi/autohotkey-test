@@ -1,0 +1,393 @@
+{
+  "plugins": {
+    "clipboard_manager": {
+      "name": "Clipboard Manager",
+      "version": "1.0.0",
+      "description": "Enhanced clipboard operations with history and management",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["#v", "^!v", "^!+c"],
+      "enabled": true,
+      "priority": 10,
+      "tags": ["clipboard", "productivity", "utilities"]
+    },
+    "system_monitor": {
+      "name": "System Monitor",
+      "version": "1.0.0",
+      "description": "Real-time system resource monitoring with GUI",
+      "category": "system",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!s"],
+      "enabled": true,
+      "priority": 20,
+      "tags": ["system", "monitoring", "performance"]
+    },
+    "window_management": {
+      "name": "Window Management",
+      "version": "1.0.0",
+      "description": "Advanced window management and positioning tools",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!w", "^!c", "^!t"],
+      "enabled": true,
+      "priority": 15,
+      "tags": ["windows", "management", "productivity"]
+    },
+    "quick_notes": {
+      "name": "Quick Notes",
+      "version": "1.0.0",
+      "description": "Rapid note-taking utility with hotkey access",
+      "category": "productivity",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!n", "^!q"],
+      "enabled": true,
+      "priority": 25,
+      "tags": ["notes", "productivity", "writing"]
+    },
+    "media_controls": {
+      "name": "Media Controls",
+      "version": "1.0.0",
+      "description": "Global media control hotkeys for music and video",
+      "category": "media",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!space", "^!left", "^!right", "^!up", "^!down"],
+      "enabled": true,
+      "priority": 30,
+      "tags": ["media", "music", "video", "controls"]
+    },
+    "volume_control": {
+      "name": "Volume Control",
+      "version": "1.0.0",
+      "description": "Advanced volume control with visual feedback",
+      "category": "media",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!+up", "^!+down", "^!+m"],
+      "enabled": true,
+      "priority": 35,
+      "tags": ["volume", "audio", "media"]
+    },
+    "text_expander": {
+      "name": "Text Expander",
+      "version": "1.0.0",
+      "description": "Text expansion and snippet management system",
+      "category": "productivity",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!e"],
+      "enabled": true,
+      "priority": 40,
+      "tags": ["text", "expansion", "snippets", "productivity"]
+    },
+    "ide_shortcuts": {
+      "name": "IDE Shortcuts",
+      "version": "1.0.0",
+      "description": "Enhanced IDE shortcuts and development tools",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!i", "^!d", "^!f"],
+      "enabled": true,
+      "priority": 5,
+      "tags": ["ide", "development", "shortcuts", "coding"]
+    },
+    "ollama_chatbot": {
+      "name": "Ollama Chatbot",
+      "version": "1.0.0",
+      "description": "AI chatbot integration with Ollama local models",
+      "category": "ai",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!o", "^!a"],
+      "enabled": true,
+      "priority": 50,
+      "tags": ["ai", "chatbot", "ollama", "llm"]
+    },
+    "weather_widget": {
+      "name": "Weather Widget",
+      "version": "1.0.0",
+      "description": "Real-time weather information widget",
+      "category": "widgets",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!w"],
+      "enabled": true,
+      "priority": 60,
+      "tags": ["weather", "widget", "api", "information"]
+    },
+    "sudoku": {
+      "name": "Sudoku Game",
+      "version": "1.0.0",
+      "description": "Complete Sudoku game with solver and hints",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!s"],
+      "enabled": true,
+      "priority": 70,
+      "tags": ["game", "sudoku", "puzzle", "entertainment"]
+    },
+    "eliza": {
+      "name": "ELIZA Chatbot",
+      "version": "1.0.0",
+      "description": "Classic ELIZA chatbot recreation",
+      "category": "ai",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!e"],
+      "enabled": true,
+      "priority": 80,
+      "tags": ["ai", "chatbot", "eliza", "classic"]
+    },
+    "pranks": {
+      "name": "Harmless Pranks",
+      "version": "1.0.0",
+      "description": "Collection of harmless prank scripts",
+      "category": "fun",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!p"],
+      "enabled": false,
+      "priority": 90,
+      "tags": ["pranks", "fun", "harmless", "entertainment"]
+    },
+    "annoying_sounds": {
+      "name": "Annoying Sounds",
+      "version": "1.0.0",
+      "description": "Collection of annoying sound effects",
+      "category": "fun",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!a"],
+      "enabled": false,
+      "priority": 95,
+      "tags": ["sounds", "fun", "annoying", "effects"]
+    },
+    "fun_animations": {
+      "name": "Fun Animations",
+      "version": "1.0.0",
+      "description": "Screen animations and visual effects",
+      "category": "fun",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!f"],
+      "enabled": false,
+      "priority": 100,
+      "tags": ["animations", "fun", "visual", "effects"]
+    },
+    "fun_games": {
+      "name": "Fun Games",
+      "version": "1.0.0",
+      "description": "Collection of simple games and entertainment",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!g"],
+      "enabled": true,
+      "priority": 75,
+      "tags": ["games", "fun", "entertainment", "simple"]
+    },
+    "smart_clipboard_manager": {
+      "name": "Smart Clipboard Manager",
+      "version": "2.0.0",
+      "description": "Advanced clipboard management with history, formatting, and smart paste",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["#v", "^!c", "^!v"],
+      "enabled": true,
+      "priority": 5,
+      "tags": ["clipboard", "advanced", "formatting", "history"]
+    },
+    "text_transformer_pro": {
+      "name": "Text Transformer Pro",
+      "version": "1.0.0",
+      "description": "Advanced text manipulation with case conversion, formatting, and encoding",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!t", "^!u", "^!l", "^!s"],
+      "enabled": true,
+      "priority": 8,
+      "tags": ["text", "transformation", "encoding", "formatting"]
+    },
+    "window_manager_pro": {
+      "name": "Window Manager Pro",
+      "version": "1.0.0",
+      "description": "Advanced window management with snapping, tiling, and organization",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["#Left", "#Right", "#Up", "#Down", "#Space", "#Tab"],
+      "enabled": true,
+      "priority": 12,
+      "tags": ["windows", "management", "snapping", "tiling"]
+    },
+    "code_formatter_pro": {
+      "name": "Code Formatter Pro",
+      "version": "1.0.0",
+      "description": "Multi-language code formatting with syntax highlighting and beautification",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!f", "^!b", "^!c"],
+      "enabled": true,
+      "priority": 3,
+      "tags": ["code", "formatting", "syntax", "beautification"]
+    },
+    "git_assistant_pro": {
+      "name": "Git Assistant Pro",
+      "version": "1.0.0",
+      "description": "Advanced Git workflow automation with commit templates and branch management",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!g", "^!commit", "^!branch"],
+      "enabled": true,
+      "priority": 2,
+      "tags": ["git", "workflow", "automation", "commits"]
+    },
+    "music_controller_pro": {
+      "name": "Music Controller Pro",
+      "version": "1.0.0",
+      "description": "Advanced music control with playlist management and visualizer",
+      "category": "media",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["#Space", "#Left", "#Right", "#Up", "#Down", "#M"],
+      "enabled": true,
+      "priority": 15,
+      "tags": ["music", "playlist", "visualizer", "control"]
+    },
+    "mini_games_collection": {
+      "name": "Mini Games Collection",
+      "version": "1.0.0",
+      "description": "Collection of fun mini-games including Snake, Tetris, and Memory",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!g", "#s", "#t", "#m"],
+      "enabled": true,
+      "priority": 65,
+      "tags": ["games", "snake", "tetris", "memory", "collection"]
+    },
+    "smart_assistant_pro": {
+      "name": "Smart Assistant Pro",
+      "version": "1.0.0",
+      "description": "AI-powered assistant with voice commands, automation, and smart workflows",
+      "category": "ai",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!a", "#v", "^!s"],
+      "enabled": true,
+      "priority": 45,
+      "tags": ["ai", "assistant", "voice", "automation", "workflows"]
+    },
+    "workflow_automator_pro": {
+      "name": "Workflow Automator Pro",
+      "version": "1.0.0",
+      "description": "Advanced workflow automation with triggers, conditions, and actions",
+      "category": "ai",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!w", "^!r", "^!t"],
+      "enabled": true,
+      "priority": 40,
+      "tags": ["workflow", "automation", "triggers", "conditions", "actions"]
+    },
+    "help_system_pro": {
+      "name": "Help System Pro",
+      "version": "1.0.0",
+      "description": "Comprehensive help system explaining AutoHotkey, the bridge, UI, and all features",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["F1", "^!h", "^!?"],
+      "enabled": true,
+      "priority": 1,
+      "tags": ["help", "documentation", "guide", "tutorial", "beginner"]
+    },
+    "security_guide_pro": {
+      "name": "Security Guide Pro",
+      "version": "1.0.0",
+      "description": "Comprehensive security guide for AutoHotkey scriptlets - warnings, limitations, and best practices",
+      "category": "utilities",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!s", "F2"],
+      "enabled": true,
+      "priority": 2,
+      "tags": ["security", "warning", "safety", "ai", "limitations", "critical"]
+    }
+  },
+  "categories": {
+    "utilities": {
+      "name": "Utilities",
+      "description": "System utilities and productivity tools",
+      "icon": "🔧",
+      "priority": 1
+    },
+    "system": {
+      "name": "System",
+      "description": "System monitoring and management tools",
+      "icon": "💻",
+      "priority": 2
+    },
+    "productivity": {
+      "name": "Productivity",
+      "description": "Tools to enhance productivity and workflow",
+      "icon": "⚡",
+      "priority": 3
+    },
+    "media": {
+      "name": "Media",
+      "description": "Media control and audio/video tools",
+      "icon": "🎵",
+      "priority": 4
+    },
+    "development": {
+      "name": "Development",
+      "description": "Development tools and IDE enhancements",
+      "icon": "💻",
+      "priority": 5
+    },
+    "ai": {
+      "name": "AI",
+      "description": "Artificial intelligence and chatbot tools",
+      "icon": "🤖",
+      "priority": 6
+    },
+    "widgets": {
+      "name": "Widgets",
+      "description": "Information widgets and displays",
+      "icon": "📊",
+      "priority": 7
+    },
+    "games": {
+      "name": "Games",
+      "description": "Games and entertainment applications",
+      "icon": "🎮",
+      "priority": 8
+    },
+    "fun": {
+      "name": "Fun",
+      "description": "Fun scripts and entertainment tools",
+      "icon": "🎉",
+      "priority": 9
+    }
+  },
+  "settings": {
+    "auto_discovery": true,
+    "auto_load_enabled": true,
+    "load_on_startup": true,
+    "hotkey_conflict_check": true,
+    "dependency_auto_resolve": true,
+    "plugin_timeout": 5000,
+    "max_concurrent_plugins": 10
+  }
+}

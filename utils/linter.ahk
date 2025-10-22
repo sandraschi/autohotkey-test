@@ -10,18 +10,18 @@ FileDelete(logFile)
 
 ; Check if a file was provided
 if (A_Args.Length = 0) {
-    MsgBox "Please provide a scriptlet file to lint.", "Scriptlet Linter", "Icon!"
+    MsgBox("Please provide a scriptlet file to lint.", "Scriptlet Linter", "Icon!")
     ExitApp 1
 }
 
 fileToCheck := A_Args[1]
 if (!FileExist(fileToCheck)) {
-    MsgBox "File not found: " fileToCheck, "Scriptlet Linter", "Icon!"
+    MsgBox("File not found: " . fileToCheck, "Scriptlet Linter", "Icon!")
     ExitApp 1
 }
 
 ; Read the file content
-FileRead fileContent, % fileToCheck
+FileRead(fileContent, fileToCheck)
 if (!fileContent) {
     LogError("Failed to read file: " fileToCheck)
     ExitApp 1
@@ -107,9 +107,7 @@ if (hasErrors) {
     result := "✅ Lint passed successfully"
 }
 
-MsgBox result ": " issues.Length " issues found.`n`nSee " reportFile " for details.", 
-    "Scriptlet Linter", 
-    hasErrors ? "Icon!" : "Iconi"
+MsgBox(result . ": " . issues.Length . " issues found.`n`nSee " . reportFile . " for details.", "Scriptlet Linter", hasErrors ? "Icon!" : "Iconi")
 
 ExitApp hasErrors ? 1 : 0
 
