@@ -31,7 +31,7 @@ class ScriptletTester {
             } else {
                 MsgBox("❌ Script has errors (exit code: " . result . "): " . scriptPath . "`n`nCheck the script for syntax issues.", "Test Result", "Icon!")
             }
-        } catch Error as e {
+        } catch as e {
             MsgBox("Test failed: " . e.Message, "Test Error", "Icon!")
         }
     }

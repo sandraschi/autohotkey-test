@@ -65,7 +65,7 @@ RunTarget(target) {
     try {
         Run target
         ShowTooltip("Launched: " target)
-    } catch Error as e {
+    } catch as e {
         ShowTooltip("Failed to launch: " e.Message, true)
     }
 }
@@ -75,7 +75,7 @@ OpenFolder(path) {
     try {
         Run "explorer.exe " path
         ShowTooltip("Opened: " path)
-    } catch Error as e {
+    } catch as e {
         ShowTooltip("Failed to open folder: " e.Message, true)
     }
 }

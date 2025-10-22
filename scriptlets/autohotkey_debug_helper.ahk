@@ -99,7 +99,7 @@ class AutoHotkeyDebugger {
             ; Try to run the script and capture any errors
             RunWait('"' . A_AhkPath . '" "' . scriptPath . '"', , "Hide")
             this.LogInfo("Script completed successfully: " . scriptPath)
-        } catch Error as e {
+        } catch as e {
             this.LogError(scriptPath, e.Message, e.Line)
         }
     }

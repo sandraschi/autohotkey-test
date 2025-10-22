@@ -156,7 +156,7 @@ TestOllamaConnection() {
         whr.Send()
         
         return (whr.Status = 200)
-    } catch Error as e {
+    } catch as e {
         return false
     }
 }
@@ -280,7 +280,7 @@ SendMessage(ctrl, info) {
         ; Send request with timeout
         try {
             response := SendOllamaRequest("chat", request, 120000)  ; 2 minute timeout
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to get response from Ollama: " . e.Message)
         }
         
@@ -295,7 +295,7 @@ SendMessage(ctrl, info) {
         ; Update status
         statusBar.SetText("Message sent")
         
-    } catch Error as e {
+    } catch as e {
         ; Show error to user
         errorMsg := "Error: " . e.Message
         AddMessage("system", errorMsg)
@@ -326,7 +326,7 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
     if (!whr) {
         try {
             whr := ComObject("WinHttp.WinHttpRequest.5.1")
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to initialize HTTP client: " . e.Message)
         }
     }
@@ -346,7 +346,7 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
         jsonData := SimpleJSON.Stringify(data)
         try {
             whr.Send(jsonData)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to send request: " . e.Message)
         }
         
@@ -365,10 +365,10 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
         ; Parse and return response
         try {
             return SimpleJSON.Parse(whr.ResponseText)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to parse response: " . e.Message)
         }
-    } catch Error as e {
+    } catch as e {
         throw Error("Request failed: " . e.Message)
     }
 }
@@ -435,7 +435,7 @@ LoadModels() {
         statusBar.SetText(models.Length . " models loaded")
         return true
         
-    } catch Error as e {
+    } catch as e {
         statusBar.SetText("Failed to load models: " . e.Message)
         
         ; Show user-friendly error message
@@ -508,7 +508,7 @@ UpdateChatDisplay() {
         chatDisplay.Value := displayText
         ; Scroll to bottom using DllCall for better compatibility
         DllCall("SendMessage", "Ptr", chatDisplay.Hwnd, "UInt", 0x115, "Ptr", 7, "Ptr", 0)  ; WM_VSCROLL, SB_BOTTOM
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Failed to update chat display: " . e.Message)
     }
 }
@@ -539,7 +539,7 @@ LoadSettings() {
             settings.darkMode := false
             SaveSettings()
         }
-    } catch Error as e {
+    } catch as e {
         ; Fallback to defaults if there's an error reading the INI
         selectedModel := DEFAULT_MODEL
         settings.darkMode := false
@@ -554,7 +554,7 @@ SaveSettings() {
     try {
         IniWrite(selectedModel, iniFile, "Settings", "model")
         IniWrite(settings.darkMode ? "1" : "0", iniFile, "Settings", "darkMode")
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Failed to save settings: " . e.Message)
     }
 }

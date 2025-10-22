@@ -266,7 +266,7 @@ LoadClipboardHistory() {
                     ClipboardHistory.Pop()
                 }
             }
-        } catch Error as e {
+        } catch as e {
             ; If there's an error loading the file, start with an empty history
             ClipboardHistory := []
             FileDelete historyFile
@@ -281,7 +281,7 @@ SaveClipboardHistory() {
     try {
         fileContents := JSON.stringify(ClipboardHistory, , 2)
         FileOpen(historyFile, "w").Write(fileContents)
-    } catch Error as e {
+    } catch as e {
         ; If there's an error saving the file, just continue
     }
 }

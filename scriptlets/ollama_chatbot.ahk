@@ -215,7 +215,7 @@ SendMessage(ctrl, info) {
         ; Send request with timeout
         try {
             response := SendOllamaRequest("chat", request, 120000)  ; 2 minute timeout
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to get response from Ollama: " . e.Message)
         }
         
@@ -230,7 +230,7 @@ SendMessage(ctrl, info) {
         ; Update status
         statusBar.SetText("Message sent")
         
-    } catch Error as e {
+    } catch as e {
         ; Show error to user
         errorMsg := "Error: " . e.Message
         AddMessage("system", errorMsg)
@@ -261,7 +261,7 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
     if (!whr) {
         try {
             whr := ComObject("WinHttp.WinHttpRequest.5.1")
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to initialize HTTP client: " . e.Message)
         }
     }
@@ -281,7 +281,7 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
         jsonData := JSON.Dump(data)
         try {
             whr.Send(jsonData)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to send request: " . e.Message)
         }
         
@@ -300,10 +300,10 @@ SendOllamaRequest(endpoint, data, timeout := 30000) {
         ; Parse and return response
         try {
             return JSON.Load(whr.ResponseText)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to parse response: " . e.Message)
         }
-    } catch Error as e {
+    } catch as e {
         throw Error("Request failed: " . e.Message)
     }
 }
@@ -370,7 +370,7 @@ LoadModels() {
         statusBar.SetText(models.Length . " models loaded")
         return true
         
-    } catch Error as e {
+    } catch as e {
         statusBar.SetText("Failed to load models: " . e.Message)
         MsgBox("Failed to load models from Ollama.`n`nError: " . e.Message . "`n`nPlease ensure Ollama is running on " . OLLAMA_URL, "Connection Error", "OK")
         return false
@@ -434,7 +434,7 @@ UpdateChatDisplay() {
         chatDisplay.Value := displayText
         ; Scroll to bottom using DllCall for better compatibility
         DllCall("SendMessage", "Ptr", chatDisplay.Hwnd, "UInt", 0x115, "Ptr", 7, "Ptr", 0)  ; WM_VSCROLL, SB_BOTTOM
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Failed to update chat display: " . e.Message)
     }
 }
@@ -465,7 +465,7 @@ LoadSettings() {
             settings.darkMode := false
             SaveSettings()
         }
-    } catch Error as e {
+    } catch as e {
         ; Fallback to defaults if there's an error reading the INI
         selectedModel := DEFAULT_MODEL
         settings.darkMode := false
@@ -480,7 +480,7 @@ SaveSettings() {
     try {
         IniWrite(selectedModel, iniFile, "Settings", "model")
         IniWrite(settings.darkMode ? "1" : "0", iniFile, "Settings", "darkMode")
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Failed to save settings: " . e.Message)
     }
 }
@@ -498,14 +498,14 @@ class JSON {
                 sc := ComObject("ScriptControl")
                 sc.Language := "JScript"
                 sc.AddCode("function parseJson(s) { try { return JSON.parse(s); } catch(e) { throw new Error('JSON Parse Error: ' + e.message); } }")
-            } catch Error as e {
+            } catch as e {
                 throw Error("Failed to initialize JSON parser: " . e.Message)
             }
         }
         
         try {
             return sc.parseJson(json)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to parse JSON: " . e.Message)
         }
     }
@@ -519,14 +519,14 @@ class JSON {
                 sc := ComObject("ScriptControl")
                 sc.Language := "JScript"
                 sc.AddCode("function stringifyJson(obj) { try { return JSON.stringify(obj); } catch(e) { throw new Error('JSON Stringify Error: ' + e.message); } }")
-            } catch Error as e {
+            } catch as e {
                 throw Error("Failed to initialize JSON stringifier: " . e.Message)
             }
         }
         
         try {
             return sc.stringifyJson(obj)
-        } catch Error as e {
+        } catch as e {
             throw Error("Failed to stringify object: " . e.Message)
         }
     }

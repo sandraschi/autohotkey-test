@@ -96,7 +96,7 @@ ProcessInput(*) {
         response := GetElizaResponse(userText)
         AddToChat("ELIZA: " . response)
         
-    } catch Error as e {
+    } catch as e {
         AddToChat("System: An error occurred: " . e.Message)
     }
 }
