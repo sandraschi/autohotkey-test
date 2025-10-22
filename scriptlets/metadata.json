@@ -359,6 +359,78 @@
       "enabled": true,
       "priority": 87,
       "tags": ["game", "chess", "stockfish", "ai", "strategy", "classic"]
+    },
+    "claude_desktop_restart": {
+      "name": "Claude Desktop Restart Helper",
+      "version": "1.0.0",
+      "description": "Intelligent Claude Desktop restart with graceful shutdown and fallback",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!r", "^!x", "F8"],
+      "enabled": true,
+      "priority": 1,
+      "tags": ["claude", "restart", "mcp", "development", "automation"]
+    },
+    "mcp_server_scaffolding": {
+      "name": "MCP Server Scaffolding Tool",
+      "version": "1.0.0",
+      "description": "Generate complete MCP server projects with FastMCP 2.12+ patterns",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!m", "F9"],
+      "enabled": true,
+      "priority": 2,
+      "tags": ["mcp", "scaffolding", "generator", "fastmcp", "development"]
+    },
+    "mcp_log_analyzer": {
+      "name": "MCP Log Analyzer",
+      "version": "1.0.0",
+      "description": "Analyze Claude Desktop MCP logs for startup issues and errors",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!l", "F10"],
+      "enabled": true,
+      "priority": 3,
+      "tags": ["mcp", "logs", "analysis", "debugging", "troubleshooting"]
+    },
+    "mcp_troubleshooter": {
+      "name": "MCP Troubleshooter",
+      "version": "1.0.0",
+      "description": "Smart MCP troubleshooting with automated fixes and diagnostics",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!t", "F11"],
+      "enabled": true,
+      "priority": 4,
+      "tags": ["mcp", "troubleshooting", "diagnostics", "fixes", "automation"]
+    },
+    "mcp_config_manager": {
+      "name": "MCP Config Manager",
+      "version": "1.0.0",
+      "description": "Manage Claude Desktop MCP configuration with validation and backup",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!c", "F12"],
+      "enabled": true,
+      "priority": 5,
+      "tags": ["mcp", "config", "management", "validation", "backup"]
+    },
+    "mcp_development_cycle": {
+      "name": "MCP Development Cycle",
+      "version": "1.0.0",
+      "description": "Orchestrate complete MCP development workflow from idea to deployment",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!d", "Ctrl+F12"],
+      "enabled": true,
+      "priority": 6,
+      "tags": ["mcp", "development", "workflow", "orchestration", "deployment"]
     }
   },
   "categories": {
