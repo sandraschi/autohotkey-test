@@ -44,8 +44,8 @@ SetWorkingDir A_ScriptDir
 if !DirExist(backupDir) {
     try {
         DirCreate(backupDir)
-    } catch Error as err {
-        MsgBox "Failed to create backup directory: " err.Message "`n`n" err.Stack
+    } catch as err {
+        MsgBox("Failed to create backup directory: " . err.Message . "`n`n" . err.Stack)
     }
 }
 
@@ -146,8 +146,8 @@ LoadNotes() {
             currentFile := ""
             statusBar.Text := "Created new notes"
         }
-    } catch Error as err {
-        MsgBox "Failed to load notes: " err.Message "`n`n" err.Stack, "Error", "Iconx"
+    } catch as err {
+        MsgBox("Failed to load notes: " . err.Message . "`n`n" . err.Stack, "Error", "Iconx")
         statusBar.Text := "Error loading notes"
     }
 }
@@ -184,8 +184,8 @@ SaveNotes(*) {
         SetTimer(() => TrayTip(), -2000)
         
         return true
-    } catch Error as saveErr {
-        MsgBox "Failed to save notes: " saveErr.Message "`n`n" saveErr.Stack, "Error", "Iconx"
+    } catch as saveErr {
+        MsgBox("Failed to save notes: " . saveErr.Message . "`n`n" . saveErr.Stack, "Error", "Iconx")
         statusBar.Text := "Error saving notes"
         return false
     }
@@ -275,8 +275,8 @@ FormatText(*) {
             FormatTime currentDateTime, , "yyyy-MM-dd HH:mm:ss"
             ControlSend(editNotes, "{Text}" currentDateTime)
         }
-    } catch Error as formatErr {
-        MsgBox "Formatting error: " formatErr.Message, "Error", "Iconx"
+    } catch as formatErr {
+        MsgBox("Formatting error: " . formatErr.Message, "Error", "Iconx")
     }
 }
 
@@ -347,7 +347,7 @@ ToggleWindow(*) {
         } else {
             CreateGUI()
         }
-    } catch Error as toggleErr {
+    } catch as toggleErr {
         ; If window doesn't exist, create it
         CreateGUI()
     }
@@ -370,7 +370,7 @@ GuiSize(thisGui, MinMax, Width, Height) {
         
         ; Update toolbar width if needed
         ; (Status bar resizes automatically)
-    } catch Error as resizeErr {
+    } catch as resizeErr {
         ; Ignore errors during window creation
         OutputDebug("Resize error: " resizeErr.Message "`n")
     }
@@ -468,7 +468,7 @@ ExportNotes(format := "txt") {
         }
         
         MsgBox("Exported to: " exportFile, "Export Complete", "Iconi")
-    } catch Error as exportErr {
+    } catch as exportErr {
         MsgBox("Export failed: " exportErr.Message, "Export Error", "Iconx")
     }
 }

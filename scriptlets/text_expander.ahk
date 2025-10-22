@@ -84,8 +84,8 @@ ShowSnippetsMenu(*) {
         
         ; Show the menu
         menuSnippets.Show()
-    } catch Error as e {
-        MsgBox "Error showing snippets menu: " e.Message, "Text Expander", "Iconx"
+    } catch as e {
+        MsgBox("Error showing snippets menu: " . e.Message, "Text Expander", "Iconx")
     }
 }
 
@@ -93,7 +93,7 @@ ShowSnippetsMenu(*) {
 InsertSnippet(snippetKey) {
     try {
         if (!Snippets.Has(snippetKey)) {
-            MsgBox "Snippet not found: " snippetKey, "Text Expander", "Iconx"
+            MsgBox("Snippet not found: " . snippetKey, "Text Expander", "Iconx")
             return
         }
         
@@ -123,8 +123,8 @@ InsertSnippet(snippetKey) {
         
         SetTimer () => A_Clipboard := savedClip, -100
         
-    } catch Error as e {
-        MsgBox "Error inserting snippet: " e.Message, "Text Expander", "Iconx"
+    } catch as e {
+        MsgBox("Error inserting snippet: " . e.Message, "Text Expander", "Iconx")
     }
 }
 
@@ -159,8 +159,8 @@ ShowSnippetEditor(key := "", value := "") {
         
         guiEditor.Show()
         
-    } catch Error as e {
-        MsgBox "Error: " e.Message, "Text Expander", "Iconx"
+    } catch as e {
+        MsgBox("Error: " . e.Message, "Text Expander", "Iconx")
     }
 }
 
@@ -170,7 +170,7 @@ SaveSnippet(guiEditor, editTrigger, editSnippet, isNew) {
     value := editSnippet.Value
     
     if (key = "") {
-        MsgBox "Please enter a trigger", "Text Expander", "Iconx"
+        MsgBox("Please enter a trigger", "Text Expander", "Iconx")
         return
     }
     
@@ -186,7 +186,7 @@ SaveSnippet(guiEditor, editTrigger, editSnippet, isNew) {
         SetTimer () => TrayTip(), 3000
         
     } catch as e {
-        MsgBox "Error saving snippet: " e.Message, "Text Expander", "Iconx"
+        MsgBox("Error saving snippet: " . e.Message, "Text Expander", "Iconx")
     }
 }
 
@@ -197,7 +197,7 @@ SaveSnippets(snippets) {
         FileDelete(snippetsFile)
         FileAppend(json, snippetsFile, "UTF-8")
     } catch as e {
-        MsgBox "Error saving snippets: " e.Message, "Text Expander", "Iconx"
+        MsgBox("Error saving snippets: " . e.Message, "Text Expander", "Iconx")
         throw e
     }
 }
@@ -228,7 +228,7 @@ LoadSnippets() {
             }
         }
     } catch as e {
-        MsgBox "Error loading snippets: " e.Message, "Text Expander", "Iconx"
+        MsgBox("Error loading snippets: " . e.Message, "Text Expander", "Iconx")
     }
     
     ; Ensure we always return a Map
@@ -266,7 +266,7 @@ class JSON {
             
             return obj
         } catch as e {
-            MsgBox "Error parsing JSON: " e.Message
+            MsgBox("Error parsing JSON: " . e.Message)
             return {}
         }
     }

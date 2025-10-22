@@ -162,7 +162,7 @@ GetCpuUsage() {
         lastUser := currentUser
         return 0
         
-    } catch Error as e {
+    } catch as e {
         OutputDebug("CPU usage error: " e.Message "`n")
         return 0
     }
@@ -192,7 +192,7 @@ GetMemoryInfo() {
             usage: memLoad
         }
         
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Memory info error: " e.Message "`n")
         return {total: 0, used: 0, usage: 0}
     }
@@ -224,7 +224,7 @@ UpdateProcessList() {
                 processes.Push(procInfo)
             }
             
-        } catch Error as e {
+        } catch as e {
             ; Fallback: Add some basic system processes manually
             processes := [
                 {name: "System", memory: 0.1, pid: 4, threads: 1, status: "System"},
@@ -259,7 +259,7 @@ UpdateProcessList() {
             lvProcesses.Add(, "No processes found", "N/A", "N/A", "N/A", "Error")
         }
         
-    } catch Error as e {
+    } catch as e {
         OutputDebug("Process list error: " e.Message "`n")
         ; Add error message to list
         lvProcesses.Add(, "Error loading processes", "N/A", "N/A", "N/A", e.Message)
@@ -281,7 +281,7 @@ ToggleWindow(*) {
         } else {
             CreateGUI()
         }
-    } catch Error as e {
+    } catch as e {
         ; GUI doesn't exist, create it
         CreateGUI()
     }
@@ -314,7 +314,7 @@ CopySystemInfo(*) {
         A_Clipboard := info
         guiMain["StatusBar"].SetText("System info copied to clipboard!", 1)
         
-    } catch Error as e {
+    } catch as e {
         guiMain["StatusBar"].SetText("Copy failed: " e.Message, 1)
     }
 }

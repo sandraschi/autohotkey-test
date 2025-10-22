@@ -159,7 +159,7 @@ ToggleHiddenFiles(*) {
         
         ; Notify Explorer to refresh
         RefreshExplorer()
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to toggle hidden files", e)
     }
 }
@@ -181,7 +181,7 @@ ToggleFileExtensions(*) {
         
         ; Notify Explorer to refresh
         RefreshExplorer()
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to toggle file extensions", e)
     }
 }
@@ -208,7 +208,7 @@ ToggleTaskbarAutoHide(*) {
         
         ; Restart Explorer to apply changes
         RestartExplorer()
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to toggle taskbar auto-hide", e)
     }
 }
@@ -219,7 +219,7 @@ EmptyRecycleBin(*) {
         try {
             FileRecycleEmpty()
             ShowToolTip("Recycle Bin has been emptied")
-        } catch Error as e {
+        } catch as e {
             ShowError("Failed to empty Recycle Bin", e)
         }
     }
@@ -229,7 +229,7 @@ EmptyRecycleBin(*) {
 OpenSystemProperties(*) {
     try {
         Run "control.exe sysdm.cpl"
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to open System Properties", e)
     }
 }
@@ -238,7 +238,7 @@ OpenSystemProperties(*) {
 OpenTaskManager(*) {
     try {
         Run "taskmgr.exe"
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to open Task Manager", e)
     }
 }
@@ -247,7 +247,7 @@ OpenTaskManager(*) {
 OpenDeviceManager(*) {
     try {
         Run "devmgmt.msc"
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to open Device Manager", e)
     }
 }
@@ -256,7 +256,7 @@ OpenDeviceManager(*) {
 OpenDiskCleanup(*) {
     try {
         Run "cleanmgr.exe"
-    } catch Error as e {
+    } catch as e {
         ShowError("Failed to open Disk Cleanup", e)
     }
 }
@@ -292,7 +292,7 @@ RestartExplorer(showNotification := true) {
             ShowToolTip("Explorer restarted successfully")
         }
         return true
-    } catch Error as e {
+    } catch as e {
         if (showNotification) {
             ShowError("Failed to restart Explorer", e)
         }
@@ -316,7 +316,7 @@ FixStuckTaskbar(*) {
             ; Write back the modified binary data
             RegWrite taskbarState, "REG_BINARY", "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3", "Settings"
         }
-    } catch Error as e {
+    } catch as e {
         ; Continue with other methods if this fails
     }
     
@@ -344,7 +344,7 @@ FixStuckTaskbar(*) {
             ; Final restart
             Run "explorer.exe", , "Hide"
             
-        } catch Error as e {
+        } catch as e {
             ShowError("Failed to fix taskbar automatically", e)
             return
         }
@@ -379,7 +379,7 @@ ShowError(message, error) {
     if (error.Extra) {
         errorMsg .= "`n" error.Extra
     }
-    MsgBox errorMsg, "Error", "Iconx"
+    MsgBox(errorMsg, "Error", "Iconx")
 }
 
 ; =============================================================================
