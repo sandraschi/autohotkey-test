@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 #NoEnv
 #SingleInstance Force
 #MaxHotkeysPerInterval 200
@@ -5,19 +6,19 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; Volume Up/Down with Win+Up/Down
-#Up::
-    Send {Volume_Up}
+#Hotkey("Up", (*) => 
+    Se)nd {Volume_Up}
     ShowOSD("Volume: " GetVolume() "%")
 return
 
-#Down::
-    Send {Volume_Down}
+#Hotkey("Down", (*) => 
+    Se)nd {Volume_Down}
     ShowOSD("Volume: " GetVolume() "%")
 return
 
 ; Mute with Win+M
-#m::
-    Send {Volume_Mute}
+#Hotkey("m", (*) => 
+    Se)nd {Volume_Mute}
     SoundGet, mute_status, , MUTE
     if (mute_status = "On")
         ShowOSD("Muted")
@@ -40,3 +41,4 @@ GetVolume() {
     SoundGet, volume
     return Round(volume)
 }
+

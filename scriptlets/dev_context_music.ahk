@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 ; AutoHotkey v2 script - Dev Context Music (System Sounds Edition)
 #SingleInstance Force
 Persistent
@@ -164,30 +165,30 @@ CheckRepoHealth() {
 ; ========================================
 
 ; Play a sad march
-^!s:: {  ; Ctrl+Alt+S for sad march
-    PlayContextSound("sad_march")
-    TrayTip("Playing a sad march... 🎵", "Mood Music", 1)
+^!Hotkey("s", (*) =>  {  ; Ctrl+Alt+S for sad march
+    PlayCo)ntextSound("sad_march")
+    TrayTip("Playing a sad march... ðŸŽµ", "Mood Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 ; Play a triumphant piece
-^!t:: {  ; Ctrl+Alt+T for triumphant music
+^!Hotkey("t", (*) =>  {  ; Ctrl+Alt+T for triumpha)nt music
     PlayContextSound("triumphant")
-    TrayTip("Playing something triumphant! 🎺", "Mood Music", 1)
+    TrayTip("Playing something triumphant! ðŸŽº", "Mood Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 ; Play a random Betty Boop cartoon
-^!b:: {  ; Ctrl+Alt+B for Betty Boop
-    PlayContextSound("betty_boop")
-    TrayTip("Betty Boop beep-a-boop! 🎭", "Plex", 1)
+^!Hotkey("b", (*) =>  {  ; Ctrl+Alt+B for Betty Boop
+    PlayCo)ntextSound("betty_boop")
+    TrayTip("Betty Boop beep-a-boop! ðŸŽ­", "Plex", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 ; Play a classical piece
-^!c:: {  ; Ctrl+Alt+C for classical
-    PlayContextSound("classical")
-    TrayTip("Playing a classical piece... 🎼", "Classical Music", 1)
+^!Hotkey("c", (*) =>  {  ; Ctrl+Alt+C for classical
+    PlayCo)ntextSound("classical")
+    TrayTip("Playing a classical piece... ðŸŽ¼", "Classical Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
@@ -204,7 +205,7 @@ CheckTime() {
         chance := Random(1, 3)
         if (chance = 1) {  ; 1 in 3 chance
             PlayContextSound("late_night")
-            TrayTip("Playing some late night coding music... 🌙", "Late Night", 1)
+            TrayTip("Playing some late night coding music... ðŸŒ™", "Late Night", 1)
             SetTimer(() => TrayTip(), -3000)
         }
     } else if (hour >= 5 && hour < 9) {
@@ -212,7 +213,7 @@ CheckTime() {
         chance := Random(1, 4)
         if (chance = 1) {  ; 1 in 4 chance
             PlayContextSound("early_morning")
-            TrayTip("Rise and shine! ☀️", "Good Morning", 1)
+            TrayTip("Rise and shine! â˜€ï¸", "Good Morning", 1)
             SetTimer(() => TrayTip(), -3000)
         }
     }
@@ -233,41 +234,41 @@ SetTimer(CheckRepoHealth, 3600000)
 ; ========================================
 
 A_TrayMenu.Delete()
-A_TrayMenu.Add("🎵 &Open Launcher", (*) => ShowLauncher())
+A_TrayMenu.Add("ðŸŽµ &Open Launcher", (*) => ShowLauncher())
 A_TrayMenu.Add()
-A_TrayMenu.Add("😢 &Sad March (Ctrl+Alt+S)", (*) => PlaySadMarch())
-A_TrayMenu.Add("🎺 &Triumphant Music (Ctrl+Alt+T)", (*) => PlayTriumphant())
-A_TrayMenu.Add("🎭 &Betty Boop (Ctrl+Alt+B)", (*) => PlayBettyBoop())
-A_TrayMenu.Add("🎼 &Classical (Ctrl+Alt+C)", (*) => PlayClassical())
+A_TrayMenu.Add("ðŸ˜¢ &Sad March (Ctrl+Alt+S)", (*) => PlaySadMarch())
+A_TrayMenu.Add("ðŸŽº &Triumphant Music (Ctrl+Alt+T)", (*) => PlayTriumphant())
+A_TrayMenu.Add("ðŸŽ­ &Betty Boop (Ctrl+Alt+B)", (*) => PlayBettyBoop())
+A_TrayMenu.Add("ðŸŽ¼ &Classical (Ctrl+Alt+C)", (*) => PlayClassical())
 A_TrayMenu.Add()
-A_TrayMenu.Add("🔧 &Check Build Status", (*) => CheckBuildStatus())
-A_TrayMenu.Add("📁 Check &Repository Health", (*) => CheckRepoHealth())
+A_TrayMenu.Add("ðŸ”§ &Check Build Status", (*) => CheckBuildStatus())
+A_TrayMenu.Add("ðŸ“ Check &Repository Health", (*) => CheckRepoHealth())
 A_TrayMenu.Add()
-A_TrayMenu.Add("🔄 &Reload", (*) => Reload())
-A_TrayMenu.Add("❌ E&xit", (*) => ExitApp())
-A_TrayMenu.Default := "🎵 &Open Launcher"
+A_TrayMenu.Add("ðŸ”„ &Reload", (*) => Reload())
+A_TrayMenu.Add("âŒ E&xit", (*) => ExitApp())
+A_TrayMenu.Default := "ðŸŽµ &Open Launcher"
 
 PlaySadMarch() {
     PlayContextSound("sad_march")
-    TrayTip("Playing a sad march... 😢", "Mood Music", 1)
+    TrayTip("Playing a sad march... ðŸ˜¢", "Mood Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 PlayTriumphant() {
     PlayContextSound("triumphant")
-    TrayTip("Playing something triumphant! 🎺", "Mood Music", 1)
+    TrayTip("Playing something triumphant! ðŸŽº", "Mood Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 PlayBettyBoop() {
     PlayContextSound("betty_boop")
-    TrayTip("Betty Boop beep-a-boop! 🎭", "Plex", 1)
+    TrayTip("Betty Boop beep-a-boop! ðŸŽ­", "Plex", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
 PlayClassical() {
     PlayContextSound("classical")
-    TrayTip("Playing a classical piece... 🎼", "Classical Music", 1)
+    TrayTip("Playing a classical piece... ðŸŽ¼", "Classical Music", 1)
     SetTimer(() => TrayTip(), -3000)
 }
 
@@ -281,8 +282,9 @@ ShowLauncher() {
 
 ; Show welcome message with startup fanfare
 PlayContextSound("early_morning")
-TrayTip("🎵 Music system ready! Press Ctrl+Alt+S/T/B/C to test!", "Dev Context Music", 1)
+TrayTip("ðŸŽµ Music system ready! Press Ctrl+Alt+S/T/B/C to test!", "Dev Context Music", 1)
 SetTimer(() => TrayTip(), -4000)
 
 ; Initial time check
 CheckTime()
+

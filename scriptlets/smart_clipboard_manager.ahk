@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Smart Clipboard Manager
 ; @name: Smart Clipboard Manager
 ; @version: 2.0.0
@@ -51,7 +51,7 @@ class SmartClipboardManager {
         this.gui.MenuBar.Add("&View", Menu())
         
         ; Toolbar
-        toolbar := this.gui.Add("Text", "w400 h30 Background0xE0E0E0", "📋 Smart Clipboard Manager")
+        toolbar := this.gui.Add("Text", "w400 h30 Background0xE0E0E0", "ðŸ“‹ Smart Clipboard Manager")
         
         ; Search box
         searchBox := this.gui.Add("Edit", "w300 h25", "")
@@ -161,9 +161,10 @@ class SmartClipboardManager {
 }
 
 ; Hotkeys
-#v::SmartClipboardManager.Init()
-^!c::SmartClipboardManager.Init()
-^!v::SmartClipboardManager.PasteSelected()
+#Hotkey("v", (*) => SmartClipboardMa)nager.Init()
+^!Hotkey("c", (*) => SmartClipboardMa)nager.Init()
+^!Hotkey("v", (*) => SmartClipboardMa)nager.PasteSelected()
 
 ; Initialize
 SmartClipboardManager.Init()
+

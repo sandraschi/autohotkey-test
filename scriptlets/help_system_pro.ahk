@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Help System Pro
 ; @name: Help System Pro
 ; @version: 1.0.0
@@ -26,11 +26,11 @@ class HelpSystem {
         this.helpData["overview"] := {
             title: "AutoHotkey Scriptlet Collection - Overview",
             content: "
-# 🚀 Welcome to the AutoHotkey Scriptlet Collection!
+# ðŸš€ Welcome to the AutoHotkey Scriptlet Collection!
 
 This repository contains a comprehensive collection of **professional-grade AutoHotkey scriptlets** that transform your Windows experience with powerful automation, productivity tools, and entertainment features.
 
-## 🤔 What is AutoHotkey?
+## ðŸ¤” What is AutoHotkey?
 
 **AutoHotkey** is a powerful scripting language for Windows that allows you to:
 - **Automate repetitive tasks** with simple scripts
@@ -41,7 +41,7 @@ This repository contains a comprehensive collection of **professional-grade Auto
 
 Think of it as **'programming for everyone'** - you can create powerful tools without being a professional developer!
 
-## 🏗️ What Makes This Repository Special?
+## ðŸ—ï¸ What Makes This Repository Special?
 
 ### **Professional Architecture**
 - **Plugin System**: Dynamic scriptlet discovery and management
@@ -57,7 +57,7 @@ Think of it as **'programming for everyone'** - you can create powerful tools wi
 - **Modern UIs**: Beautiful, responsive interfaces
 - **Voice Commands**: AI-powered voice recognition
 
-## 🎯 Who Should Use This?
+## ðŸŽ¯ Who Should Use This?
 
 - **Power Users**: Enhance Windows productivity
 - **Developers**: Professional development tools
@@ -65,7 +65,7 @@ Think of it as **'programming for everyone'** - you can create powerful tools wi
 - **Automation Enthusiasts**: Workflow automation
 - **Anyone**: Who wants to supercharge their Windows experience
 
-## 🚀 Quick Start
+## ðŸš€ Quick Start
 
 1. **Download AutoHotkey v2.0+** from autohotkey.com
 2. **Run the Plugin Loader**: `AutoHotkey64.exe plugin_loader.ahk`
@@ -81,7 +81,7 @@ Ready to explore? Use the navigation menu to learn about specific components!
         this.helpData["autohotkey"] := {
             title: "AutoHotkey Basics - What You Need to Know",
             content: "
-# 🔧 AutoHotkey Basics
+# ðŸ”§ AutoHotkey Basics
 
 ## What is AutoHotkey?
 
@@ -92,7 +92,7 @@ Ready to explore? Use the navigation menu to learn about specific components!
 - **Build desktop apps** with graphical interfaces
 - **Enhance Windows** with custom functionality
 
-## 🎯 Why AutoHotkey?
+## ðŸŽ¯ Why AutoHotkey?
 
 ### **Easy to Learn**
 - **Simple syntax** - readable and intuitive
@@ -106,12 +106,12 @@ Ready to explore? Use the navigation menu to learn about specific components!
 - **Real-time** - instant response to events
 - **Extensible** - add functionality with libraries
 
-## 📝 Basic AutoHotkey Concepts
+## ðŸ“ Basic AutoHotkey Concepts
 
 ### **Hotkeys**
 ```autohotkey
-#Space::Run('notepad.exe')  ; Win+Space opens Notepad
-^!s::Send('Hello World')   ; Ctrl+Alt+S types 'Hello World'
+#Hotkey("Space", (*) => Ru)n('notepad.exe')  ; Win+Space opens Notepad
+^!Hotkey("s", (*) => Se)nd('Hello World')   ; Ctrl+Alt+S types 'Hello World'
 ```
 
 ### **Variables**
@@ -135,7 +135,7 @@ MyGui.Add('Text', 'w200 h30', 'Welcome!')
 MyGui.Show('w300 h200')
 ```
 
-## 🔑 Common Hotkey Symbols
+## ðŸ”‘ Common Hotkey Symbols
 
 - `#` = Windows key
 - `^` = Ctrl key
@@ -144,14 +144,14 @@ MyGui.Show('w300 h200')
 - `*` = Any modifier key
 - `~` = Don't block original key
 
-## 📚 Learning Resources
+## ðŸ“š Learning Resources
 
 - **Official Documentation**: autohotkey.com/docs
 - **Community Forum**: autohotkey.com/boards
 - **Script Showcase**: autohotkey.com/boards/forum-9.html
 - **Tutorial Videos**: YouTube 'AutoHotkey Tutorial'
 
-## 🎮 Try It Yourself!
+## ðŸŽ® Try It Yourself!
 
 1. **Create a new file**: `test.ahk`
 2. **Add this code**:
@@ -170,22 +170,22 @@ AutoHotkey is **that simple** to get started!
         this.helpData["bridge"] := {
             title: "COM Bridge System - How It Works",
             content: "
-# 🌉 COM Bridge System Explained
+# ðŸŒ‰ COM Bridge System Explained
 
 ## What is the COM Bridge?
 
 The **COM Bridge** is a sophisticated system that connects our **modern web interface** with **AutoHotkey scriptlets**. It's like a translator that allows the beautiful HTML5 launcher to communicate with AutoHotkey scripts.
 
-## 🏗️ Architecture Overview
+## ðŸ—ï¸ Architecture Overview
 
 ```
-┌─────────────────┐    HTTP     ┌─────────────────┐    COM     ┌─────────────────┐
-│   Web Browser   │ ──────────► │  PowerShell     │ ────────► │ AutoHotkey      │
-│   (launcher.html)│             │  HTTP Server    │           │ Scriptlets      │
-└─────────────────┘             └─────────────────┘           └─────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”    HTTP     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”    COM     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚   Web Browser   â”‚ â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â–º â”‚  PowerShell     â”‚ â”€â”€â”€â”€â”€â”€â”€â”€â–º â”‚ AutoHotkey      â”‚
+â”‚   (launcher.html)â”‚             â”‚  HTTP Server    â”‚           â”‚ Scriptlets      â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜             â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜           â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-## 🔧 How It Works
+## ðŸ”§ How It Works
 
 ### **1. HTTP Server (PowerShell)**
 - **Port**: Runs on port 8765
@@ -205,7 +205,7 @@ The **COM Bridge** is a sophisticated system that connects our **modern web inte
 - **Error Handling**: Graceful error management
 - **Logging**: Comprehensive activity logging
 
-## 🚀 Key Components
+## ðŸš€ Key Components
 
 ### **ScriptletCOMBridge.ahk**
 - **Main bridge script** that starts the HTTP server
@@ -224,7 +224,7 @@ The **COM Bridge** is a sophisticated system that connects our **modern web inte
 - **Theme switching**: Dark/light mode support
 - **Search functionality**: Find scriptlets instantly
 
-## 🔄 Communication Flow
+## ðŸ”„ Communication Flow
 
 ### **Starting a Scriptlet**
 1. **User clicks** scriptlet in web interface
@@ -239,7 +239,7 @@ The **COM Bridge** is a sophisticated system that connects our **modern web inte
 3. **Status information** returned to browser
 4. **UI updates** with current state
 
-## 🛠️ Technical Details
+## ðŸ› ï¸ Technical Details
 
 ### **HTTP Endpoints**
 - `GET /status` - Get server status
@@ -259,7 +259,7 @@ The **COM Bridge** is a sophisticated system that connects our **modern web inte
 - **Process isolation** between components
 - **Safe scriptlet execution** environment
 
-## 🎯 Benefits of This Architecture
+## ðŸŽ¯ Benefits of This Architecture
 
 ### **Modern Web Interface**
 - **Responsive design** works on any screen size
@@ -279,7 +279,7 @@ The **COM Bridge** is a sophisticated system that connects our **modern web inte
 - **Plugin system** for dynamic discovery
 - **Future enhancements** possible
 
-## 🔧 Troubleshooting
+## ðŸ”§ Troubleshooting
 
 ### **Bridge Not Starting**
 - Check if port 8765 is available
@@ -307,13 +307,13 @@ The COM Bridge makes our scriptlet collection **modern, accessible, and powerful
         this.helpData["webui"] := {
             title: "Web Interface - Modern Launcher Explained",
             content: "
-# 🌐 Web Interface - Modern Launcher
+# ðŸŒ Web Interface - Modern Launcher
 
 ## What is the Web Interface?
 
 The **Web Interface** is a beautiful, modern HTML5 application that provides a **professional-grade launcher** for all your AutoHotkey scriptlets. It's designed to be intuitive, responsive, and feature-rich.
 
-## 🎨 Design Philosophy
+## ðŸŽ¨ Design Philosophy
 
 ### **Modern & Professional**
 - **Clean design** with professional aesthetics
@@ -327,33 +327,33 @@ The **Web Interface** is a beautiful, modern HTML5 application that provides a *
 - **Visual feedback** - see what's running and what's not
 - **Customizable** - themes and settings
 
-## 🚀 Key Features
+## ðŸš€ Key Features
 
-### **📱 Responsive Design**
+### **ðŸ“± Responsive Design**
 - **Mobile-friendly** - works on phones and tablets
 - **Desktop optimized** - takes advantage of large screens
 - **Adaptive layout** - adjusts to window size
 - **Touch support** - works with touch screens
 
-### **🎨 Theme System**
+### **ðŸŽ¨ Theme System**
 - **Dark Mode** - Easy on the eyes for night use
 - **Light Mode** - Clean and bright for day use
 - **Auto Theme** - Switches based on system preference
 - **Persistent** - Remembers your preference
 
-### **🔍 Search & Discovery**
+### **ðŸ” Search & Discovery**
 - **Real-time search** - Find scriptlets as you type
 - **Category filtering** - Browse by type
 - **Command palette** - Press Ctrl+K for quick actions
 - **Smart suggestions** - Intelligent search results
 
-### **📊 Live Statistics**
+### **ðŸ“Š Live Statistics**
 - **Real-time updates** - See what's running
 - **Performance metrics** - System resource usage
 - **Activity monitoring** - Track scriptlet usage
 - **Status indicators** - Visual status of all components
 
-## 🎮 Interface Components
+## ðŸŽ® Interface Components
 
 ### **Header**
 - **Logo and title** - Clear branding
@@ -388,7 +388,7 @@ The **Web Interface** is a beautiful, modern HTML5 application that provides a *
 - **Categories** - Number of different types
 - **Uptime** - How long the system has been running
 
-## ⌨️ Keyboard Shortcuts
+## âŒ¨ï¸ Keyboard Shortcuts
 
 ### **Navigation**
 - `Ctrl+K` - Open command palette
@@ -407,7 +407,7 @@ The **Web Interface** is a beautiful, modern HTML5 application that provides a *
 - `S` - Open settings
 - `H` - Show help
 
-## 🎯 Command Palette (Ctrl+K)
+## ðŸŽ¯ Command Palette (Ctrl+K)
 
 The **Command Palette** is a powerful feature that lets you quickly access any function:
 
@@ -425,7 +425,7 @@ The **Command Palette** is a powerful feature that lets you quickly access any f
 3. **Select with arrow keys** or mouse
 4. **Press Enter** to execute
 
-## ⚙️ Settings Panel
+## âš™ï¸ Settings Panel
 
 ### **General Settings**
 - **Auto-start enabled scriptlets** - Launch on startup
@@ -444,7 +444,7 @@ The **Command Palette** is a powerful feature that lets you quickly access any f
 - **Logging level** - Debug information
 - **Cache settings** - Performance optimization
 
-## 🔧 Technical Implementation
+## ðŸ”§ Technical Implementation
 
 ### **Technologies Used**
 - **HTML5** - Modern web standards
@@ -465,7 +465,7 @@ The **Command Palette** is a powerful feature that lets you quickly access any f
 - **Debounced search** - Efficient search performance
 - **Minimal DOM updates** - Smooth animations
 
-## 🎨 Customization
+## ðŸŽ¨ Customization
 
 ### **Themes**
 - **Built-in themes** - Professional light and dark
@@ -487,62 +487,62 @@ The Web Interface makes our scriptlet collection **accessible, beautiful, and po
         this.helpData["scriptlets"] := {
             title: "Scriptlets Collection - What's Available",
             content: "
-# 🎯 Scriptlets Collection - What's Available
+# ðŸŽ¯ Scriptlets Collection - What's Available
 
 ## What are Scriptlets?
 
 **Scriptlets** are self-contained AutoHotkey applications that provide specific functionality. Think of them as **mini-apps** that enhance your Windows experience with powerful automation, productivity tools, and entertainment features.
 
-## 🏆 Our Collection
+## ðŸ† Our Collection
 
-### **🔧 Productivity Scriptlets**
+### **ðŸ”§ Productivity Scriptlets**
 
-#### **Smart Clipboard Manager** 🧠
+#### **Smart Clipboard Manager** ðŸ§ 
 - **Advanced clipboard history** with search and filtering
 - **Text formatting** and smart paste options
 - **Real-time monitoring** of clipboard changes
 - **Hotkeys**: `#v`, `^!c`, `^!v`
 
-#### **Text Transformer Pro** ⚡
+#### **Text Transformer Pro** âš¡
 - **Case conversion**: UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case
 - **Text manipulation**: reverse, sort lines, remove duplicates
 - **Encoding tools**: Base64 encode/decode
 - **Validation**: JSON formatting and validation
 - **Hotkeys**: `^!t`, `^!u`, `^!l`, `^!s`
 
-#### **Window Manager Pro** 🪟
+#### **Window Manager Pro** ðŸªŸ
 - **8-zone window snapping** (left, right, top, bottom, corners, center)
 - **Layout modes**: Grid, cascade, and tile layouts
 - **Window history** and management
 - **Real-time monitoring** of window changes
 - **Hotkeys**: `#Left`, `#Right`, `#Up`, `#Down`, `#Space`, `#Tab`
 
-### **💻 Development Tools**
+### **ðŸ’» Development Tools**
 
-#### **Code Formatter Pro** 🎨
+#### **Code Formatter Pro** ðŸŽ¨
 - **Multi-language support**: JavaScript, Python, JSON, XML, HTML, CSS, SQL, AutoHotkey
 - **Syntax highlighting** and beautification
 - **Minification** and validation tools
 - **Professional GUI** with language selection
 - **Hotkeys**: `^!f`, `^!b`, `^!c`
 
-#### **Git Assistant Pro** 🌿
+#### **Git Assistant Pro** ðŸŒ¿
 - **Advanced Git workflow** automation
 - **Commit templates** and branch management
 - **Real-time repository** monitoring
 - **Built-in Git commands** and status
 - **Hotkeys**: `^!g`, `^!commit`, `^!branch`
 
-### **🎵 Media & Entertainment**
+### **ðŸŽµ Media & Entertainment**
 
-#### **Music Controller Pro** 🎶
+#### **Music Controller Pro** ðŸŽ¶
 - **Advanced music control** with playlist management
 - **Real-time visualizer** and progress tracking
 - **Volume control** and track management
 - **Play modes**: Shuffle, repeat, and random
 - **Hotkeys**: `#Space`, `#Left`, `#Right`, `#Up`, `#Down`, `#M`
 
-#### **Mini Games Collection** 🎮
+#### **Mini Games Collection** ðŸŽ®
 - **Snake Game**: Classic snake with scoring system
 - **Tetris**: Block puzzle game with levels
 - **Memory Game**: Card matching with timer
@@ -551,31 +551,31 @@ The Web Interface makes our scriptlet collection **accessible, beautiful, and po
 - **Minesweeper**: Logic puzzle game
 - **Hotkeys**: `^!g`, `#s`, `#t`, `#m`
 
-### **🤖 AI & Automation**
+### **ðŸ¤– AI & Automation**
 
-#### **Smart Assistant Pro** 🧠
+#### **Smart Assistant Pro** ðŸ§ 
 - **AI-powered voice commands** and recognition
 - **Smart workflows** and automation
 - **Context-aware assistance** for different scenarios
 - **Work session management** (start/end work, focus mode)
 - **Hotkeys**: `^!a`, `#v`, `^!s`
 
-#### **Workflow Automator Pro** ⚡
+#### **Workflow Automator Pro** âš¡
 - **Advanced workflow automation** with triggers
 - **Conditional execution** based on system events
 - **Real-time monitoring** and management
 - **Custom workflow creation** and editing
 - **Hotkeys**: `^!w`, `^!r`, `^!t`
 
-### **🖥️ System Utilities**
+### **ðŸ–¥ï¸ System Utilities**
 
-#### **System Monitor** 📊
+#### **System Monitor** ðŸ“Š
 - **Real-time system resource** monitoring
 - **Performance tracking** and alerts
 - **System health dashboard** with metrics
 - **Hotkeys**: `^!s`
 
-## 🎯 How to Use Scriptlets
+## ðŸŽ¯ How to Use Scriptlets
 
 ### **Method 1: Web Interface (Recommended)**
 1. **Open** `launcher_enhanced.html` in your browser
@@ -595,7 +595,7 @@ The Web Interface makes our scriptlet collection **accessible, beautiful, and po
 3. **Use hotkeys** for functionality
 4. **Close** when done
 
-## 🔧 Scriptlet Features
+## ðŸ”§ Scriptlet Features
 
 ### **Professional Quality**
 - **Modern GUIs** with beautiful interfaces
@@ -615,7 +615,7 @@ The Web Interface makes our scriptlet collection **accessible, beautiful, and po
 - **Real-time monitoring** and alerts
 - **Multi-language support** and formatting
 
-## 🎮 Getting Started
+## ðŸŽ® Getting Started
 
 ### **Try These First**
 1. **Smart Clipboard Manager** - `#v` to see clipboard history
@@ -631,7 +631,7 @@ The Web Interface makes our scriptlet collection **accessible, beautiful, and po
 - **Games** - Fun games and entertainment
 - **AI** - Smart assistants and automation
 
-## 🚀 Advanced Usage
+## ðŸš€ Advanced Usage
 
 ### **Customization**
 - **Modify hotkeys** in scriptlet files
@@ -653,7 +653,7 @@ Our scriptlet collection provides **professional-grade tools** that transform yo
         this.helpData["installation"] := {
             title: "Installation Guide - Getting Started",
             content: "
-# 📥 Installation Guide - Getting Started
+# ðŸ“¥ Installation Guide - Getting Started
 
 ## Prerequisites
 
@@ -661,7 +661,7 @@ Our scriptlet collection provides **professional-grade tools** that transform yo
 - **Download**: Visit [autohotkey.com](https://autohotkey.com)
 - **Version**: AutoHotkey v2.0 or later (v2.1+ recommended)
 - **Installation**: Run the installer with default settings
-- **Verification**: Right-click desktop → New → AutoHotkey Script
+- **Verification**: Right-click desktop â†’ New â†’ AutoHotkey Script
 
 ### **Windows Requirements**
 - **OS**: Windows 10/11 (Windows 7/8 may work with limitations)
@@ -669,7 +669,7 @@ Our scriptlet collection provides **professional-grade tools** that transform yo
 - **Browser**: Modern browser (Chrome, Edge, Firefox, Safari)
 - **Permissions**: Administrator rights for some features
 
-## 🚀 Quick Installation
+## ðŸš€ Quick Installation
 
 ### **Step 1: Download Repository**
 ```bash
@@ -697,7 +697,7 @@ start launcher_enhanced.html
 3. **Try a hotkey** - `#v` for clipboard manager
 4. **Check status** - All components should be green
 
-## 🔧 Detailed Installation
+## ðŸ”§ Detailed Installation
 
 ### **Method 1: Complete Setup (Recommended)**
 
@@ -754,7 +754,7 @@ AutoHotkey64.exe plugin_loader.ahk
 start launcher_enhanced.html
 ```
 
-## ⚙️ Configuration
+## âš™ï¸ Configuration
 
 ### **Automatic Configuration**
 The system automatically detects and configures:
@@ -784,7 +784,7 @@ Edit `config.json` to customize:
 }
 ```
 
-## 🔍 Troubleshooting
+## ðŸ” Troubleshooting
 
 ### **Common Issues**
 
@@ -836,7 +836,7 @@ AutoHotkey64.exe test.ahk
 del test.ahk
 ```
 
-## 🎯 Post-Installation
+## ðŸŽ¯ Post-Installation
 
 ### **First Steps**
 1. **Explore scriptlets** in the web interface
@@ -856,13 +856,13 @@ del test.ahk
 - **Check logs** for error information
 - **Visit documentation** for detailed guides
 
-## 🎉 Success!
+## ðŸŽ‰ Success!
 
 If everything is working correctly, you should see:
-- ✅ **Plugin Loader** running (tray icon)
-- ✅ **Web Interface** loading in browser
-- ✅ **Scriptlets** appearing in the interface
-- ✅ **Hotkeys** working (try `#v`)
+- âœ… **Plugin Loader** running (tray icon)
+- âœ… **Web Interface** loading in browser
+- âœ… **Scriptlets** appearing in the interface
+- âœ… **Hotkeys** working (try `#v`)
 
 **Congratulations!** You now have a powerful AutoHotkey scriptlet collection ready to enhance your Windows experience!
             "
@@ -872,9 +872,9 @@ If everything is working correctly, you should see:
         this.helpData["faq"] := {
             title: "Frequently Asked Questions",
             content: "
-# ❓ Frequently Asked Questions
+# â“ Frequently Asked Questions
 
-## 🤔 General Questions
+## ðŸ¤” General Questions
 
 ### **Q: What is AutoHotkey?**
 **A:** AutoHotkey is a free, open-source scripting language for Windows that lets you automate tasks, create hotkeys, and build desktop applications. It's like programming for everyone - you can create powerful tools without being a professional developer.
@@ -888,7 +888,7 @@ If everything is working correctly, you should see:
 ### **Q: Will this slow down my computer?**
 **A:** No, the scriptlets are lightweight and designed for efficiency. They only use resources when active, and most run in the background with minimal impact.
 
-## 🔧 Technical Questions
+## ðŸ”§ Technical Questions
 
 ### **Q: Why do I need AutoHotkey v2.0+?**
 **A:** This collection uses modern AutoHotkey v2 syntax and features. Version 1.x is outdated and incompatible. Always use the latest version for best results.
@@ -902,7 +902,7 @@ If everything is working correctly, you should see:
 ### **Q: How do I add my own scriptlets?**
 **A:** Simply add your `.ahk` file to the `scriptlets/` folder with proper metadata comments, and the system will automatically discover and load it.
 
-## 🎮 Usage Questions
+## ðŸŽ® Usage Questions
 
 ### **Q: How do I start using scriptlets?**
 **A:** 
@@ -920,7 +920,7 @@ If everything is working correctly, you should see:
 ### **Q: How do I stop a scriptlet?**
 **A:** Click the scriptlet card again in the web interface, or close the scriptlet's window. Some scriptlets also have stop hotkeys.
 
-## 🚨 Troubleshooting Questions
+## ðŸš¨ Troubleshooting Questions
 
 ### **Q: Nothing happens when I press hotkeys**
 **A:** 
@@ -950,7 +950,7 @@ If everything is working correctly, you should see:
 - Ensure AutoHotkey has necessary privileges
 - Verify Windows security settings
 
-## 🎯 Advanced Questions
+## ðŸŽ¯ Advanced Questions
 
 ### **Q: Can I create my own scriptlets?**
 **A:** Yes! Study the existing scriptlets for examples, read the AutoHotkey documentation, and start with simple scripts. The plugin system makes it easy to integrate new scriptlets.
@@ -964,7 +964,7 @@ If everything is working correctly, you should see:
 ### **Q: Is there a way to backup my settings?**
 **A:** Yes! The `config.json` file contains all your settings. Copy this file to backup your configuration.
 
-## 🎨 Customization Questions
+## ðŸŽ¨ Customization Questions
 
 ### **Q: Can I change the web interface theme?**
 **A:** Yes! Click the theme toggle button (moon icon) in the web interface, or modify the theme settings in the configuration.
@@ -978,7 +978,7 @@ If everything is working correctly, you should see:
 ### **Q: How do I update scriptlets?**
 **A:** Replace the old `.ahk` files with new versions. The plugin system will automatically detect changes and reload them.
 
-## 🆘 Getting Help
+## ðŸ†˜ Getting Help
 
 ### **Q: Where can I get more help?**
 **A:**
@@ -1067,9 +1067,10 @@ If everything is working correctly, you should see:
 }
 
 ; Hotkeys
-F1::HelpSystem.Init()
-^!h::HelpSystem.Init()
+Hotkey("F1", (*) => HelpSystem.I)nit()
+^!Hotkey("h", (*) => HelpSystem.I)nit()
 ^!?::HelpSystem.Init()
 
 ; Initialize
 HelpSystem.Init()
+

@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 #NoEnv
 #SingleInstance Force
 #MaxHotkeysPerInterval 200
@@ -5,8 +6,8 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; Self Destruct Sequence
-^!d::  ; Ctrl+Alt+D for self-destruct
-    ; Create GUI for countdown
+^!Hotkey("d", (*) =>   ; Ctrl+Alt+D for self-destruct
+    ; Create GUI for cou)ntdown
     Gui, Destroy
     Gui, Color, 000000
     Gui, Font, s24 cRed, Consolas
@@ -43,8 +44,8 @@ UpdateCountdown:
     return
 
 ; ASCII Cows
-^!c::  ; Ctrl+Alt+C for ASCII cows
-    Gui, CowGui:New, +AlwaysOnTop -Caption +ToolWindow
+^!Hotkey("c", (*) =>   ; Ctrl+Alt+C for ASCII cows
+    Gui, CowGui:)New, +AlwaysOnTop -Caption +ToolWindow
     Gui, Color, 000000
     Gui, Font, s12 cLime, Consolas
     
@@ -112,3 +113,4 @@ Speak(text) {
 ; Clean up
 GuiClose:
     ExitApp
+

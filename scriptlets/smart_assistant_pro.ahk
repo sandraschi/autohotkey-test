@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Smart Assistant Pro
 ; @name: Smart Assistant Pro
 ; @version: 1.0.0
@@ -57,12 +57,12 @@ class SmartAssistant {
         this.gui := Gui("+Resize", "Smart Assistant Pro")
         
         ; Title
-        this.gui.Add("Text", "w600 h30 Center", "🤖 Smart Assistant Pro")
+        this.gui.Add("Text", "w600 h30 Center", "ðŸ¤– Smart Assistant Pro")
         
         ; Voice control panel
         voicePanel := this.gui.Add("Text", "w600 h60")
         
-        this.voiceBtn := this.gui.Add("Button", "x10 y10 w100 h40", "🎤 Start Listening")
+        this.voiceBtn := this.gui.Add("Button", "x10 y10 w100 h40", "ðŸŽ¤ Start Listening")
         this.voiceBtn.OnEvent("Click", this.ToggleVoice.Bind(this))
         
         this.gui.Add("Text", "x120 y20 w200 h20", "Voice Status: " . (this.voiceEnabled ? "Active" : "Inactive"))
@@ -125,7 +125,7 @@ class SmartAssistant {
     
     static ToggleVoice(*) {
         this.voiceEnabled := !this.voiceEnabled
-        this.voiceBtn.Text := this.voiceEnabled ? "🔇 Stop Listening" : "🎤 Start Listening"
+        this.voiceBtn.Text := this.voiceEnabled ? "ðŸ”‡ Stop Listening" : "ðŸŽ¤ Start Listening"
         this.statusBar.Text := this.voiceEnabled ? "Voice commands active" : "Voice commands inactive"
     }
     
@@ -237,7 +237,7 @@ class SmartAssistant {
     
     static GetWeather(*) {
         ; Simulate weather API call
-        weather := "Sunny, 72°F (22°C)"
+        weather := "Sunny, 72Â°F (22Â°C)"
         this.AppendOutput("Current weather: " . weather)
         ToolTip("Weather: " . weather)
         SetTimer(() => ToolTip(), -5000)
@@ -358,9 +358,10 @@ class SmartAssistant {
 }
 
 ; Hotkeys
-^!a::SmartAssistant.Init()
-#v::SmartAssistant.ToggleVoice()
-^!s::SmartAssistant.StartWorkSession()
+^!Hotkey("a", (*) => SmartAssista)nt.Init()
+#Hotkey("v", (*) => SmartAssista)nt.ToggleVoice()
+^!Hotkey("s", (*) => SmartAssista)nt.StartWorkSession()
 
 ; Initialize
 SmartAssistant.Init()
+

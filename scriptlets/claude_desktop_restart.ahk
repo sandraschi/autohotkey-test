@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Claude Desktop Restart Helper
 ; @name: Claude Desktop Restart Helper
 ; @version: 1.0.0
@@ -45,14 +45,14 @@ class ClaudeRestart {
     }
     
     static ShowClaudeInstructions() {
-        instructionsText := "🚀 CLAUDE DESKTOP REQUIRED 🚀`n`n"
+        instructionsText := "ðŸš€ CLAUDE DESKTOP REQUIRED ðŸš€`n`n"
         instructionsText .= "Claude Desktop not found! Please install it:`n`n"
         instructionsText .= "1. Download from: https://claude.ai/download`n"
         instructionsText .= "2. Install Claude Desktop`n"
         instructionsText .= "3. Restart this scriptlet`n`n"
         instructionsText .= "Expected locations:`n"
-        instructionsText .= "• " . A_AppData . "\Local\AnthropicClaude\claude.exe`n"
-        instructionsText .= "• C:\Program Files\AnthropicClaude\claude.exe`n`n"
+        instructionsText .= "â€¢ " . A_AppData . "\Local\AnthropicClaude\claude.exe`n"
+        instructionsText .= "â€¢ C:\Program Files\AnthropicClaude\claude.exe`n`n"
         instructionsText .= "Press OK to continue."
         
         MsgBox(instructionsText, "Claude Desktop Required", "Iconi")
@@ -64,29 +64,29 @@ class ClaudeRestart {
         gui.SetFont("s10 cWhite", "Segoe UI")
         
         ; Title
-        gui.Add("Text", "x20 y20 w560 Center Bold", "🚀 Claude Desktop Restart Helper")
+        gui.Add("Text", "x20 y20 w560 Center Bold", "ðŸš€ Claude Desktop Restart Helper")
         gui.Add("Text", "x20 y50 w560 Center c0xcccccc", "Intelligent restart with graceful shutdown and fallback")
         
         ; Status section
-        gui.Add("Text", "x20 y90 w560 Bold", "📊 Status Information")
+        gui.Add("Text", "x20 y90 w560 Bold", "ðŸ“Š Status Information")
         gui.Add("Text", "x20 y115 w560", "Claude Executable: " . (this.claudeExe ? this.claudeExe : "Not Found"))
         gui.Add("Text", "x20 y140 w560", "Config File: " . this.configFile)
         gui.Add("Text", "x20 y165 w560", "Temp Directory: " . this.tempDir)
         
         ; Restart options
-        gui.Add("Text", "x20 y200 w560 Bold", "🔄 Restart Options")
+        gui.Add("Text", "x20 y200 w560 Bold", "ðŸ”„ Restart Options")
         
         ; Intelligent Restart
         gui.Add("Button", "x20 y230 w200 h50", "Intelligent Restart").OnEvent("Click", this.IntelligentRestart.Bind(this))
-        gui.Add("Text", "x240 y240 w340 c0xcccccc", "Graceful shutdown → Force kill → Restart")
+        gui.Add("Text", "x240 y240 w340 c0xcccccc", "Graceful shutdown â†’ Force kill â†’ Restart")
         
         ; Emergency Restart
         gui.Add("Button", "x20 y290 w200 h50", "Emergency Restart").OnEvent("Click", this.EmergencyRestart.Bind(this))
-        gui.Add("Text", "x240 y300 w340 c0xcccccc", "Force kill all processes → Clean restart")
+        gui.Add("Text", "x240 y300 w340 c0xcccccc", "Force kill all processes â†’ Clean restart")
         
         ; Config Reload
         gui.Add("Button", "x20 y350 w200 h50", "Config Reload").OnEvent("Click", this.ConfigReload.Bind(this))
-        gui.Add("Text", "x240 y360 w340 c0xcccccc", "Validate config → Restart Claude")
+        gui.Add("Text", "x240 y360 w340 c0xcccccc", "Validate config â†’ Restart Claude")
         
         ; Controls
         gui.Add("Text", "x20 y420 w560 Center c0x888888", "Hotkeys: Ctrl+Alt+R (Intelligent) | Ctrl+Alt+X (Emergency) | F8 (Config Reload)")
@@ -118,7 +118,7 @@ class ClaudeRestart {
         
         ; Clear any potential locks
         try {
-            FileDelete(this.tempDir . "claude_restart.lock")
+            try FileDelete(this.tempDir . "claude_restart.lock")
         } catch {
             ; Ignore if file doesn't exist
         }
@@ -146,8 +146,8 @@ class ClaudeRestart {
         
         ; Clean up temp files
         try {
-            FileDelete(this.tempDir . "claude_*.lock")
-            FileDelete(this.tempDir . "mcp_*.tmp")
+            try FileDelete(this.tempDir . "claude_*.lock")
+            try FileDelete(this.tempDir . "mcp_*.tmp")
         } catch {
             ; Ignore cleanup errors
         }
@@ -212,17 +212,17 @@ class ClaudeRestart {
     
     static SetupHotkeys() {
         ; Intelligent restart
-        ^!r::this.IntelligentRestart()
+        ^!Hotkey("r", (*) => this.I)ntelligentRestart()
         
         ; Emergency restart
-        ^!x::this.EmergencyRestart()
+        ^!Hotkey("x", (*) => this.Emerge)ncyRestart()
         
         ; Config reload
-        F8::this.ConfigReload()
+        Hotkey("F8", (*) => this.Co)nfigReload()
         
         ; Escape to close
-        Escape::{
-            if (WinExist("Claude Desktop Restart Helper")) {
+        Hotkey("Escape", (*) => {
+            if (Wi)nExist("Claude Desktop Restart Helper")) {
                 WinClose("Claude Desktop Restart Helper")
             }
         }
@@ -230,9 +230,10 @@ class ClaudeRestart {
 }
 
 ; Hotkeys
-^!r::ClaudeRestart.IntelligentRestart()
-^!x::ClaudeRestart.EmergencyRestart()
-F8::ClaudeRestart.ConfigReload()
+^!Hotkey("r", (*) => ClaudeRestart.I)ntelligentRestart()
+^!Hotkey("x", (*) => ClaudeRestart.Emerge)ncyRestart()
+Hotkey("F8", (*) => ClaudeRestart.Co)nfigReload()
 
 ; Initialize
 ClaudeRestart.Init()
+

@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 #NoEnv
 #SingleInstance Force
 #MaxHotkeysPerInterval 200
@@ -5,7 +6,7 @@ SendMode Input
 SetWorkingDir %A_ScriptDir%
 
 ; Snake Game
-^!s::  ; Ctrl+Alt+S to start Snake
+^!Hotkey("s", (*) =>   ; Ctrl+Alt+S to start S)nake
     Gui, Snake:New, +AlwaysOnTop -Caption +ToolWindow
     Gui, Color, 000000
     Gui, Font, s12 cLime, Consolas
@@ -103,15 +104,15 @@ DrawSnakeGame() {
 
 ; Control snake with arrow keys
 #IfWinActive Snake Game
-Up::direction := (direction != "down") ? "up" : direction
-Down::direction := (direction != "up") ? "down" : direction
-Left::direction := (direction != "right") ? "left" : direction
-Right::direction := (direction != "left") ? "right" : direction
+Hotkey("Up", (*) => directio)n := (direction != "down") ? "up" : direction
+Hotkey("Down", (*) => directio)n := (direction != "up") ? "down" : direction
+Hotkey("Left", (*) => directio)n := (direction != "right") ? "left" : direction
+Hotkey("Right", (*) => directio)n := (direction != "left") ? "right" : direction
 #IfWinActive
 
 ; Prank: Mouse Jiggler
-^!j::  ; Ctrl+Alt+J to toggle mouse jiggler
-    static jigglerOn := false
+^!Hotkey("j", (*) =>   ; Ctrl+Alt+J to toggle mouse jiggler
+    static jigglerO)n := false
     jigglerOn := !jigglerOn
     if (jigglerOn) {
         SetTimer, JiggleMouse, 60000  ; Jiggle every minute
@@ -130,12 +131,12 @@ JiggleMouse:
     return
 
 ; Prank: Fake Error Message
-^!e::  ; Ctrl+Alt+E for fake error
-    MsgBox, 16, Critical Error, Windows has encountered a critical error!`nError Code: 0x80070002`n`nYour computer will now explode in 10 seconds..., 10
+^!Hotkey("e", (*) =>   ; Ctrl+Alt+E for fake error
+    MsgBox, 16, Critical Error, Wi)ndows has encountered a critical error!`nError Code: 0x80070002`n`nYour computer will now explode in 10 seconds..., 10
     return
 
 ; Prank: Flip Screen
-^!f::  ; Ctrl+Alt+F to flip screen
+^!Hotkey("f", (*) =>   ; Ctrl+Alt+F to flip scree)n
     static flipped := false
     if (!flipped) {
         DllCall("user32.dll\SetDisplayConfig", "UInt",0, "UInt",0, "UInt",0, "UInt",0, "UInt",0x00000003)
@@ -149,3 +150,4 @@ JiggleMouse:
 RemoveTrayTip:
     TrayTip
     return
+

@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Classic Frogger Game
 ; @name: Classic Frogger Game
 ; @version: 1.0.0
@@ -258,7 +258,7 @@ class FroggerGame {
         this.turtlesSpeed += 0.3
         
         ; Add more obstacles
-        if (this.level % 3 = 0) {
+        if (Mod(this.level, 3) = 0) {
             this.cars.Push({
                 x: Random(0, this.gameWidth),
                 y: 500 + Random(0, 100),
@@ -306,29 +306,29 @@ class FroggerGame {
     }
     
     static ShowInstructions(*) {
-        instructionsText := "🐸 HOW TO PLAY FROGGER 🐸`n`n"
+        instructionsText := "ðŸ¸ HOW TO PLAY FROGGER ðŸ¸`n`n"
         instructionsText .= "OBJECTIVE:`n"
         instructionsText .= "Help the frog cross the road and river to reach home!`n`n"
         instructionsText .= "CONTROLS:`n"
-        instructionsText .= "• ↑: Move UP`n"
-        instructionsText .= "• ↓: Move DOWN`n"
-        instructionsText .= "• ←: Move LEFT`n"
-        instructionsText .= "• →: Move RIGHT`n"
-        instructionsText .= "• SPACE: Start/Pause game`n"
-        instructionsText .= "• R: Reset game`n`n"
+        instructionsText .= "â€¢ â†‘: Move UP`n"
+        instructionsText .= "â€¢ â†“: Move DOWN`n"
+        instructionsText .= "â€¢ â†: Move LEFT`n"
+        instructionsText .= "â€¢ â†’: Move RIGHT`n"
+        instructionsText .= "â€¢ SPACE: Start/Pause game`n"
+        instructionsText .= "â€¢ R: Reset game`n`n"
         instructionsText .= "RULES:`n"
-        instructionsText .= "• Avoid cars on the road`n"
-        instructionsText .= "• Jump on logs to cross the river`n"
-        instructionsText .= "• Jump on turtles (but they submerge!)`n"
-        instructionsText .= "• Reach the top to score points`n"
-        instructionsText .= "• You have 3 lives`n`n"
+        instructionsText .= "â€¢ Avoid cars on the road`n"
+        instructionsText .= "â€¢ Jump on logs to cross the river`n"
+        instructionsText .= "â€¢ Jump on turtles (but they submerge!)`n"
+        instructionsText .= "â€¢ Reach the top to score points`n"
+        instructionsText .= "â€¢ You have 3 lives`n`n"
         instructionsText .= "SCORING:`n"
-        instructionsText .= "• Reach home: 100 points × level`n"
-        instructionsText .= "• Each level increases difficulty`n`n"
+        instructionsText .= "â€¢ Reach home: 100 points Ã— level`n"
+        instructionsText .= "â€¢ Each level increases difficulty`n`n"
         instructionsText .= "TIPS:`n"
-        instructionsText .= "• Time your jumps carefully`n"
-        instructionsText .= "• Watch turtle submerge patterns`n"
-        instructionsText .= "• Use logs to cross the river safely`n`n"
+        instructionsText .= "â€¢ Time your jumps carefully`n"
+        instructionsText .= "â€¢ Watch turtle submerge patterns`n"
+        instructionsText .= "â€¢ Use logs to cross the river safely`n`n"
         instructionsText .= "Press OK to start playing!"
         
         MsgBox(instructionsText, "Frogger Instructions", "Iconi")
@@ -336,49 +336,49 @@ class FroggerGame {
     
     static SetupHotkeys() {
         ; Frog movement
-        Up::{
-            if (FroggerGame.gameRunning) {
+        Hotkey("Up", (*) => {
+            if (FroggerGame.gameRu)nning) {
                 FroggerGame.frogY -= 20
                 FroggerGame.PlaySound("move")
             }
         }
         
-        Down::{
-            if (FroggerGame.gameRunning) {
+        Hotkey("Down", (*) => {
+            if (FroggerGame.gameRu)nning) {
                 FroggerGame.frogY += 20
                 FroggerGame.PlaySound("move")
             }
         }
         
-        Left::{
-            if (FroggerGame.gameRunning) {
+        Hotkey("Left", (*) => {
+            if (FroggerGame.gameRu)nning) {
                 FroggerGame.frogX -= 20
                 FroggerGame.PlaySound("move")
             }
         }
         
-        Right::{
-            if (FroggerGame.gameRunning) {
+        Hotkey("Right", (*) => {
+            if (FroggerGame.gameRu)nning) {
                 FroggerGame.frogX += 20
                 FroggerGame.PlaySound("move")
             }
         }
         
         ; Game controls
-        Space::{
-            if (FroggerGame.gameRunning) {
+        Hotkey("Space", (*) => {
+            if (FroggerGame.gameRu)nning) {
                 FroggerGame.gameRunning := false
             } else {
                 FroggerGame.StartGame()
             }
         }
         
-        r::FroggerGame.Init()
-        m::FroggerGame.ShowInstructions()
+        Hotkey("r", (*) => FroggerGame.I)nit()
+        Hotkey("m", (*) => FroggerGame.ShowI)nstructions()
         
         ; Escape to close
-        Escape::{
-            FroggerGame.gameRunning := false
+        Hotkey("Escape", (*) => {
+            FroggerGame.gameRu)nning := false
             if (FroggerGame.gameGui) {
                 FroggerGame.gameGui.Close()
             }
@@ -387,8 +387,9 @@ class FroggerGame {
 }
 
 ; Hotkeys
-^!f::FroggerGame.Init()
-F6::FroggerGame.Init()
+^!Hotkey("f", (*) => FroggerGame.I)nit()
+Hotkey("F6", (*) => FroggerGame.I)nit()
 
 ; Initialize
 FroggerGame.Init()
+

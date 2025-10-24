@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Mini Games Collection
 ; @name: Mini Games Collection
 ; @version: 1.0.0
@@ -24,31 +24,31 @@ class MiniGames {
         this.gameGui := Gui("+Resize", "Mini Games Collection")
         
         ; Title
-        this.gameGui.Add("Text", "w400 h40 Center", "🎮 Mini Games Collection")
+        this.gameGui.Add("Text", "w400 h40 Center", "ðŸŽ® Mini Games Collection")
         
         ; Game selection
         this.gameGui.Add("Text", "w400 h20 Center", "Choose a game:")
         
         ; Game buttons
-        snakeBtn := this.gameGui.Add("Button", "x50 y60 w100 h60", "🐍 Snake`nClassic Snake Game")
-        tetrisBtn := this.gameGui.Add("Button", "x160 y60 w100 h60", "🧩 Tetris`nBlock Puzzle Game")
-        memoryBtn := this.gameGui.Add("Button", "x270 y60 w100 h60", "🧠 Memory`nCard Matching Game")
+        snakeBtn := this.gameGui.Add("Button", "x50 y60 w100 h60", "ðŸ Snake`nClassic Snake Game")
+        tetrisBtn := this.gameGui.Add("Button", "x160 y60 w100 h60", "ðŸ§© Tetris`nBlock Puzzle Game")
+        memoryBtn := this.gameGui.Add("Button", "x270 y60 w100 h60", "ðŸ§  Memory`nCard Matching Game")
         
         snakeBtn.OnEvent("Click", this.StartSnake.Bind(this))
         tetrisBtn.OnEvent("Click", this.StartTetris.Bind(this))
         memoryBtn.OnEvent("Click", this.StartMemory.Bind(this))
         
         ; Additional games
-        pongBtn := this.gameGui.Add("Button", "x50 y130 w100 h60", "🏓 Pong`nClassic Arcade Game")
-        breakoutBtn := this.gameGui.Add("Button", "x160 y130 w100 h60", "💥 Breakout`nBrick Breaking Game")
-        minesweeperBtn := this.gameGui.Add("Button", "x270 y130 w100 h60", "💣 Minesweeper`nLogic Puzzle Game")
+        pongBtn := this.gameGui.Add("Button", "x50 y130 w100 h60", "ðŸ“ Pong`nClassic Arcade Game")
+        breakoutBtn := this.gameGui.Add("Button", "x160 y130 w100 h60", "ðŸ’¥ Breakout`nBrick Breaking Game")
+        minesweeperBtn := this.gameGui.Add("Button", "x270 y130 w100 h60", "ðŸ’£ Minesweeper`nLogic Puzzle Game")
         
         pongBtn.OnEvent("Click", this.StartPong.Bind(this))
         breakoutBtn.OnEvent("Click", this.StartBreakout.Bind(this))
         minesweeperBtn.OnEvent("Click", this.StartMinesweeper.Bind(this))
         
         ; Instructions
-        this.gameGui.Add("Text", "w400 h60", "Instructions:`n• Use arrow keys to control`n• Press ESC to return to main menu`n• Press F1 for game-specific help")
+        this.gameGui.Add("Text", "w400 h60", "Instructions:`nâ€¢ Use arrow keys to control`nâ€¢ Press ESC to return to main menu`nâ€¢ Press F1 for game-specific help")
         
         this.gameGui.Show("w420 h250")
     }
@@ -225,12 +225,12 @@ class MiniGames {
     
     static SetupTetrisHotkeys() {
         ; Tetris controls
-        Up::this.RotatePiece()
-        Down::this.MovePieceDown()
-        Left::this.MovePieceLeft()
+        Hotkey("Up", (*) => this.RotatePiece()
+        Dow)Hotkey("n", (*) => this.MovePieceDow)n()
+        Hotkey("Left", (*) => this.MovePieceLeft()
         Right::this.MovePieceRight()
         Space::this.DropPiece()
-        Escape::this.Init()
+        Escape::this.I)nit()
     }
     
     static StartMemory(*) {
@@ -267,7 +267,7 @@ class MiniGames {
     
     static GenerateMemoryCards() {
         ; Generate memory card pairs
-        symbols := ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"]
+        symbols := ["ðŸ¶", "ðŸ±", "ðŸ­", "ðŸ¹", "ðŸ°", "ðŸ¦Š", "ðŸ»", "ðŸ¼"]
         this.memoryCards := []
         
         ; Create pairs
@@ -381,9 +381,9 @@ class MiniGames {
     }
     
     static SetupPongHotkeys() {
-        w::this.playerY -= 20
+        Hotkey("w", (*) => this.playerY -= 20
         s::this.playerY += 20
-        Escape::this.Init()
+        Escape::this.I)nit()
     }
     
     static StartBreakout(*) {
@@ -435,10 +435,10 @@ class MiniGames {
     }
     
     static SetupBreakoutHotkeys() {
-        a::this.paddleX -= 20
+        Hotkey("a", (*) => this.paddleX -= 20
         d::this.paddleX += 20
-        Space::this.LaunchBall()
-        Escape::this.Init()
+        Space::this.Lau)nchBall()
+        Hotkey("Escape", (*) => this.I)nit()
     }
     
     static LaunchBall() {
@@ -548,37 +548,38 @@ class MiniGames {
 }
 
 ; Hotkeys
-^!g::MiniGames.Init()
-#s::MiniGames.StartSnake()
-#t::MiniGames.StartTetris()
-#m::MiniGames.StartMemory()
+^!Hotkey("g", (*) => Mi)niGames.Init()
+#Hotkey("s", (*) => Mi)niGames.StartSnake()
+#Hotkey("t", (*) => Mi)niGames.StartTetris()
+#Hotkey("m", (*) => Mi)niGames.StartMemory()
 
 ; Snake game controls (only active when snake game is running)
-Up::{
-    if (MiniGames.currentGame = "Snake") {
+Hotkey("Up", (*) => {
+    if (Mi)niGames.currentGame = "Snake") {
         MiniGames.direction := "up"
     }
 }
-Down::{
-    if (MiniGames.currentGame = "Snake") {
+Hotkey("Down", (*) => {
+    if (Mi)niGames.currentGame = "Snake") {
         MiniGames.direction := "down"
     }
 }
-Left::{
-    if (MiniGames.currentGame = "Snake") {
+Hotkey("Left", (*) => {
+    if (Mi)niGames.currentGame = "Snake") {
         MiniGames.direction := "left"
     }
 }
-Right::{
-    if (MiniGames.currentGame = "Snake") {
+Hotkey("Right", (*) => {
+    if (Mi)niGames.currentGame = "Snake") {
         MiniGames.direction := "right"
     }
 }
-Escape::{
-    if (MiniGames.currentGame = "Snake") {
+Hotkey("Escape", (*) => {
+    if (Mi)niGames.currentGame = "Snake") {
         MiniGames.Init()
     }
 }
 
 ; Initialize
 MiniGames.Init()
+

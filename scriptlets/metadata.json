@@ -431,6 +431,90 @@
       "enabled": true,
       "priority": 6,
       "tags": ["mcp", "development", "workflow", "orchestration", "deployment"]
+    },
+    "autohotkey_debug_helper": {
+      "name": "AutoHotkey Debug Helper",
+      "version": "1.0.0",
+      "description": "Comprehensive debugging tools for AutoHotkey v2 scripts with debug flags and analysis",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!d", "F3", "^!v", "^!l", "^!k"],
+      "enabled": true,
+      "priority": 7,
+      "tags": ["debug", "debugging", "analysis", "variables", "lines", "hotkeys"]
+    },
+    "game_starter_popup": {
+      "name": "Game Starter Popup",
+      "version": "1.0.0",
+      "description": "Beautiful game launcher popup with Ctrl+Alt+G hotkey",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!g", "Ctrl+Alt+G"],
+      "enabled": true,
+      "priority": 8,
+      "tags": ["games", "launcher", "popup", "starter", "arcade"]
+    },
+    "tetris_classic": {
+      "name": "Tetris Classic",
+      "version": "1.0.0",
+      "description": "Classic Tetris falling blocks puzzle game",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["Arrow keys", "Space", "P", "R"],
+      "enabled": true,
+      "priority": 9,
+      "tags": ["tetris", "puzzle", "classic", "blocks", "arcade"]
+    },
+    "pacman_classic": {
+      "name": "Pacman Classic",
+      "version": "1.0.0",
+      "description": "Classic Pacman arcade game with ghosts and dots",
+      "category": "games",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["Arrow keys", "Space", "P", "R"],
+      "enabled": true,
+      "priority": 10,
+      "tags": ["pacman", "arcade", "classic", "ghosts", "dots"]
+    },
+    "classic_pranks_collection": {
+      "name": "Classic Pranks Collection",
+      "version": "1.0.0",
+      "description": "Collection of classic computer pranks and harmless jokes",
+      "category": "pranks",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!p", "F9"],
+      "enabled": true,
+      "priority": 11,
+      "tags": ["pranks", "jokes", "classic", "harmless", "fun"]
+    },
+    "ai_code_assistant": {
+      "name": "AI-Powered Code Assistant",
+      "version": "1.0.0",
+      "description": "Advanced AI-powered coding assistant with real-time suggestions",
+      "category": "development",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!a", "Ctrl+Alt+I"],
+      "enabled": true,
+      "priority": 12,
+      "tags": ["ai", "code", "assistant", "development", "suggestions"]
+    },
+    "system_monitor_pro": {
+      "name": "Real-time System Monitor Pro",
+      "version": "1.0.0",
+      "description": "Advanced real-time system monitoring with alerts and analytics",
+      "category": "system",
+      "author": "Sandra",
+      "dependencies": [],
+      "hotkeys": ["^!m", "F10"],
+      "enabled": true,
+      "priority": 13,
+      "tags": ["system", "monitor", "real-time", "alerts", "analytics"]
     }
   },
   "categories": {

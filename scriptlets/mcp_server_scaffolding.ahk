@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; MCP Server Scaffolding Tool
 ; @name: MCP Server Scaffolding Tool
 ; @version: 1.0.0
@@ -28,11 +28,11 @@ class MCPScaffolding {
         gui.SetFont("s10 cWhite", "Segoe UI")
         
         ; Title
-        gui.Add("Text", "x20 y20 w660 Center Bold", "🚀 MCP Server Scaffolding Tool")
+        gui.Add("Text", "x20 y20 w660 Center Bold", "ðŸš€ MCP Server Scaffolding Tool")
         gui.Add("Text", "x20 y50 w660 Center c0xcccccc", "Generate complete MCP server projects with FastMCP 2.12+ patterns")
         
         ; Project details section
-        gui.Add("Text", "x20 y90 w660 Bold", "📋 Project Details")
+        gui.Add("Text", "x20 y90 w660 Bold", "ðŸ“‹ Project Details")
         
         ; Project name
         gui.Add("Text", "x20 y120 w150", "Project Name:")
@@ -47,7 +47,7 @@ class MCPScaffolding {
         dirEdit := gui.Add("Edit", "x180 y185 w400 h25", this.projectDir . "\my-mcp-server")
         
         ; Template selection
-        gui.Add("Text", "x20 y225 w660 Bold", "📁 Template Selection")
+        gui.Add("Text", "x20 y225 w660 Bold", "ðŸ“ Template Selection")
         
         templateList := gui.Add("ListBox", "x20 y250 w660 h120", [
             "Basic MCP Server - Simple tool registration",
@@ -59,7 +59,7 @@ class MCPScaffolding {
         ])
         
         ; Features section
-        gui.Add("Text", "x20 y385 w660 Bold", "✨ Features to Include")
+        gui.Add("Text", "x20 y385 w660 Bold", "âœ¨ Features to Include")
         
         ; Checkboxes for features
         featuresPanel := gui.Add("Text", "x20 y410 w660 h80")
@@ -88,15 +88,15 @@ class MCPScaffolding {
         }
         
         ; Generate button
-        generateBtn := gui.Add("Button", "x20 y500 w200 h50", "🚀 Generate MCP Server")
+        generateBtn := gui.Add("Button", "x20 y500 w200 h50", "ðŸš€ Generate MCP Server")
         generateBtn.OnEvent("Click", (*) => this.GenerateProject(gui, projectNameEdit, descriptionEdit, dirEdit, templateList, checkboxes))
         
         ; Preview button
-        previewBtn := gui.Add("Button", "x240 y500 w200 h50", "👁️ Preview Structure")
+        previewBtn := gui.Add("Button", "x240 y500 w200 h50", "ðŸ‘ï¸ Preview Structure")
         previewBtn.OnEvent("Click", (*) => this.PreviewStructure(gui, projectNameEdit, templateList, checkboxes))
         
         ; Help button
-        helpBtn := gui.Add("Button", "x460 y500 w200 h50", "❓ Help")
+        helpBtn := gui.Add("Button", "x460 y500 w200 h50", "â“ Help")
         helpBtn.OnEvent("Click", this.ShowHelp.Bind(this))
         
         ; Status
@@ -141,7 +141,7 @@ class MCPScaffolding {
             this.GenerateGitignore(projectDir)
             
             ; Show success message
-            successText := "✅ MCP Server Generated Successfully!`n`n"
+            successText := "âœ… MCP Server Generated Successfully!`n`n"
             successText .= "Project: " . projectName . "`n"
             successText .= "Location: " . projectDir . "`n`n"
             successText .= "Next steps:`n"
@@ -397,53 +397,53 @@ class MCPScaffolding {
         ]
         template := templates[templateIndex]
         
-        previewText := "📁 Project Structure Preview`n`n"
+        previewText := "ðŸ“ Project Structure Preview`n`n"
         previewText .= "Project: " . projectName . "`n"
         previewText .= "Template: " . template . "`n`n"
         previewText .= "Files to be generated:`n"
-        previewText .= "├── main.py (Main server file)`n"
-        previewText .= "├── requirements.txt (Dependencies)`n"
-        previewText .= "├── claude_config.json (Claude Desktop config)`n"
-        previewText .= "├── README.md (Documentation)`n"
-        previewText .= "└── .gitignore (Git ignore file)`n`n"
+        previewText .= "â”œâ”€â”€ main.py (Main server file)`n"
+        previewText .= "â”œâ”€â”€ requirements.txt (Dependencies)`n"
+        previewText .= "â”œâ”€â”€ claude_config.json (Claude Desktop config)`n"
+        previewText .= "â”œâ”€â”€ README.md (Documentation)`n"
+        previewText .= "â””â”€â”€ .gitignore (Git ignore file)`n`n"
         previewText .= "Selected Features:`n"
         for feature in selectedFeatures {
-            previewText .= "• " . feature . "`n"
+            previewText .= "â€¢ " . feature . "`n"
         }
         
         MsgBox(previewText, "Project Structure Preview", "Iconi")
     }
     
     static ShowHelp(*) {
-        helpText := "🚀 MCP Server Scaffolding Tool Help`n`n"
+        helpText := "ðŸš€ MCP Server Scaffolding Tool Help`n`n"
         helpText .= "This tool generates complete MCP server projects with:`n`n"
-        helpText .= "📋 Project Details:`n"
-        helpText .= "• Project Name: Choose a unique name for your MCP server`n"
-        helpText .= "• Description: Brief description of what your server does`n"
-        helpText .= "• Directory: Where to create the project files`n`n"
-        helpText .= "📁 Templates:`n"
-        helpText .= "• Basic: Simple tool registration`n"
-        helpText .= "• Advanced: Complex workflows with state management`n"
-        helpText .= "• File Ops: File system automation`n"
-        helpText .= "• Web Scraping: HTTP requests and data extraction`n"
-        helpText .= "• Database: Database operations`n"
-        helpText .= "• AI Integration: LLM and AI services`n`n"
-        helpText .= "✨ Features:`n"
+        helpText .= "ðŸ“‹ Project Details:`n"
+        helpText .= "â€¢ Project Name: Choose a unique name for your MCP server`n"
+        helpText .= "â€¢ Description: Brief description of what your server does`n"
+        helpText .= "â€¢ Directory: Where to create the project files`n`n"
+        helpText .= "ðŸ“ Templates:`n"
+        helpText .= "â€¢ Basic: Simple tool registration`n"
+        helpText .= "â€¢ Advanced: Complex workflows with state management`n"
+        helpText .= "â€¢ File Ops: File system automation`n"
+        helpText .= "â€¢ Web Scraping: HTTP requests and data extraction`n"
+        helpText .= "â€¢ Database: Database operations`n"
+        helpText .= "â€¢ AI Integration: LLM and AI services`n`n"
+        helpText .= "âœ¨ Features:`n"
         helpText .= "Select which features to include in your generated code`n`n"
         helpText .= "Hotkeys:`n"
-        helpText .= "• Ctrl+Alt+M: Generate project`n"
-        helpText .= "• F9: Preview structure`n"
-        helpText .= "• Escape: Close tool"
+        helpText .= "â€¢ Ctrl+Alt+M: Generate project`n"
+        helpText .= "â€¢ F9: Preview structure`n"
+        helpText .= "â€¢ Escape: Close tool"
         
         MsgBox(helpText, "MCP Scaffolding Help", "Iconi")
     }
     
     static SetupHotkeys(gui, projectNameEdit, descriptionEdit, dirEdit, templateList, checkboxes) {
-        ^!m::this.GenerateProject(gui, projectNameEdit, descriptionEdit, dirEdit, templateList, checkboxes)
-        F9::this.PreviewStructure(gui, projectNameEdit, templateList, checkboxes)
+        ^!Hotkey("m", (*) => this.Ge)nerateProject(gui, projectNameEdit, descriptionEdit, dirEdit, templateList, checkboxes)
+        Hotkey("F9", (*) => this.PreviewStructure(gui, project)NameEdit, templateList, checkboxes)
         
-        Escape::{
-            if (WinExist("MCP Server Scaffolding Tool")) {
+        Hotkey("Escape", (*) => {
+            if (Wi)nExist("MCP Server Scaffolding Tool")) {
                 WinClose("MCP Server Scaffolding Tool")
             }
         }
@@ -451,8 +451,9 @@ class MCPScaffolding {
 }
 
 ; Hotkeys
-^!m::MCPScaffolding.Init()
-F9::MCPScaffolding.Init()
+^!Hotkey("m", (*) => MCPScaffoldi)ng.Init()
+Hotkey("F9", (*) => MCPScaffoldi)ng.Init()
 
 ; Initialize
 MCPScaffolding.Init()
+

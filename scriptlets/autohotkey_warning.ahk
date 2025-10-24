@@ -88,9 +88,9 @@ class AutoHotkeyWarning {
 }
 
 ; Hotkeys
-^!w::AutoHotkeyWarning.ShowWarning()
-F3::AutoHotkeyWarning.ShowWarning()
-^!s::AutoHotkeyWarning.ShowSpamWarning()
+Hotkey("^!w", (*) => AutoHotkeyWarning.ShowWarning())
+Hotkey("F3", (*) => AutoHotkeyWarning.ShowWarning())
+Hotkey("^!s", (*) => AutoHotkeyWarning.ShowSpamWarning())
 
 ; Only show warning on first run, not automatically
 ; AutoHotkeyWarning.ShowWarning()

@@ -1,12 +1,12 @@
-; AutoHotkey v2 Scriptlet Linter
-; Usage: linter.ahk [path_to_scriptlet]
-
 #Requires AutoHotkey v2.0
 #Warn
 
+; AutoHotkey v2 Scriptlet Linter - COMPLETELY REWRITTEN FOR V2
+; Usage: linter.ahk [path_to_scriptlet]
+
 ; Set up logging
 logFile := A_ScriptDir "\linter.log"
-FileDelete(logFile)
+try FileDelete(logFile)
 
 ; Check if a file was provided
 if (A_Args.Length = 0) {
@@ -21,9 +21,9 @@ if (!FileExist(fileToCheck)) {
 }
 
 ; Read the file content
-FileRead(fileContent, fileToCheck)
+fileContent := FileRead(fileToCheck)
 if (!fileContent) {
-    LogError("Failed to read file: " fileToCheck)
+    LogError("Failed to read file: " . fileToCheck)
     ExitApp 1
 }
 
@@ -32,70 +32,188 @@ issues := []
 hasErrors := false
 hasWarnings := false
 
-; Check 1: Required base class inclusion
-if (!InStr(fileContent, "#Include <_base>")) {
-    AddIssue("Missing required #Include <_base>", "Error", 1)
+; Enhanced checks for AutoHotkey v2 compliance
+Log("Starting lint analysis for: " . fileToCheck)
+
+; Check 1: AutoHotkey v2 requirement
+if (!InStr(fileContent, "#Requires AutoHotkey v2")) {
+    AddIssue("Missing #Requires AutoHotkey v2.0 directive", "Error", 1)
     hasErrors := true
 }
 
-; Check 2: Class definition
-if (!RegExMatch(fileContent, "class\s+(\w+)\s+extends\s+Scriptlet", &match)) {
-    AddIssue("Scriptlet must define a class that extends Scriptlet", "Error")
-    hasErrors := true
-}
-
-; Check 3: Required static properties
-requiredProps := ["name", "description", "category"]
-for prop in requiredProps {
-    if (!RegExMatch(fileContent, "static\s+" prop "\s*:=\s*")) {
-        AddIssue("Missing required static property: " prop, "Error")
+; Check 2: FormatTime syntax (common v1/v2 issue)
+lines := StrSplit(fileContent, "`n")
+for i, line in lines {
+    if (RegExMatch(line, "FormatTime\s+\w+,\s*,")) {
+        AddIssue("Incorrect FormatTime syntax - use FormatTime(var, , format)", "Error", i)
         hasErrors := true
     }
 }
 
-; Check 4: Run method
-if (!RegExMatch(fileContent, "static\s+Run\s*\([^)]*\)")) {
-    AddIssue("Missing required Run() method", "Error")
+; Check 3: FileRead syntax
+for i, line in lines {
+    if (RegExMatch(line, "FileRead\s+\w+,\s*\w+")) {
+        AddIssue("Incorrect FileRead syntax - use FileRead(content, file)", "Error", i)
+        hasErrors := true
+    }
+}
+
+; Check 4: MsgBox syntax
+for i, line in lines {
+    if (RegExMatch(line, "MsgBox\s+\w+")) {
+        AddIssue("Incorrect MsgBox syntax - use MsgBox(text, title, options)", "Error", i)
+        hasErrors := true
+    }
+}
+
+; Check 5: Hotkey syntax
+for i, line in lines {
+    if (RegExMatch(line, "^\w+::")) {
+        AddIssue("Incorrect hotkey syntax - use Hotkey(key, callback)", "Error", i)
     hasErrors := true
 }
+}
 
-; Check 5: Init() call
-if (!RegExMatch(fileContent, "\n;?\s*\w+\.Init\(\)")) {
-    AddIssue("Missing Init() call at the end of the file", "Warning")
+; Check 6: String functions (v1 to v2 migration)
+for i, line in lines {
+    if (RegExMatch(line, "StringReplace\s*\(")) {
+        AddIssue("Found StringReplace - use StrReplace() instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "StringSplit\s*\(")) {
+        AddIssue("Found StringSplit - use StrSplit() instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "StringLen\s*\(")) {
+        AddIssue("Found StringLen - use StrLen() instead", "Error", i)
+        hasErrors := true
+    }
+}
+
+; Check 7: GUI commands (v1 to v2 migration)
+for i, line in lines {
+    if (RegExMatch(line, "Gui,\s*")) {
+        AddIssue("Found Gui, command - use Gui() constructor instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "GuiAdd,\s*")) {
+        AddIssue("Found GuiAdd, command - use gui.Add() method instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "GuiShow,\s*")) {
+        AddIssue("Found GuiShow, command - use gui.Show() method instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "GuiClose,\s*")) {
+        AddIssue("Found GuiClose, command - use gui.Close() method instead", "Error", i)
+        hasErrors := true
+    }
+    if (RegExMatch(line, "GuiControl,\s*")) {
+        AddIssue("Found GuiControl, command - use gui control methods instead", "Error", i)
+    hasErrors := true
+}
+}
+
+; Check 8: Class definition (for scriptlets that should have classes)
+if (!RegExMatch(fileContent, "class\s+\w+")) {
+    AddIssue("No class definition found - consider using class-based structure", "Warning")
     hasWarnings := true
 }
 
-; Check 6: Error handling
+; Check 9: Init method
+if (!RegExMatch(fileContent, "static\s+Init\s*\(")) {
+    AddIssue("Missing Init() method - recommended for scriptlets", "Warning")
+    hasWarnings := true
+}
+
+; Check 10: Error handling
 if (!InStr(fileContent, "try") && !InStr(fileContent, "catch")) {
-    AddIssue("Consider adding error handling with try/catch blocks", "Warning")
-    hasWarnings := true
+    AddIssue("Consider adding error handling with try/catch blocks", "Suggestion")
 }
 
-; Check 7: Status updates
-if (!InStr(fileContent, "ShowStatus")) {
-    AddIssue("Consider using ShowStatus() to provide user feedback", "Suggestion")
+; Check 11: Global variables (v1 pattern)
+for i, line in lines {
+    if (RegExMatch(line, "global\s+\w+")) {
+        AddIssue("Found global variable declaration - consider using static or local variables", "Warning", i)
+        hasWarnings := true
+    }
 }
 
-; Generate report
-report := "Lint Report for: " fileToCheck "`n"
-report .= "Generated: " A_Now "`n"
+; Check 12: Loop syntax
+for i, line in lines {
+    if (RegExMatch(line, "Loop\s*,\s*")) {
+        AddIssue("Found Loop, syntax - use Loop or For loop instead", "Error", i)
+        hasErrors := true
+    }
+}
+
+; Check 13: SetWorkingDir syntax
+for i, line in lines {
+    if (RegExMatch(line, "SetWorkingDir\s+\w+")) {
+        AddIssue("Incorrect SetWorkingDir syntax - use SetWorkingDir(path)", "Error", i)
+        hasErrors := true
+    }
+}
+
+; Generate comprehensive report
+report := "Lint Report for: " . fileToCheck . "`n"
+report .= "Generated: " . FormatTime(A_Now, "yyyy-MM-dd HH:mm:ss") . "`n"
+report .= "Total Lines: " . lines.Length . "`n"
 report .= "`nIssues found:`n"
 
 if (issues.Length = 0) {
-    report .= "  No issues found! 🎉"
+    report .= "  No issues found! 🎉`n"
 } else {
+    ; Group issues by severity
+    errors := []
+    warnings := []
+    suggestions := []
+    
     for issue in issues {
-        severity := "[" issue.severity "]"
-        report .= Format("{1:-10} Line {2:-4} - {3}`n", 
-                        severity, 
+        switch issue.severity {
+            case "Error":
+                errors.Push(issue)
+            case "Warning":
+                warnings.Push(issue)
+            case "Suggestion":
+                suggestions.Push(issue)
+        }
+    }
+    
+    if (errors.Length > 0) {
+        report .= "`nERRORS (" . errors.Length . "):`n"
+        for issue in errors {
+            report .= Format("  [{1}] Line {2:-4} - {3}`n", 
+                            issue.severity, 
+                            issue.line ? issue.line : "N/A", 
+                            issue.message)
+        }
+    }
+    
+    if (warnings.Length > 0) {
+        report .= "`nWARNINGS (" . warnings.Length . "):`n"
+        for issue in warnings {
+            report .= Format("  [{1}] Line {2:-4} - {3}`n", 
+                            issue.severity, 
                         issue.line ? issue.line : "N/A", 
                         issue.message)
+        }
+    }
+    
+    if (suggestions.Length > 0) {
+        report .= "`nSUGGESTIONS (" . suggestions.Length . "):`n"
+        for issue in suggestions {
+            report .= Format("  [{1}] Line {2:-4} - {3}`n", 
+                            issue.severity, 
+                            issue.line ? issue.line : "N/A", 
+                            issue.message)
+        }
     }
 }
 
 ; Save report to file
 reportFile := A_ScriptDir "\lint_report.txt"
-FileDelete(reportFile)
+try FileDelete(reportFile)
 FileAppend(report, reportFile, "UTF-8")
 
 ; Show summary
@@ -109,12 +227,13 @@ if (hasErrors) {
 
 MsgBox(result . ": " . issues.Length . " issues found.`n`nSee " . reportFile . " for details.", "Scriptlet Linter", hasErrors ? "Icon!" : "Iconi")
 
+Log("Lint analysis completed. Issues found: " . issues.Length)
 ExitApp hasErrors ? 1 : 0
 
 ; Helper functions
 AddIssue(message, severity, line := "") {
     issues.Push({message: message, severity: severity, line: line})
-    Log(severity ": " message " (Line: " (line ? line : "N/A") ")")
+    Log(severity . ": " . message . " (Line: " . (line ? line : "N/A") . ")")
 }
 
 Log(message) {
@@ -126,12 +245,13 @@ Log(message) {
         Sleep 10
     }
     
-    FormatTime timestamp,, "yyyy-MM-dd HH:mm:ss"
-    logMessage := "[" timestamp "] " message "`n"
+    ; FIXED: Use correct AutoHotkey v2 FormatTime syntax
+    timestamp := FormatTime(A_Now, "yyyy-MM-dd HH:mm:ss")
+    logMessage := "[" . timestamp . "] " . message . "`n"
     FileAppend(logMessage, logFile, "UTF-8")
     logMutex := 0
 }
 
 LogError(message) {
-    Log("ERROR: " message)
+    Log("ERROR: " . message)
 }

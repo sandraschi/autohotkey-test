@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Window Manager Pro
 ; @name: Window Manager Pro
 ; @version: 1.0.0
@@ -44,20 +44,20 @@ class WindowManager {
         this.gui := Gui("+AlwaysOnTop +ToolWindow", "Window Manager")
         
         ; Title
-        this.gui.Add("Text", "w300 h20 Center", "🪟 Window Manager Pro")
+        this.gui.Add("Text", "w300 h20 Center", "ðŸªŸ Window Manager Pro")
         
         ; Quick snap buttons
         snapPanel := this.gui.Add("Text", "w300 h80")
         
-        leftBtn := this.gui.Add("Button", "x10 y10 w60 h25", "← Left")
-        rightBtn := this.gui.Add("Button", "x80 y10 w60 h25", "Right →")
-        topBtn := this.gui.Add("Button", "x150 y10 w60 h25", "↑ Top")
-        bottomBtn := this.gui.Add("Button", "x220 y10 w60 h25", "↓ Bottom")
+        leftBtn := this.gui.Add("Button", "x10 y10 w60 h25", "â† Left")
+        rightBtn := this.gui.Add("Button", "x80 y10 w60 h25", "Right â†’")
+        topBtn := this.gui.Add("Button", "x150 y10 w60 h25", "â†‘ Top")
+        bottomBtn := this.gui.Add("Button", "x220 y10 w60 h25", "â†“ Bottom")
         
-        tlBtn := this.gui.Add("Button", "x10 y40 w60 h25", "↖ TL")
-        trBtn := this.gui.Add("Button", "x80 y40 w60 h25", "TR ↗")
-        blBtn := this.gui.Add("Button", "x150 y40 w60 h25", "↙ BL")
-        brBtn := this.gui.Add("Button", "x220 y40 w60 h25", "BR ↘")
+        tlBtn := this.gui.Add("Button", "x10 y40 w60 h25", "â†– TL")
+        trBtn := this.gui.Add("Button", "x80 y40 w60 h25", "TR â†—")
+        blBtn := this.gui.Add("Button", "x150 y40 w60 h25", "â†™ BL")
+        brBtn := this.gui.Add("Button", "x220 y40 w60 h25", "BR â†˜")
         
         leftBtn.OnEvent("Click", this.SnapWindow.Bind(this, "left"))
         rightBtn.OnEvent("Click", this.SnapWindow.Bind(this, "right"))
@@ -239,12 +239,13 @@ class WindowManager {
 }
 
 ; Hotkeys
-#Left::WindowManager.SnapWindow("left")
-#Right::WindowManager.SnapWindow("right")
-#Up::WindowManager.SnapWindow("top")
-#Down::WindowManager.SnapWindow("bottom")
-#Space::WindowManager.Init()
-#Tab::WindowManager.GridLayout()
+#Hotkey("Left", (*) => Wi)ndowManager.SnapWindow("left")
+#Hotkey("Right", (*) => Wi)ndowManager.SnapWindow("right")
+#Hotkey("Up", (*) => Wi)ndowManager.SnapWindow("top")
+#Hotkey("Down", (*) => Wi)ndowManager.SnapWindow("bottom")
+#Hotkey("Space", (*) => Wi)ndowManager.Init()
+#Hotkey("Tab", (*) => Wi)ndowManager.GridLayout()
 
 ; Initialize
 WindowManager.Init()
+

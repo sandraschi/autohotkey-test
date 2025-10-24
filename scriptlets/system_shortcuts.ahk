@@ -1,4 +1,4 @@
-#Requires AutoHotkey v2.0
+﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 #Warn
 
@@ -27,7 +27,7 @@ OPEN_DEVICE_MANAGER := "^!+m"     ; Ctrl+Alt+Shift+M - Device Manager
 OPEN_DISK_CLEANUP := "^!+d"       ; Ctrl+Alt+Shift+D - Disk Cleanup
 
 ; Help Screen
-^+h::ShowHelp()  ; Ctrl+Shift+H - Show help screen
+^+Hotkey("h", (*) => ShowHelp()  ; Ctrl+Shift+H - Show help scree)n
 
 ; =============================================================================
 ; FUNCTIONS
@@ -390,3 +390,4 @@ ExitFunc(ExitReason, ExitCode) {
     ; Clean up any resources if needed
     return 0
 }
+

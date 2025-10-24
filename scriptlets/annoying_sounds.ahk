@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 #NoEnv
 #SingleInstance Force
 #MaxHotkeysPerInterval 200
@@ -7,8 +8,8 @@ SetWorkingDir %A_ScriptDir%
 ; ========================================
 ; 1. ELEVATOR MUSIC PLAYER
 ; ========================================
-^!m::  ; Ctrl+Alt+M for elevator music
-    static musicPlaying := false
+^!Hotkey("m", (*) =>   ; Ctrl+Alt+M for elevator music
+    static musicPlayi)ng := false
     
     if (!musicPlaying) {
         ; Start playing elevator music (using system sounds as fallback)
@@ -42,7 +43,7 @@ PlayElevatorMusic:
 ; ========================================
 ; 2. RANDOM SOUND EFFECTS
 ; ========================================
-^!s::  ; Ctrl+Alt+S for random sound effects
+^!Hotkey("s", (*) =>   ; Ctrl+Alt+S for ra)ndom sound effects
     static soundsOn := false
     soundsOn := !soundsOn
     
@@ -84,7 +85,7 @@ RandomSound:
 ; ========================================
 ; 3. ANNOYING BEEP GENERATOR
 ; ========================================
-^!b::  ; Ctrl+Alt+B for annoying beeps
+^!Hotkey("b", (*) =>   ; Ctrl+Alt+B for a)nnoying beeps
     static beepOn := false
     beepOn := !beepOn
     
@@ -107,8 +108,8 @@ AnnoyingBeep:
 ; ========================================
 ; 4. RICKROLL (OF COURSE!)
 ; ========================================
-^!r::  ; Ctrl+Alt+R for Rickroll
-    ; This would open the YouTube video in the default browser
+^!Hotkey("r", (*) =>   ; Ctrl+Alt+R for Rickroll
+    ; This would ope)n the YouTube video in the default browser
     Run, https://www.youtube.com/watch?v=dQw4w9WgXcQ
     
     ; Play a little preview
@@ -133,7 +134,7 @@ AnnoyingBeep:
 ; ========================================
 ; 5. FAKE VIRUS SCAN
 ; ========================================
-^!v::  ; Ctrl+Alt+V for fake virus scan
+^!Hotkey("v", (*) =>   ; Ctrl+Alt+V for fake virus sca)n
     Gui, VirusScan:New, +AlwaysOnTop -Caption +ToolWindow
     Gui, Color, 000000
     Gui, Font, s12 cLime, Consolas
@@ -192,7 +193,7 @@ VirusScanGuiClose:
 ; ========================================
 ; 6. KEYBOARD SOUNDS
 ; ========================================
-^!k::  ; Ctrl+Alt+K for keyboard sounds
+^!Hotkey("k", (*) =>   ; Ctrl+Alt+K for keyboard sou)nds
     static kbSoundsOn := false
     kbSoundsOn := !kbSoundsOn
     
@@ -251,3 +252,4 @@ GuiClose:
     
     ExitApp
     return
+

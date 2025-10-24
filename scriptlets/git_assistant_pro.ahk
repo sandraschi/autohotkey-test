@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Git Assistant Pro
 ; @name: Git Assistant Pro
 ; @version: 1.0.0
@@ -57,7 +57,7 @@ class GitAssistant {
         this.gui := Gui("+Resize", "Git Assistant Pro")
         
         ; Title
-        this.gui.Add("Text", "w600 h30 Center", "🚀 Git Assistant Pro")
+        this.gui.Add("Text", "w600 h30 Center", "ðŸš€ Git Assistant Pro")
         
         ; Repository info
         repoInfo := this.gui.Add("Text", "w600 h20", "Repository: " . (this.currentRepo ? this.currentRepo : "Not in a Git repository"))
@@ -302,9 +302,10 @@ class GitAssistant {
 }
 
 ; Hotkeys
-^!g::GitAssistant.Init()
-^!commit::GitAssistant.GitCommit()
-^!branch::GitAssistant.CreateBranch()
+^!Hotkey("g", (*) => GitAssista)nt.Init()
+^!Hotkey("commit", (*) => GitAssista)nt.GitCommit()
+^!Hotkey("branch", (*) => GitAssista)nt.CreateBranch()
 
 ; Initialize
 GitAssistant.Init()
+

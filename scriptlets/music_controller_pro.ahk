@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Music Controller Pro
 ; @name: Music Controller Pro
 ; @version: 1.0.0
@@ -39,7 +39,7 @@ class MusicController {
         this.gui := Gui("+Resize", "Music Controller Pro")
         
         ; Title
-        this.gui.Add("Text", "w500 h30 Center", "🎵 Music Controller Pro")
+        this.gui.Add("Text", "w500 h30 Center", "ðŸŽµ Music Controller Pro")
         
         ; Playlist selector
         playlistPanel := this.gui.Add("Text", "w500 h40")
@@ -59,11 +59,11 @@ class MusicController {
         ; Control panel
         controlPanel := this.gui.Add("Text", "w500 h80")
         
-        prevBtn := this.gui.Add("Button", "x10 y10 w60 h40", "⏮")
-        playBtn := this.gui.Add("Button", "x80 y10 w60 h40", "▶")
-        pauseBtn := this.gui.Add("Button", "x150 y10 w60 h40", "⏸")
-        nextBtn := this.gui.Add("Button", "x220 y10 w60 h40", "⏭")
-        stopBtn := this.gui.Add("Button", "x290 y10 w60 h40", "⏹")
+        prevBtn := this.gui.Add("Button", "x10 y10 w60 h40", "â®")
+        playBtn := this.gui.Add("Button", "x80 y10 w60 h40", "â–¶")
+        pauseBtn := this.gui.Add("Button", "x150 y10 w60 h40", "â¸")
+        nextBtn := this.gui.Add("Button", "x220 y10 w60 h40", "â­")
+        stopBtn := this.gui.Add("Button", "x290 y10 w60 h40", "â¹")
         
         prevBtn.OnEvent("Click", this.PreviousTrack.Bind(this))
         playBtn.OnEvent("Click", this.PlayTrack.Bind(this))
@@ -180,7 +180,7 @@ class MusicController {
             tracks := this.playlists[this.currentPlaylist]
             if (this.currentTrack < tracks.Length) {
                 track := tracks[this.currentTrack + 1]
-                status := this.isPlaying ? "▶ Playing" : "⏸ Paused"
+                status := this.isPlaying ? "â–¶ Playing" : "â¸ Paused"
                 this.currentTrackInfo.Text := status . " - " . track
             }
         }
@@ -210,7 +210,7 @@ class MusicController {
                 bars := ""
                 Loop 20 {
                     height := Random(10, 100)
-                    bars .= "█"
+                    bars .= "â–ˆ"
                 }
                 this.visualizer.Text := bars
             } else {
@@ -304,12 +304,13 @@ class MusicController {
 }
 
 ; Hotkeys
-#Space::MusicController.PlayTrack()
-#Left::MusicController.PreviousTrack()
-#Right::MusicController.NextTrack()
-#Up::MusicController.VolumeChanged()
-#Down::MusicController.VolumeChanged()
-#M::MusicController.Init()
+#Hotkey("Space", (*) => MusicCo)ntroller.PlayTrack()
+#Hotkey("Left", (*) => MusicCo)ntroller.PreviousTrack()
+#Hotkey("Right", (*) => MusicCo)ntroller.NextTrack()
+#Hotkey("Up", (*) => MusicCo)ntroller.VolumeChanged()
+#Hotkey("Down", (*) => MusicCo)ntroller.VolumeChanged()
+#Hotkey("M", (*) => MusicCo)ntroller.Init()
 
 ; Initialize
 MusicController.Init()
+

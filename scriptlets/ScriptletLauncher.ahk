@@ -1,3 +1,4 @@
+﻿#Requires AutoHotkey v2.0
 #NoEnv
 #SingleInstance Force
 #Warn
@@ -136,3 +137,4 @@ IsProcessRunning(processName) {
     Process, Exist, %processName%
     return ErrorLevel
 }
+

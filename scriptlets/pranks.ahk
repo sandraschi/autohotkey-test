@@ -1,11 +1,11 @@
-#Requires AutoHotkey v2.0
+﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 #MaxHotkeysPerInterval 200
 SendMode "Input"
 SetWorkingDir A_ScriptDir
 
 ; Prank: Fake Typing
-^!t:: {  ; Ctrl+Alt+T to toggle fake typing
+^!Hotkey("t", (*) =>  {  ; Ctrl+Alt+T to toggle fake typi)ng
     static typing := false
     typing := !typing
     if (typing) {
@@ -34,7 +34,7 @@ FakeTyping() {
 }
 
 ; Prank: Random Mouse Clicks
-^!m:: {  ; Ctrl+Alt+M to toggle random mouse clicks
+^!Hotkey("m", (*) =>  {  ; Ctrl+Alt+M to toggle ra)ndom mouse clicks
     static clicking := false
     clicking := !clicking
     if (clicking) {
@@ -54,7 +54,7 @@ RandomClick() {
 }
 
 ; Prank: Invert Mouse Buttons
-^!i:: {  ; Ctrl+Alt+I to invert mouse buttons
+^!Hotkey("i", (*) =>  {  ; Ctrl+Alt+I to i)nvert mouse buttons
     static inverted := false
     inverted := !inverted
     if (inverted) {
@@ -68,8 +68,8 @@ RandomClick() {
 }
 
 ; Prank: Fake BSOD
-^!b:: {  ; Ctrl+Alt+B for fake BSOD
-    bsod := Gui("+AlwaysOnTop -Caption +ToolWindow", "Windows - No Disk")
+^!Hotkey("b", (*) =>  {  ; Ctrl+Alt+B for fake BSOD
+    bsod := Gui("+AlwaysO)nTop -Caption +ToolWindow", "Windows - No Disk")
     bsod.BackColor := "0000AA"
     bsod.SetFont("s12 cWhite", "Lucida Console")
     
@@ -95,7 +95,7 @@ RandomClick() {
 }
 
 ; Prank: Fake Update
-^!u:: {  ; Ctrl+Alt+U for fake Windows update
+^!Hotkey("u", (*) =>  {  ; Ctrl+Alt+U for fake Wi)ndows update
     updateGui := Gui("-Caption +ToolWindow +AlwaysOnTop", "Windows Update")
     updateGui.BackColor := "0078D7"
     updateGui.SetFont("s12 cWhite", "Segoe UI")
@@ -141,12 +141,12 @@ RandomClick() {
 }
 
 ; Prank: Fake Error Message
-^!e:: {  ; Ctrl+Alt+E for fake error
-    MsgBox "Error 0x80070002: The system cannot find the file specified.", "Windows - Application Error", "Iconx"
+^!Hotkey("e", (*) =>  {  ; Ctrl+Alt+E for fake error
+    MsgBox("Error 0x80070002: The system ca)nnot find the file specified.",  "Windows - Application Error",  "Ico)nx"
 }
 
 ; Prank: Fake Shutdown
-^!s:: {  ; Ctrl+Alt+S for fake shutdown
+^!Hotkey("s", (*) =>  {  ; Ctrl+Alt+S for fake shutdow)n
     shutdownGui := Gui("-Caption +ToolWindow +AlwaysOnTop", "Windows")
     shutdownGui.BackColor := "000000"
     shutdownGui.SetFont("s12 cWhite", "Segoe UI")
@@ -184,3 +184,4 @@ ExitFunc(ExitReason, ExitCode) {
     DllCall("SwapMouseButton", "UInt", 0)
     return 0
 }
+

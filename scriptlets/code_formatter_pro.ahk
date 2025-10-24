@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Code Formatter Pro
 ; @name: Code Formatter Pro
 ; @version: 1.0.0
@@ -371,27 +371,27 @@ class CodeFormatter {
     static ValidateJSON(code) {
         try {
             JSON.parse(code)
-            return "✅ Valid JSON"
+            return "âœ… Valid JSON"
         } catch {
-            return "❌ Invalid JSON"
+            return "âŒ Invalid JSON"
         }
     }
     
     static ValidateXML(code) {
         ; Simple XML validation
         if (RegExMatch(code, "<[^>]*>")) {
-            return "✅ Valid XML"
+            return "âœ… Valid XML"
         } else {
-            return "❌ Invalid XML"
+            return "âŒ Invalid XML"
         }
     }
     
     static ValidateJavaScript(code) {
         ; Simple JavaScript validation
         if (RegExMatch(code, "function|var|let|const")) {
-            return "✅ Valid JavaScript"
+            return "âœ… Valid JavaScript"
         } else {
-            return "❌ Invalid JavaScript"
+            return "âŒ Invalid JavaScript"
         }
     }
     
@@ -469,9 +469,10 @@ StringRepeat(str, count) {
 }
 
 ; Hotkeys
-^!f::CodeFormatter.FormatCode()
+^!Hotkey("f", (*) => CodeFormatter.FormatCode()
 ^!b::CodeFormatter.BeautifyCode()
-^!c::CodeFormatter.Init()
+^!c::CodeFormatter.I)nit()
 
 ; Initialize
 CodeFormatter.Init()
+

@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Workflow Automator Pro
 ; @name: Workflow Automator Pro
 ; @version: 1.0.0
@@ -97,7 +97,7 @@ class WorkflowAutomator {
         this.gui := Gui("+Resize", "Workflow Automator Pro")
         
         ; Title
-        this.gui.Add("Text", "w700 h30 Center", "⚡ Workflow Automator Pro")
+        this.gui.Add("Text", "w700 h30 Center", "âš¡ Workflow Automator Pro")
         
         ; Workflow list
         this.gui.Add("Text", "w700 h20", "Active Workflows:")
@@ -426,9 +426,10 @@ class WorkflowAutomator {
 }
 
 ; Hotkeys
-^!w::WorkflowAutomator.Init()
-^!r::WorkflowAutomator.GenerateReport()
-^!t::WorkflowAutomator.ExecuteWorkflow("Daily Report")
+^!Hotkey("w", (*) => WorkflowAutomator.I)nit()
+^!Hotkey("r", (*) => WorkflowAutomator.Ge)nerateReport()
+^!Hotkey("t", (*) => WorkflowAutomator.ExecuteWorkflow("Daily Report")
 
-; Initialize
+; I)nitialize
 WorkflowAutomator.Init()
+

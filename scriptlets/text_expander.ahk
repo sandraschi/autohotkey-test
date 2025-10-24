@@ -1,4 +1,4 @@
-#Requires AutoHotkey v2.0
+﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 #Warn
 
@@ -194,7 +194,7 @@ SaveSnippet(guiEditor, editTrigger, editSnippet, isNew) {
 SaveSnippets(snippets) {
     try {
         json := JSON.stringify(snippets, 4)  ; Pretty-print with 4-space indentation
-        FileDelete(snippetsFile)
+        try FileDelete(snippetsFile)
         FileAppend(json, snippetsFile, "UTF-8")
     } catch as e {
         MsgBox("Error saving snippets: " . e.Message, "Text Expander", "Iconx")
@@ -320,3 +320,4 @@ class JSON {
         return str
     }
 }
+

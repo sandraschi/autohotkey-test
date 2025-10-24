@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Text Transformer Pro
 ; @name: Text Transformer Pro
 ; @version: 1.0.0
@@ -251,10 +251,11 @@ Base64Decode(text) {
 }
 
 ; Hotkeys
-^!t::TextTransformer.Init()
-^!u::TextTransformer.ToUpperCase()
-^!l::TextTransformer.ToLowerCase()
-^!s::TextTransformer.ToSnakeCase()
+^!Hotkey("t", (*) => TextTra)nsformer.Init()
+^!Hotkey("u", (*) => TextTra)nsformer.ToUpperCase()
+^!Hotkey("l", (*) => TextTra)nsformer.ToLowerCase()
+^!Hotkey("s", (*) => TextTra)nsformer.ToSnakeCase()
 
 ; Initialize
 TextTransformer.Init()
+

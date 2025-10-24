@@ -1,4 +1,4 @@
-; ==============================================================================
+﻿; ==============================================================================
 ; Chess Game with Stockfish Integration
 ; @name: Chess Game with Stockfish Integration
 ; @version: 1.0.0
@@ -103,12 +103,12 @@ class ChessGame {
     }
     
     static ShowStockfishInstructions() {
-        instructionsText := "♟️ STOCKFISH ENGINE REQUIRED ♟️`n`n"
+        instructionsText := "â™Ÿï¸ STOCKFISH ENGINE REQUIRED â™Ÿï¸`n`n"
         instructionsText .= "To play against the AI, you need Stockfish:`n`n"
         instructionsText .= "1. Download Stockfish from: https://stockfishchess.org/download/`n"
         instructionsText .= "2. Extract stockfish.exe to:`n"
-        instructionsText .= "   • " . A_ScriptDir . "\stockfish.exe`n"
-        instructionsText .= "   • Or " . A_ScriptDir . "\engines\stockfish.exe`n`n"
+        instructionsText .= "   â€¢ " . A_ScriptDir . "\stockfish.exe`n"
+        instructionsText .= "   â€¢ Or " . A_ScriptDir . "\engines\stockfish.exe`n`n"
         instructionsText .= "3. Restart this game`n`n"
         instructionsText .= "You can still play Human vs Human mode without Stockfish.`n`n"
         instructionsText .= "Press OK to continue with Human vs Human mode."
@@ -171,7 +171,7 @@ class ChessGame {
             Loop 8 {
                 piece := this.board[row][A_Index - 1]
                 if (piece = "") {
-                    boardText .= "· "
+                    boardText .= "Â· "
                 } else {
                     boardText .= piece . " "
                 }
@@ -202,18 +202,18 @@ class ChessGame {
     }
     
     static ShowGameMode(*) {
-        modeText := "🎮 CHESS GAME MODES 🎮`n`n"
+        modeText := "ðŸŽ® CHESS GAME MODES ðŸŽ®`n`n"
         modeText .= "Current Mode: " . this.gameMode . "`n`n"
         modeText .= "Available Modes:`n`n"
         modeText .= "1. Human vs AI (requires Stockfish)`n"
-        modeText .= "   • Play against computer`n"
-        modeText .= "   • AI uses Stockfish engine`n`n"
+        modeText .= "   â€¢ Play against computer`n"
+        modeText .= "   â€¢ AI uses Stockfish engine`n`n"
         modeText .= "2. Human vs Human`n"
-        modeText .= "   • Two players on same computer`n"
-        modeText .= "   • Take turns moving pieces`n`n"
+        modeText .= "   â€¢ Two players on same computer`n"
+        modeText .= "   â€¢ Take turns moving pieces`n`n"
         modeText .= "3. AI vs AI (demo mode)`n"
-        modeText .= "   • Watch two AIs play`n"
-        modeText .= "   • Great for learning`n`n"
+        modeText .= "   â€¢ Watch two AIs play`n"
+        modeText .= "   â€¢ Great for learning`n`n"
         modeText .= "Stockfish Status: " . (this.stockfishPath ? "Found" : "Not Found") . "`n`n"
         modeText .= "Press OK to continue."
         
@@ -221,28 +221,28 @@ class ChessGame {
     }
     
     static ShowInstructions(*) {
-        instructionsText := "♟️ HOW TO PLAY CHESS ♟️`n`n"
+        instructionsText := "â™Ÿï¸ HOW TO PLAY CHESS â™Ÿï¸`n`n"
         instructionsText .= "OBJECTIVE:`n"
         instructionsText .= "Checkmate your opponent's king!`n`n"
         instructionsText .= "CONTROLS:`n"
-        instructionsText .= "• Click on a piece to select it`n"
-        instructionsText .= "• Click on destination square to move`n"
-        instructionsText .= "• SPACE: Start/Pause game`n"
-        instructionsText .= "• R: Reset game`n"
-        instructionsText .= "• M: Show this menu`n`n"
+        instructionsText .= "â€¢ Click on a piece to select it`n"
+        instructionsText .= "â€¢ Click on destination square to move`n"
+        instructionsText .= "â€¢ SPACE: Start/Pause game`n"
+        instructionsText .= "â€¢ R: Reset game`n"
+        instructionsText .= "â€¢ M: Show this menu`n`n"
         instructionsText .= "PIECE MOVEMENTS:`n"
-        instructionsText .= "• Pawn (P/p): Forward 1, capture diagonally`n"
-        instructionsText .= "• Rook (R/r): Horizontal and vertical`n"
-        instructionsText .= "• Knight (N/n): L-shaped moves`n"
-        instructionsText .= "• Bishop (B/b): Diagonal moves`n"
-        instructionsText .= "• Queen (Q/q): Any direction`n"
-        instructionsText .= "• King (K/k): One square any direction`n`n"
+        instructionsText .= "â€¢ Pawn (P/p): Forward 1, capture diagonally`n"
+        instructionsText .= "â€¢ Rook (R/r): Horizontal and vertical`n"
+        instructionsText .= "â€¢ Knight (N/n): L-shaped moves`n"
+        instructionsText .= "â€¢ Bishop (B/b): Diagonal moves`n"
+        instructionsText .= "â€¢ Queen (Q/q): Any direction`n"
+        instructionsText .= "â€¢ King (K/k): One square any direction`n`n"
         instructionsText .= "SPECIAL RULES:`n"
-        instructionsText .= "• Castling: King and rook special move`n"
-        instructionsText .= "• En passant: Pawn capture rule`n"
-        instructionsText .= "• Pawn promotion: Promote to queen`n"
-        instructionsText .= "• Check: King under attack`n"
-        instructionsText .= "• Checkmate: King cannot escape`n`n"
+        instructionsText .= "â€¢ Castling: King and rook special move`n"
+        instructionsText .= "â€¢ En passant: Pawn capture rule`n"
+        instructionsText .= "â€¢ Pawn promotion: Promote to queen`n"
+        instructionsText .= "â€¢ Check: King under attack`n"
+        instructionsText .= "â€¢ Checkmate: King cannot escape`n`n"
         instructionsText .= "Press OK to start playing!"
         
         MsgBox(instructionsText, "Chess Instructions", "Iconi")
@@ -417,20 +417,20 @@ class ChessGame {
     
     static SetupHotkeys() {
         ; Game controls
-        Space::{
-            if (ChessGame.gameRunning) {
+        Hotkey("Space", (*) => {
+            if (ChessGame.gameRu)nning) {
                 ChessGame.gameRunning := false
             } else {
                 ChessGame.StartGame()
             }
         }
         
-        r::ChessGame.Init()
-        m::ChessGame.ShowInstructions()
+        Hotkey("r", (*) => ChessGame.I)nit()
+        Hotkey("m", (*) => ChessGame.ShowI)nstructions()
         
         ; Escape to close
-        Escape::{
-            ChessGame.gameRunning := false
+        Hotkey("Escape", (*) => {
+            ChessGame.gameRu)nning := false
             if (ChessGame.gameGui) {
                 ChessGame.gameGui.Close()
             }
@@ -439,8 +439,9 @@ class ChessGame {
 }
 
 ; Hotkeys
-^!c::ChessGame.Init()
-F7::ChessGame.Init()
+Hotkey("^!c", (*) => ChessGame.Init())
+Hotkey("F7", (*) => ChessGame.Init())
 
 ; Initialize
 ChessGame.Init()
+

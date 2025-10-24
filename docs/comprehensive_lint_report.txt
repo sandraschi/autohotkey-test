@@ -1,0 +1,885 @@
+﻿=== COMPREHENSIVE LINT ANALYSIS REPORT ===
+Generated: 10/24/2025 10:17:01
+Total Files Analyzed: 54
+
+
+=== ai_code_assistant.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\workflow_automator_pro.ahk
+Generated: 2025-10-24 10:11:25
+Total Lines: 435
+
+Issues found:
+  No issues found! 🎉
+
+
+=== annoying_sounds.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\ai_code_assistant.ahk
+Generated: 2025-10-24 10:15:07
+Total Lines: 334
+
+Issues found:
+  No issues found! 🎉
+
+
+=== autohotkey_debug_helper.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\annoying_sounds.ahk
+Generated: 2025-10-24 10:15:09
+Total Lines: 256
+
+Issues found:
+
+ERRORS (12):
+  [Error] Line 138  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 139  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 140  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 142  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 143  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 144  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 146  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 159  - Found GuiControl, command - use gui control methods instead
+  [Error] Line 169  - Found GuiControl, command - use gui control methods instead
+  [Error] Line 185  - Found GuiControl, command - use gui control methods instead
+  [Error] Line 190  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 245  - Found Gui, command - use Gui() constructor instead
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== autohotkey_warning.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\autohotkey_debug_helper.ahk
+Generated: 2025-10-24 10:15:11
+Total Lines: 423
+
+Issues found:
+  No issues found! 🎉
+
+
+=== chess_stockfish.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\autohotkey_warning.ahk
+Generated: 2025-10-24 10:15:13
+Total Lines: 100
+
+Issues found:
+
+WARNINGS (1):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== classic_frogger.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\chess_stockfish.ahk
+Generated: 2025-10-24 10:15:15
+Total Lines: 448
+
+Issues found:
+  No issues found! 🎉
+
+
+=== classic_pong.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\classic_frogger.ahk
+Generated: 2025-10-24 10:15:18
+Total Lines: 396
+
+Issues found:
+  No issues found! 🎉
+
+
+=== classic_pranks.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\classic_pong.ahk
+Generated: 2025-10-24 10:15:20
+Total Lines: 314
+
+Issues found:
+  No issues found! 🎉
+
+
+=== classic_pranks_collection.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\classic_pranks.ahk
+Generated: 2025-10-24 10:15:22
+Total Lines: 282
+
+Issues found:
+
+ERRORS (3):
+  [Error] Line 78   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 182  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 183  - Found Gui, command - use Gui() constructor instead
+
+
+=== classic_pranks_fixed.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\classic_pranks_collection.ahk
+Generated: 2025-10-24 10:15:24
+Total Lines: 377
+
+Issues found:
+  No issues found! 🎉
+
+
+=== claude_desktop_restart.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\classic_pranks_fixed.ahk
+Generated: 2025-10-24 10:15:26
+Total Lines: 282
+
+Issues found:
+
+ERRORS (3):
+  [Error] Line 78   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 182  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 183  - Found Gui, command - use Gui() constructor instead
+
+
+=== clipboard_manager.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\claude_desktop_restart.ahk
+Generated: 2025-10-24 10:15:28
+Total Lines: 240
+
+Issues found:
+  No issues found! 🎉
+
+
+=== code_formatter_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\clipboard_manager.ahk
+Generated: 2025-10-24 10:15:31
+Total Lines: 331
+
+Issues found:
+
+ERRORS (6):
+  [Error] Line 123  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 127  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 130  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 166  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 193  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 37   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== dev_context_music.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\code_formatter_pro.ahk
+Generated: 2025-10-24 10:15:32
+Total Lines: 479
+
+Issues found:
+  No issues found! 🎉
+
+
+=== dev_context_music_backup.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\dev_context_music.ahk
+Generated: 2025-10-24 10:15:35
+Total Lines: 291
+
+Issues found:
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== eliza.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\dev_context_music_backup.ahk
+Generated: 2025-10-24 10:15:37
+Total Lines: 258
+
+Issues found:
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== fun_animations.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\eliza.ahk
+Generated: 2025-10-24 10:15:39
+Total Lines: 231
+
+Issues found:
+
+WARNINGS (8):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 30   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 80   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 105  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 111  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 128  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 178  - Found global variable declaration - consider using static or local variables
+
+
+=== fun_games.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\fun_animations.ahk
+Generated: 2025-10-24 10:15:41
+Total Lines: 117
+
+Issues found:
+
+ERRORS (21):
+  [Error] Line 11   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 12   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 13   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 14   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 15   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 16   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 28   - Found GuiControl, command - use gui control methods instead
+  [Error] Line 35   - Found GuiControl, command - use gui control methods instead
+  [Error] Line 38   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 40   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 42   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 48   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 49   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 50   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 70   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 77   - Found GuiControl, command - use gui control methods instead
+  [Error] Line 98   - Found GuiControl, command - use gui control methods instead
+  [Error] Line 103  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 61   - Found Loop, syntax - use Loop or For loop instead
+  [Error] Line 88   - Found Loop, syntax - use Loop or For loop instead
+  [Error] Line 90   - Found Loop, syntax - use Loop or For loop instead
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== game_starter_popup.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\fun_games.ahk
+Generated: 2025-10-24 10:15:43
+Total Lines: 154
+
+Issues found:
+
+ERRORS (9):
+  [Error] Line 10   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 11   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 12   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 35   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 71   - Found GuiControl, command - use gui control methods instead
+  [Error] Line 23   - Found Loop, syntax - use Loop or For loop instead
+  [Error] Line 32   - Found Loop, syntax - use Loop or For loop instead
+  [Error] Line 79   - Found Loop, syntax - use Loop or For loop instead
+  [Error] Line 82   - Found Loop, syntax - use Loop or For loop instead
+
+WARNINGS (3):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 75   - Found global variable declaration - consider using static or local variables
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== github_repo_manager.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\game_starter_popup.ahk
+Generated: 2025-10-24 10:15:45
+Total Lines: 243
+
+Issues found:
+  No issues found! 🎉
+
+
+=== git_assistant_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\github_repo_manager.ahk
+Generated: 2025-10-24 10:15:47
+Total Lines: 217
+
+Issues found:
+  No issues found! 🎉
+
+
+=== help_system_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\git_assistant_pro.ahk
+Generated: 2025-10-24 10:15:49
+Total Lines: 312
+
+Issues found:
+  No issues found! 🎉
+
+
+=== ide_shortcuts.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\help_system_pro.ahk
+Generated: 2025-10-24 10:15:52
+Total Lines: 1077
+
+Issues found:
+
+WARNINGS (1):
+  [Warning] Line 433  - Found global variable declaration - consider using static or local variables
+
+
+=== mcp_config_manager.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\ide_shortcuts.ahk
+Generated: 2025-10-24 10:15:54
+Total Lines: 175
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 169  - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== mcp_development_cycle.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mcp_config_manager.ahk
+Generated: 2025-10-24 10:15:56
+Total Lines: 578
+
+Issues found:
+  No issues found! 🎉
+
+
+=== mcp_log_analyzer.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mcp_development_cycle.ahk
+Generated: 2025-10-24 10:15:58
+Total Lines: 557
+
+Issues found:
+  No issues found! 🎉
+
+
+=== mcp_server_scaffolding.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mcp_log_analyzer.ahk
+Generated: 2025-10-24 10:16:00
+Total Lines: 506
+
+Issues found:
+  No issues found! 🎉
+
+
+=== mcp_troubleshooter.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mcp_server_scaffolding.ahk
+Generated: 2025-10-24 10:16:02
+Total Lines: 460
+
+Issues found:
+  No issues found! 🎉
+
+
+=== media_controls.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mcp_troubleshooter.ahk
+Generated: 2025-10-24 10:16:04
+Total Lines: 589
+
+Issues found:
+  No issues found! 🎉
+
+
+=== mini_games_collection.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\media_controls.ahk
+Generated: 2025-10-24 10:16:07
+Total Lines: 203
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 45   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== music_controller_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\mini_games_collection.ahk
+Generated: 2025-10-24 10:16:09
+Total Lines: 586
+
+Issues found:
+
+WARNINGS (1):
+  [Warning] Line 163  - Found global variable declaration - consider using static or local variables
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== ollama_chatbot.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\music_controller_pro.ahk
+Generated: 2025-10-24 10:16:11
+Total Lines: 317
+
+Issues found:
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== ollama_chatbot_no_com.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\ollama_chatbot.ahk
+Generated: 2025-10-24 10:16:13
+Total Lines: 589
+
+Issues found:
+
+WARNINGS (14):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 68   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 118  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 139  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 149  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 154  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 161  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 311  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 383  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 406  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 445  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 475  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 538  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 546  - Found global variable declaration - consider using static or local variables
+
+
+=== pacman_classic.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\ollama_chatbot_no_com.ahk
+Generated: 2025-10-24 10:16:15
+Total Lines: 901
+
+Issues found:
+
+WARNINGS (18):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 68   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 124  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 148  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 164  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 177  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 183  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 204  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 214  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 219  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 226  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 376  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 457  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 480  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 519  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 549  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 851  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 859  - Found global variable declaration - consider using static or local variables
+
+
+=== pranks.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\pacman_classic.ahk
+Generated: 2025-10-24 10:16:17
+Total Lines: 458
+
+Issues found:
+  No issues found! 🎉
+
+
+=== quick_launch.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\pranks.ahk
+Generated: 2025-10-24 10:16:20
+Total Lines: 188
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 5    - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== quick_notes.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\quick_launch.ahk
+Generated: 2025-10-24 10:16:22
+Total Lines: 94
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 41   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== ScriptletLauncher.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\quick_notes.ahk
+Generated: 2025-10-24 10:16:24
+Total Lines: 1010
+
+Issues found:
+
+ERRORS (4):
+  [Error] Line 548  - Incorrect FormatTime syntax - use FormatTime(var, , format)
+  [Error] Line 357  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 712  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 41   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (35):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 9    - Found global variable declaration - consider using static or local variables
+  [Warning] Line 10   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 13   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 14   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 15   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 16   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 19   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 32   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 33   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 34   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 35   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 65   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 129  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 156  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 195  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 206  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 234  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 284  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 322  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 337  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 358  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 383  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 400  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 422  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 446  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 566  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 642  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 672  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 714  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 764  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 798  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 842  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 890  - Found global variable declaration - consider using static or local variables
+
+
+=== scriptlet_tester.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\ScriptletLauncher.ahk
+Generated: 2025-10-24 10:16:26
+Total Lines: 141
+
+Issues found:
+
+ERRORS (34):
+  [Error] Line 11   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 12   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 15   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 16   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 17   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 18   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 19   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 22   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 25   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 26   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 27   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 28   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 29   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 30   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 31   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 32   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 35   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 36   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 37   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 40   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 41   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 42   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 43   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 44   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 45   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 46   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 49   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 50   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 51   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 54   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 57   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 62   - Found Gui, command - use Gui() constructor instead
+  [Error] Line 120  - Found Gui, command - use Gui() constructor instead
+  [Error] Line 131  - Found Gui, command - use Gui() constructor instead
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== security_guide_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\scriptlet_tester.ahk
+Generated: 2025-10-24 10:16:28
+Total Lines: 108
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 84   - Incorrect FileRead syntax - use FileRead(content, file)
+
+WARNINGS (2):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 87   - Found global variable declaration - consider using static or local variables
+
+
+=== smart_assistant_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\security_guide_pro.ahk
+Generated: 2025-10-24 10:16:30
+Total Lines: 943
+
+Issues found:
+  No issues found! 🎉
+
+
+=== smart_clipboard_manager.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\smart_assistant_pro.ahk
+Generated: 2025-10-24 10:16:32
+Total Lines: 368
+
+Issues found:
+  No issues found! 🎉
+
+
+=== sudoku.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\smart_clipboard_manager.ahk
+Generated: 2025-10-24 10:16:35
+Total Lines: 171
+
+Issues found:
+  No issues found! 🎉
+
+
+=== system_monitor.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\sudoku.ahk
+Generated: 2025-10-24 10:16:37
+Total Lines: 766
+
+Issues found:
+
+WARNINGS (35):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 30   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 31   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 32   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 35   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 36   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 37   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 38   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 39   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 42   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 43   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 44   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 45   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 48   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 49   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 50   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 62   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 95   - Found global variable declaration - consider using static or local variables
+  [Warning] Line 139  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 164  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 190  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 247  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 401  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 459  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 466  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 492  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 501  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 532  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 546  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 592  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 619  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 635  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 667  - Found global variable declaration - consider using static or local variables
+  [Warning] Line 720  - Found global variable declaration - consider using static or local variables
+
+
+=== system_monitor_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\system_monitor.ahk
+Generated: 2025-10-24 10:16:39
+Total Lines: 335
+
+Issues found:
+
+WARNINGS (3):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+  [Warning] Line 202  - Found global variable declaration - consider using static or local variables
+
+
+=== system_shortcuts.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\system_monitor_pro.ahk
+Generated: 2025-10-24 10:16:41
+Total Lines: 393
+
+Issues found:
+  No issues found! 🎉
+
+
+=== tetris_classic.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\system_shortcuts.ahk
+Generated: 2025-10-24 10:16:43
+Total Lines: 394
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 84   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (1):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== text_expander.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\tetris_classic.ahk
+Generated: 2025-10-24 10:16:45
+Total Lines: 437
+
+Issues found:
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== text_transformer_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\text_expander.ahk
+Generated: 2025-10-24 10:16:47
+Total Lines: 324
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 52   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (1):
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+
+=== volume_control.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\text_transformer_pro.ahk
+Generated: 2025-10-24 10:16:50
+Total Lines: 262
+
+Issues found:
+  No issues found! 🎉
+
+
+=== window_management.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\volume_control.ahk
+Generated: 2025-10-24 10:16:52
+Total Lines: 45
+
+Issues found:
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== window_manager_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\window_management.ahk
+Generated: 2025-10-24 10:16:54
+Total Lines: 476
+
+Issues found:
+
+ERRORS (1):
+  [Error] Line 41   - Incorrect SetWorkingDir syntax - use SetWorkingDir(path)
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== window_snapping.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\window_manager_pro.ahk
+Generated: 2025-10-24 10:16:56
+Total Lines: 252
+
+Issues found:
+  No issues found! 🎉
+
+
+=== workflow_automator_pro.ahk ===
+Lint Report for: D:\Dev\repos\autohotkey-test\scriptlets\window_snapping.ahk
+Generated: 2025-10-24 10:16:58
+Total Lines: 39
+
+Issues found:
+
+WARNINGS (2):
+  [Warning] Line N/A  - No class definition found - consider using class-based structure
+  [Warning] Line N/A  - Missing Init() method - recommended for scriptlets
+
+SUGGESTIONS (1):
+  [Suggestion] Line N/A  - Consider adding error handling with try/catch blocks
+
+
+=== SUMMARY ===
+Total Errors Found: 100
+Total Warnings Found: 149
+Files with Errors: 16
+Files with Warnings: 26
+
+Files with Errors:
+  - autohotkey_debug_helper.ahk
+  - classic_pranks_collection.ahk
+  - claude_desktop_restart.ahk
+  - code_formatter_pro.ahk
+  - fun_games.ahk
+  - game_starter_popup.ahk
+  - mcp_config_manager.ahk
+  - mini_games_collection.ahk
+  - quick_launch.ahk
+  - quick_notes.ahk
+  - ScriptletLauncher.ahk
+  - scriptlet_tester.ahk
+  - security_guide_pro.ahk
+  - tetris_classic.ahk
+  - text_transformer_pro.ahk
+  - window_manager_pro.ahk
+
+Files with Warnings:
+  - autohotkey_debug_helper.ahk
+  - chess_stockfish.ahk
+  - code_formatter_pro.ahk
+  - dev_context_music_backup.ahk
+  - eliza.ahk
+  - fun_animations.ahk
+  - fun_games.ahk
+  - game_starter_popup.ahk
+  - ide_shortcuts.ahk
+  - mcp_config_manager.ahk
+  - mini_games_collection.ahk
+  - music_controller_pro.ahk
+  - ollama_chatbot_no_com.ahk
+  - pacman_classic.ahk
+  - quick_launch.ahk
+  - quick_notes.ahk
+  - ScriptletLauncher.ahk
+  - scriptlet_tester.ahk
+  - security_guide_pro.ahk
+  - system_monitor.ahk
+  - system_monitor_pro.ahk
+  - tetris_classic.ahk
+  - text_transformer_pro.ahk
+  - window_management.ahk
+  - window_manager_pro.ahk
+  - workflow_automator_pro.ahk
+
