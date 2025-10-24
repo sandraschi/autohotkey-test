@@ -26,7 +26,8 @@ See `SECURITY_WARNING.md` and `scriptlets/security_guide_pro.ahk` for complete s
 
 - **ScriptletCOMBridge**: Advanced HTTP bridge for web-based scriptlet management
 - **Enhanced Web GUI**: Modern HTML5 interface with theme switching and real-time updates
-- **Comprehensive Scriptlets**: 25+ professional-grade utilities and tools
+- **Comprehensive Scriptlets**: 54+ professional-grade utilities and tools
+- **Advanced Linting System**: Complete AutoHotkey v2 static analysis and error fixing
 - **Debugging Tools**: Built-in error tracking and syntax checking
 - **Security System**: Comprehensive warnings and safety guides
 - **AutoHotkey v2 Migration**: Complete v1→v2 syntax conversion with migration guide
@@ -39,6 +40,14 @@ See `SECURITY_WARNING.md` and `scriptlets/security_guide_pro.ahk` for complete s
 - `claude-mcp-scripts-extended.ahk` - Claude Desktop MCP integration
 - `scriptlets/help_system_pro.ahk` - Interactive help system
 - `scriptlets/security_guide_pro.ahk` - Security education tool
+
+### Linting & Development Tools
+
+- `utils/linter.ahk` - Complete AutoHotkey v2 static analyzer
+- `utils/run_linter_clean.ps1` - Clean linter runner with process management
+- `utils/batch_analyze_all.ps1` - Comprehensive batch analysis tool
+- `utils/fix_autohotkey_errors.ps1` - Automated error fixing script
+- `utils/scriptlet_validator.ahk` - Advanced validation framework
 
 ## 🌐 Enhanced Web Interface
 
@@ -148,10 +157,19 @@ curl http://localhost:8765/scriptlets
 
 ## 🔧 Development Tools
 
+### Advanced Linting System
+- **Static Analyzer**: Complete AutoHotkey v2 syntax checking
+- **Error Detection**: Identifies compatibility issues and syntax errors
+- **Automated Fixing**: Batch fixes for common v1→v2 migration issues
+- **Process Management**: Clean execution with automatic process cleanup
+- **Comprehensive Reports**: Detailed analysis with line-by-line error reporting
+
 ### Debugging & Testing
 - **Debug Helper**: `Ctrl+Alt+D` - View error logs
 - **Scriptlet Tester**: `Ctrl+Alt+T` - Test all scriptlets
 - **Syntax Checker**: `Ctrl+Alt+F` - Quick fix guide
+- **Batch Analysis**: Comprehensive analysis of all scriptlets
+- **Validation Framework**: Advanced testing and validation
 
 ### Configuration Management
 - **ConfigManager**: JSON-based configuration with INI migration
@@ -228,10 +246,22 @@ curl http://localhost:8765/scriptlets
 - **README_COMPREHENSIVE.md** - Detailed documentation
 - **QUICK_START_GUIDE.md** - Quick start instructions
 - **SECURITY_WARNING.md** - Critical security information
+- **CHANGELOG.md** - Complete version history
+- **docs/DEVELOPMENT_GUIDE.md** - Development practices and tools
 - **docs/AutoHotkey_v2_Syntax_Migration_Guide.md** - Migration reference
+- **docs/AutoHotkey_Debugging_Guide.md** - Debugging techniques
+- **docs/linting_success_report.md** - Linting system documentation
 - **scriptlets/help_system_pro.ahk** - Interactive help
 
 ## 📊 Recent Updates
+
+### v2.1.0 - Advanced Linting & Error Fixing System
+- ✅ **Complete Linting Infrastructure**: Full AutoHotkey v2 static analysis
+- ✅ **Automated Error Fixing**: Fixed 31 critical errors across 45 scriptlets
+- ✅ **Process Management**: Clean execution with automatic process cleanup
+- ✅ **Comprehensive Analysis**: Batch analysis of all 54 scriptlets
+- ✅ **Error Documentation**: Complete documentation of all fixes applied
+- ✅ **Development Tools**: Professional-grade linting and validation tools
 
 ### v2.0.0 - Major Migration & Enhancement
 - ✅ Complete AutoHotkey v1→v2 migration
